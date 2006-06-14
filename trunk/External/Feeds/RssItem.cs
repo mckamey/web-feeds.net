@@ -3,7 +3,7 @@ using System.ComponentModel;
 using System.Collections.Generic;
 using System.Xml.Serialization;
 
-namespace MediaLib.Web.Rss
+namespace MediaLib.Web.Feeds
 {
 	/// <summary>
 	/// RSS 2.0 Item

@@ -3,7 +3,7 @@ using System.Web;
 using System.Xml;
 using System.Xml.Serialization;
 
-namespace MediaLib.Web.Rss
+namespace MediaLib.Web.Feeds
 {
 	/// <summary>
 	/// Based upon RSS 2.0
