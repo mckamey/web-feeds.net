@@ -28,9 +28,12 @@ namespace MediaLib.Web.Handlers
 			if (!String.IsNullOrEmpty(context.Request.QueryString["url"]))
 				return base.GenerateRssFeed(context);
 #endif
-			string folderPath = Path.GetDirectoryName(context.Request.PhysicalPath);
+			if (!FilePathMapper.IsPathVirtual(context.Request.CurrentExecutionFilePath))
+				context.Response.Redirect(FilePathMapper.MediaVirtualRoot, true);
+
+			string folderPath = FilePathMapper.GetDirectory(FilePathMapper.GetPhysicalPath(context.Request.CurrentExecutionFilePath));
 			folderPath = HttpUtility.UrlDecode(folderPath);
-			return this.GenerateDirectoryListFeed(context, folderPath+"\\");
+			return this.GenerateDirectoryListFeed(context, folderPath);
 		}
 
 		#endregion RssHandler Members
@@ -39,7 +42,6 @@ namespace MediaLib.Web.Handlers
 
 		protected RssDocument GenerateDirectoryListFeed(System.Web.HttpContext context, string folderPath)
 		{
-			string appRoot = FilePathMapper.GetPhysicalPath("~/");
 			string requestUrl = FilePathMapper.GetDirectory(context.Request.Url.AbsoluteUri);
 			DirectoryInfo directoryInfo = new DirectoryInfo(folderPath);
 			//string[] directories = Directory.GetDirectories(folderPath, "*", SearchOption.TopDirectoryOnly);
@@ -55,7 +57,7 @@ namespace MediaLib.Web.Handlers
 			rssDoc.Channel.Link = requestUrl;
 			rssDoc.Channel.Language = System.Globalization.CultureInfo.CurrentCulture.Name;
 
-			if (!folderPath.Equals(appRoot, StringComparison.InvariantCultureIgnoreCase))
+			if (!folderPath.Equals(FilePathMapper.MediaPhysicalRoot, StringComparison.InvariantCultureIgnoreCase))
 			{
 				RssItem item = new RssItem();
 				item.Title = "Parent Directory";

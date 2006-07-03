@@ -3,6 +3,8 @@ using System.Web;
 using System.Xml;
 using System.Xml.Serialization;
 
+using MediaLib.Web.Hosting;
+
 namespace MediaLib.Web.Feeds
 {
 	/// <summary>
@@ -123,12 +125,9 @@ namespace MediaLib.Web.Feeds
 		private static string GetRssXslt(Uri baseUri)
 		{
 			string rssXslt = System.Configuration.ConfigurationManager.AppSettings[RssHandler.AppSettingsKey_RssXslt];
-			Uri rssXsltUri = null;
-			if (baseUri != null && !String.IsNullOrEmpty(rssXslt) &&
-				Uri.TryCreate(baseUri, rssXslt, out rssXsltUri))
+			if (baseUri != null && !String.IsNullOrEmpty(rssXslt))
 			{
-				// normalize Uri
-				rssXslt = rssXsltUri.AbsoluteUri;
+				return FilePathMapper.Combine(baseUri.AbsoluteUri, rssXslt);
 			}
 
 			return rssXslt;
