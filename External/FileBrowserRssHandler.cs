@@ -32,7 +32,6 @@ namespace MediaLib.Web.Handlers
 				context.Response.Redirect(FilePathMapper.MediaVirtualRoot, true);
 
 			string folderPath = FilePathMapper.GetDirectory(FilePathMapper.GetPhysicalPath(context.Request.CurrentExecutionFilePath));
-			folderPath = HttpUtility.UrlDecode(folderPath);
 			return this.GenerateDirectoryListFeed(context, folderPath);
 		}
 
@@ -44,8 +43,6 @@ namespace MediaLib.Web.Handlers
 		{
 			string requestUrl = FilePathMapper.GetDirectory(context.Request.Url.AbsoluteUri);
 			DirectoryInfo directoryInfo = new DirectoryInfo(folderPath);
-			//string[] directories = Directory.GetDirectories(folderPath, "*", SearchOption.TopDirectoryOnly);
-			//string[] files = Directory.GetFiles(folderPath, "*.mp3", SearchOption.TopDirectoryOnly);
 
 			RssDocument rssDoc = new RssDocument();
 			rssDoc.Channel.Title = ConfigurationManager.AppSettings["SiteName"];
@@ -73,7 +70,7 @@ namespace MediaLib.Web.Handlers
 				RssItem item = new RssItem();
 				item.Title = info.Name;
 				item.PubDate = info.LastWriteTimeUtc;
-				item.Guid.Value = FilePathMapper.Combine(context.Request.Url.AbsoluteUri, FileBrowserRssHandler.PathEncode(info.Name));
+				item.Guid.Value = FilePathMapper.Combine(context.Request.Url.AbsoluteUri, FilePathMapper.UrlEncode(info.Name));
 				item.Guid.IsPermaLink = false;
 
 				if ((info.Attributes&FileAttributes.Directory) != 0)
@@ -136,16 +133,6 @@ namespace MediaLib.Web.Handlers
 			}
 
 			return rssDoc;
-		}
-
-		protected static string PathEncode(string path)
-		{
-			if (String.IsNullOrEmpty(path))
-				return String.Empty;
-
-#warning Doesn't fix the fact that ASP.NET won't handle these chars
-			// &#%=
-			return HttpUtility.UrlPathEncode(path.Replace("%", "%25")).Replace("&", "%26").Replace("=", "%3D").Replace("#", "%23");
 		}
 
 		#endregion FileBrowser Methods
