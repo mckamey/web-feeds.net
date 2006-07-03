@@ -86,7 +86,7 @@ namespace MediaLib.Web.Feeds
 			RssDocument rssDoc = new RssDocument();
 			rssDoc.Channel.LastBuildDate = DateTime.UtcNow;
 			rssDoc.Channel.Title = "Server Error";
-			rssDoc.Channel.Description = "An error has occurred on the server. See feed items for details.";
+			rssDoc.Channel.Description = "An error occurred while generating this feed. See feed items for details.";
 
 			RssCategory rssCategory = new RssCategory();
 			rssCategory.Value = "error";
@@ -96,7 +96,11 @@ namespace MediaLib.Web.Feeds
 			{
 				RssItem item = new RssItem();
 				item.Title = exception.GetType().Name;
+#if DEBUG
+				item.Description = "<pre>"+exception+"</pre>";
+#else
 				item.Description = exception.Message;
+#endif
 				item.Link = exception.HelpLink;
 				item.PubDate = rssDoc.Channel.LastBuildDate;
 				rssDoc.Channel.Items.Add(item);

@@ -38,27 +38,27 @@ namespace MediaLib.Web.Handlers
 
 		protected RssDocument GenerateDirectoryListFeed(System.Web.HttpContext context, string folderPath)
 		{
-			string appRoot = context.Server.MapPath("~/");
-			Uri requestUrl = new Uri(context.Request.Url, "./");
+			string appRoot = FilePathMapper.GetPhysicalPath("~/");
+			string requestUrl = FilePathMapper.GetDirectory(context.Request.Url.AbsoluteUri);
 			DirectoryInfo directoryInfo = new DirectoryInfo(folderPath);
 			//string[] directories = Directory.GetDirectories(folderPath, "*", SearchOption.TopDirectoryOnly);
 			//string[] files = Directory.GetFiles(folderPath, "*.mp3", SearchOption.TopDirectoryOnly);
 
 			RssDocument rssDoc = new RssDocument();
 			rssDoc.Channel.Title = ConfigurationManager.AppSettings["SiteName"];
-			rssDoc.Channel.Description = requestUrl.ToString();
+			rssDoc.Channel.Description = requestUrl;
 			rssDoc.Channel.Copyright = ConfigurationManager.AppSettings["Copyright"];
 			rssDoc.Channel.LastBuildDate = DateTime.UtcNow;
 			rssDoc.Channel.Generator = rssDoc.Channel.Title+" RSS Generator";
 			rssDoc.Channel.Ttl = 86400;
-			rssDoc.Channel.Link = new Uri(context.Request.Url, "/").AbsoluteUri;
+			rssDoc.Channel.Link = requestUrl;
 			rssDoc.Channel.Language = System.Globalization.CultureInfo.CurrentCulture.Name;
 
 			if (!folderPath.Equals(appRoot, StringComparison.InvariantCultureIgnoreCase))
 			{
 				RssItem item = new RssItem();
 				item.Title = "Parent Directory";
-				item.Link = new Uri(context.Request.Url, "../").AbsoluteUri;
+				item.Link = FilePathMapper.Combine(context.Request.Url.AbsoluteUri, "../");
 				item.Guid.Value = item.Link;
 				item.Guid.IsPermaLink = false;
 
@@ -70,7 +70,7 @@ namespace MediaLib.Web.Handlers
 				RssItem item = new RssItem();
 				item.Title = info.Name;
 				item.PubDate = info.LastWriteTimeUtc;
-				item.Guid.Value = new Uri(context.Request.Url, FileBrowserRssHandler.PathEncode(info.Name)).AbsoluteUri;
+				item.Guid.Value = FilePathMapper.Combine(context.Request.Url.AbsoluteUri, FileBrowserRssHandler.PathEncode(info.Name));
 				item.Guid.IsPermaLink = false;
 
 				if ((info.Attributes&FileAttributes.Directory) != 0)
