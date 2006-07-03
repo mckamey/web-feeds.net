@@ -6,6 +6,7 @@ using System.Web;
 
 using MediaLib.Web;
 using MediaLib.Web.Feeds;
+using MediaLib.Web.Hosting;
 
 namespace MediaLib.Web.Handlers
 {
