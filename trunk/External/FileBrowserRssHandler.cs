@@ -46,7 +46,7 @@ namespace MediaLib.Web.Handlers
 
 			RssDocument rssDoc = new RssDocument();
 			rssDoc.Channel.Title = ConfigurationManager.AppSettings["SiteName"];
-			rssDoc.Channel.Description = requestUrl;
+			rssDoc.Channel.Description = HttpUtility.UrlDecode(requestUrl);
 			rssDoc.Channel.Copyright = ConfigurationManager.AppSettings["Copyright"];
 			rssDoc.Channel.LastBuildDate = DateTime.UtcNow;
 			rssDoc.Channel.Generator = rssDoc.Channel.Title+" RSS Generator";
@@ -59,7 +59,7 @@ namespace MediaLib.Web.Handlers
 				RssItem item = new RssItem();
 				item.Title = "Parent Directory";
 				item.Link = FilePathMapper.Combine(context.Request.Url.AbsoluteUri, "../");
-				item.Guid.Value = item.Link;
+				item.Guid.Value = HttpUtility.UrlDecode(item.Link);
 				item.Guid.IsPermaLink = false;
 
 				rssDoc.Channel.Items.Add(item);
@@ -128,6 +128,7 @@ namespace MediaLib.Web.Handlers
 						item.Enclosure.Length = fileInfo.Length;
 					}
 				}
+				item.Guid.Value = HttpUtility.UrlDecode(item.Guid.Value);
 
 				rssDoc.Channel.Items.Add(item);
 			}
