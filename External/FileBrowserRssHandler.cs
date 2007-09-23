@@ -44,15 +44,15 @@ namespace MediaLib.Web.Handlers
 			string requestUrl = FilePathMapper.GetDirectory(context.Request.Url.AbsoluteUri);
 			DirectoryInfo directoryInfo = new DirectoryInfo(folderPath);
 
-			RssFeed rssDoc = new RssFeed();
-			rssDoc.Channel.Title = ConfigurationManager.AppSettings["SiteName"];
-			rssDoc.Channel.Description = HttpUtility.UrlDecode(requestUrl);
-			rssDoc.Channel.Copyright = ConfigurationManager.AppSettings["Copyright"];
-			rssDoc.Channel.LastBuildDate = DateTime.UtcNow;
-			rssDoc.Channel.Generator = rssDoc.Channel.Title+" RSS Generator";
-			rssDoc.Channel.Ttl = 86400;
-			rssDoc.Channel.Link = requestUrl;
-			rssDoc.Channel.Language = System.Globalization.CultureInfo.CurrentCulture.Name;
+			RssFeed feed = new RssFeed();
+			feed.Channel.Title = ConfigurationManager.AppSettings["SiteName"];
+			feed.Channel.Description = HttpUtility.UrlDecode(requestUrl);
+			feed.Channel.Copyright = ConfigurationManager.AppSettings["Copyright"];
+			feed.Channel.LastBuildDate = DateTime.UtcNow;
+			feed.Channel.Generator = feed.Channel.Title+" RSS Generator";
+			feed.Channel.Ttl = 86400;
+			feed.Channel.Link = requestUrl;
+			feed.Channel.Language = System.Globalization.CultureInfo.CurrentCulture.Name;
 
 			if (!folderPath.Equals(FilePathMapper.MediaPhysicalRoot, StringComparison.InvariantCultureIgnoreCase))
 			{
@@ -62,7 +62,7 @@ namespace MediaLib.Web.Handlers
 				item.Guid.Value = HttpUtility.UrlDecode(item.Link);
 				item.Guid.IsPermaLink = false;
 
-				rssDoc.Channel.Items.Add(item);
+				feed.Channel.Items.Add(item);
 			}
 
 			foreach (FileSystemInfo info in directoryInfo.GetFileSystemInfos())
@@ -130,10 +130,10 @@ namespace MediaLib.Web.Handlers
 				}
 				item.Guid.Value = HttpUtility.UrlDecode(item.Guid.Value);
 
-				rssDoc.Channel.Items.Add(item);
+				feed.Channel.Items.Add(item);
 			}
 
-			return rssDoc;
+			return feed;
 		}
 
 		#endregion FileBrowser Methods
