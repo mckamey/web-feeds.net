@@ -5,17 +5,17 @@ using System.Xml.Serialization;
 
 using MediaLib.Web.Hosting;
 
-namespace MediaLib.Web.Feeds.Rss
+namespace MediaLib.Web.Feeds.Atom
 {
 	/// <summary>
-	/// Based upon RSS 2.0
-	///		http://blogs.law.harvard.edu/tech/rss
+	/// Based upon Atom 1.0
+	///		http://tools.ietf.org/html/rfc4287
 	/// </summary>
-	public class RssHandler : System.Web.IHttpHandler
+	public class AtomHandler : System.Web.IHttpHandler
 	{
 		#region Constants
 
-		public const string AppSettingsKey_RssXslt = "RssXslt";
+		public const string AppSettingsKey_AtomXslt = "AtomXslt";
 
 		#endregion Constants
 
@@ -28,37 +28,37 @@ namespace MediaLib.Web.Feeds.Rss
 
 		void IHttpHandler.ProcessRequest(System.Web.HttpContext context)
 		{
-			RssFeed rssDoc = null;
+			AtomFeed10 feed = null;
 			try
 			{
-				rssDoc = this.GenerateRssFeed(context);
+				feed = this.GenerateAtomFeed(context);
 			}
 			catch (Exception ex)
 			{
-				try { rssDoc = this.HandleError(context, ex); }
+				try { feed = this.HandleError(context, ex); }
 				catch { }
 			}
-			RssHandler.WriteRssXml(context, rssDoc);
+			AtomHandler.WriteAtomXml(context, feed);
 		}
 
 		#endregion IHttpHandler Members
 
-		#region RSS Handler Methods
+		#region Atom Handler Methods
 
 		/// <summary>
-		/// Implementations should override this method to produce a custom RSS feed based upon the request URL.
+		/// Implementations should override this method to produce a custom Atom feed based upon the request URL.
 		/// </summary>
 		/// <param name="context">HttpContext provides access to request</param>
-		/// <returns>RssDocument</returns>
+		/// <returns>AtomFeed10</returns>
 		/// <remarks>
-		/// The default implementation is a unit test which deserializes an RSS 2.0 feed
+		/// The default implementation is a unit test which deserializes an Atom 1.0 feed
 		/// located at the URL provided in the query string param "url".
 		/// 
-		/// This tests the round-trip serialization of the RSS object model.
+		/// This tests the round-trip serialization of the Atom object model.
 		/// </remarks>
-		protected virtual RssFeed GenerateRssFeed(System.Web.HttpContext context)
+		protected virtual AtomFeed10 GenerateAtomFeed(System.Web.HttpContext context)
 		{
-			// this test code deserializes the RSS 2.0 feed and then serializes it
+			// this test code deserializes the Atom 1.0 feed and then serializes it
 			string url = context.Request["url"];
 			if (String.IsNullOrEmpty(url) || !url.StartsWith(Uri.UriSchemeHttp, StringComparison.InvariantCultureIgnoreCase))
 				return null;
@@ -67,70 +67,81 @@ namespace MediaLib.Web.Feeds.Rss
 			{
 				using (System.IO.Stream stream = client.OpenRead(url))
 				{
-					System.Xml.Serialization.XmlSerializer serializer = new System.Xml.Serialization.XmlSerializer(typeof(RssFeed));
-					return serializer.Deserialize(stream) as RssFeed;
+					System.Xml.Serialization.XmlSerializer serializer = new System.Xml.Serialization.XmlSerializer(typeof(AtomFeed10));
+					return serializer.Deserialize(stream) as AtomFeed10;
 				}
 			}
 		}
 
 		/// <summary>
-		/// Implementations should override this method to handle errors during RSS generation.
+		/// Implementations should override this method to handle errors during Atom generation.
 		/// </summary>
 		/// <param name="context"></param>
 		/// <param name="exception"></param>
-		/// <returns>RssDocument</returns>
+		/// <returns>AtomFeed10</returns>
 		/// <remarks>
-		/// The default implementation handles any exceptions during the RSS generation by
-		/// producing the exception stack trace as a valid RSS document.
+		/// The default implementation handles any exceptions during the Atom generation by
+		/// producing the exception stack trace as a valid Atom document.
 		/// </remarks>
-		protected virtual RssFeed HandleError(System.Web.HttpContext context, System.Exception exception)
+		protected virtual AtomFeed10 HandleError(System.Web.HttpContext context, System.Exception exception)
 		{
-			RssFeed rssDoc = new RssFeed();
-			rssDoc.Channel.LastBuildDate = DateTime.UtcNow;
-			rssDoc.Channel.Title = "Server Error";
-			rssDoc.Channel.Description = "An error occurred while generating this feed. See feed items for details.";
+			AtomFeed10 feed = new AtomFeed10();
+			feed.Updated = new AtomDate();
+			feed.Updated.Value = DateTime.UtcNow;
+			feed.Title = new AtomText();
+			feed.Title.Value = "Server Error";
+			feed.SubTitle = new AtomText();
+			feed.SubTitle.Value = "An error occurred while generating this feed. See feed items for details.";
 
-			RssCategory rssCategory = new RssCategory();
-			rssCategory.Value = "error";
-			rssDoc.Channel.Categories.Add(rssCategory);
+			//AtomCategory atomCategory = new AtomCategory();
+			//atomCategory.Value = "error";
+			//feed.Categories.Add(atomCategory);
 
 			while (exception != null)
 			{
-				RssItem item = new RssItem();
-				item.Title = exception.GetType().Name;
+				AtomEntry entry = new AtomEntry();
+				entry.Title = new AtomText();
+				entry.Title.Value = exception.GetType().Name;
+				entry.Title.Type = AtomTextType.text;
+
+				entry.Summary = new AtomText();
 #if DEBUG
-				item.Description = "<pre>"+exception+"</pre>";
+				entry.Summary.Type = AtomTextType.html;
+				entry.Summary.Value = "<pre>"+exception+"</pre>";
 #else
-				item.Description = exception.Message;
+				entry.Summary.Type = AtomTextType.text;
+				entry.Summary.Value = exception.Message;
 #endif
-				item.Link = exception.HelpLink;
-				item.PubDate = rssDoc.Channel.LastBuildDate;
-				rssDoc.Channel.Items.Add(item);
+				AtomLink link = new AtomLink();
+				link.Href = exception.HelpLink;
+				entry.Links.Add(link);
+				entry.Published = feed.Updated;
+				feed.Entries.Add(entry);
 
 				exception = exception.InnerException;
 			}
 
-			return rssDoc;
+			return feed;
 		}
 
-		#endregion RSS Handler Methods
+		#endregion Atom Handler Methods
 
 		#region Xslt Methods
 
 		/// <summary>
-		/// Creates the absolute url for the RSS XSLT.
+		/// Creates the absolute url for the Atom XSLT.
 		/// </summary>
 		/// <param name="baseUri"></param>
 		/// <returns></returns>
-		private static string GetRssXslt(Uri baseUri)
+		private static string GetAtomXslt(Uri baseUri)
 		{
-			string rssXslt = System.Configuration.ConfigurationManager.AppSettings[RssHandler.AppSettingsKey_RssXslt];
-			if (baseUri != null && !String.IsNullOrEmpty(rssXslt))
+			string atomXslt = System.Configuration.ConfigurationManager.AppSettings[AtomHandler.AppSettingsKey_AtomXslt];
+			if (baseUri != null && !String.IsNullOrEmpty(atomXslt))
 			{
-				return FilePathMapper.Combine(baseUri.AbsoluteUri, rssXslt);
+				return FilePathMapper.Combine(baseUri.AbsoluteUri, atomXslt);
 			}
 
-			return rssXslt;
+			return atomXslt;
 		}
 
 		/// <summary>
@@ -140,12 +151,12 @@ namespace MediaLib.Web.Feeds.Rss
 		/// <param name="baseUri"></param>
 		private static void AddXsltInstruction(XmlWriter writer, Uri baseUri)
 		{
-			string rssXslt = RssHandler.GetRssXslt(baseUri);
-			if (!String.IsNullOrEmpty(rssXslt))
+			string atomXslt = AtomHandler.GetAtomXslt(baseUri);
+			if (!String.IsNullOrEmpty(atomXslt))
 			{
 				// add a stylesheet for browser viewing
 				writer.WriteProcessingInstruction("xml-stylesheet",
-					String.Format("type=\"text/xsl\" href=\"{0}\" version=\"1.0\"", rssXslt));
+					String.Format("type=\"text/xsl\" href=\"{0}\" version=\"1.0\"", atomXslt));
 			}
 		}
 
@@ -157,20 +168,20 @@ namespace MediaLib.Web.Feeds.Rss
 		/// Controls the XML serialization and response header generation.
 		/// </summary>
 		/// <param name="context"></param>
-		/// <param name="rss"></param>
+		/// <param name="atom"></param>
 		/// <remarks>
-		/// This has been tweaked to specifically output XML according to RSS 2.0.
+		/// This has been tweaked to specifically output XML according to Atom 1.0.
 		/// </remarks>
-		private static void WriteRssXml(System.Web.HttpContext context, object rss)
+		private static void WriteAtomXml(System.Web.HttpContext context, object atom)
 		{
 			context.Response.Clear();
 			context.Response.ClearContent();
 			context.Response.ClearHeaders();
 			context.Response.ContentType = MediaLib.Web.MimeTypes.Xml.ContentType;
 			context.Response.ContentEncoding = System.Text.Encoding.UTF8;
-			context.Response.AddHeader("Content-Disposition", "inline;filename=rss.xml");
+			context.Response.AddHeader("Content-Disposition", "inline;filename=atom.xml");
 
-			if (rss == null)
+			if (atom == null)
 				return;
 
 			XmlWriter writer = null;
@@ -186,11 +197,11 @@ namespace MediaLib.Web.Feeds.Rss
 				settings.IndentChars = "\t";
 				writer = XmlWriter.Create(context.Response.OutputStream, settings);
 
-				RssHandler.AddXsltInstruction(writer, context.Request.Url);
+				AtomHandler.AddXsltInstruction(writer, context.Request.Url);
 
-				// write out rss
-				XmlSerializer serializer = new XmlSerializer(rss.GetType());
-				serializer.Serialize(writer, rss);
+				// write out atom
+				XmlSerializer serializer = new XmlSerializer(atom.GetType());
+				serializer.Serialize(writer, atom);
 			}
 			catch (Exception ex)
 			{
