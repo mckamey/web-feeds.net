@@ -5,12 +5,12 @@ using System.Collections.Generic;
 using System.Web;
 
 using MediaLib.Web;
-using MediaLib.Web.Feeds;
+using MediaLib.Web.Feeds.Rss;
 using MediaLib.Web.Hosting;
 
 namespace MediaLib.Web.Handlers
 {
-	public class FileBrowserRssHandler : MediaLib.Web.Feeds.RssHandler
+	public class FileBrowserRssHandler : MediaLib.Web.Feeds.Rss.RssHandler
 	{
 		#region Init
 
@@ -22,7 +22,7 @@ namespace MediaLib.Web.Handlers
 
 		#region RssHandler Members
 
-		protected override RssDocument GenerateRssFeed(System.Web.HttpContext context)
+		protected override RssFeed GenerateRssFeed(System.Web.HttpContext context)
 		{
 #if DEBUG
 			if (!String.IsNullOrEmpty(context.Request.QueryString["url"]))
@@ -39,12 +39,12 @@ namespace MediaLib.Web.Handlers
 
 		#region FileBrowser Methods
 
-		protected RssDocument GenerateDirectoryListFeed(System.Web.HttpContext context, string folderPath)
+		protected RssFeed GenerateDirectoryListFeed(System.Web.HttpContext context, string folderPath)
 		{
 			string requestUrl = FilePathMapper.GetDirectory(context.Request.Url.AbsoluteUri);
 			DirectoryInfo directoryInfo = new DirectoryInfo(folderPath);
 
-			RssDocument rssDoc = new RssDocument();
+			RssFeed rssDoc = new RssFeed();
 			rssDoc.Channel.Title = ConfigurationManager.AppSettings["SiteName"];
 			rssDoc.Channel.Description = HttpUtility.UrlDecode(requestUrl);
 			rssDoc.Channel.Copyright = ConfigurationManager.AppSettings["Copyright"];

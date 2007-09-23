@@ -4,7 +4,7 @@ using System.Collections.Specialized;
 using System.Collections.Generic;
 using System.Xml.Serialization;
 
-namespace MediaLib.Web.Feeds
+namespace MediaLib.Web.Feeds.Rss
 {
 	#region RssCategory
 
