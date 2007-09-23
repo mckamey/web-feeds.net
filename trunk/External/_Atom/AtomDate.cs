@@ -29,7 +29,7 @@ namespace Notifier.Atom
 		#region Properties
 
 		[XmlIgnore]
-		public DateTime DateTimeValue
+		public DateTime Value
 		{
 			get { return this.value; }
 			set { this.value = value; }
@@ -37,7 +37,7 @@ namespace Notifier.Atom
 
 		[XmlText]
 		[DefaultValue(null)]
-		public string Value
+		public string Value_Iso8601
 		{
 			get
 			{
@@ -63,7 +63,7 @@ namespace Notifier.Atom
 
 		public override string ToString()
 		{
-			return this.DateTimeValue.ToString();
+			return this.Value.ToString();
 		}
 
 		#endregion Object Overrides
