@@ -6,12 +6,12 @@ using System.Xml.Serialization;
 namespace MediaLib.Web.Feeds.Atom
 {
 	/// <summary>
-	/// http://tools.ietf.org/html/rfc4287
+	/// http://tools.ietf.org/html/rfc4287#section-4.1.1
 	/// </summary>
 	[Serializable]
 	[XmlInclude(typeof(AtomFeed03))]
 	[XmlInclude(typeof(AtomFeed10))]
-	public class AtomFeed
+	public abstract class AtomFeed : AtomSource
 	{
 		#region Constants
 
@@ -22,11 +22,7 @@ namespace MediaLib.Web.Feeds.Atom
 
 		#region Fields
 
-		private AtomText title = null;
-		private AtomText tagline = null;
-		private AtomLink link = null;
-		private AtomDate modified = null;
-		private List<AtomEntry> entries = new List<AtomEntry>();
+		private string logo = null;
 
 		#endregion Fields
 
@@ -42,42 +38,11 @@ namespace MediaLib.Web.Feeds.Atom
 		#region Properties
 
 		[DefaultValue(null)]
-		[XmlElement("title")]
-		public AtomText Title
+		[XmlElement("logo")]
+		public string Logo
 		{
-			get { return this.title; }
-			set { this.title = value; }
-		}
-
-		[DefaultValue(null)]
-		[XmlElement("tagline")]
-		public AtomText TagLine
-		{
-			get { return this.tagline; }
-			set { this.tagline = value; }
-		}
-
-		[DefaultValue(null)]
-		[XmlElement("link")]
-		public AtomLink Link
-		{
-			get { return this.link; }
-			set { this.link = value; }
-		}
-
-		[DefaultValue(null)]
-		[XmlElement("modified")]
-		public AtomDate Modified
-		{
-			get { return this.modified; }
-			set { this.modified = value; }
-		}
-
-		[XmlElement("entry")]
-		public List<AtomEntry> Entries
-		{
-			get { return this.entries; }
-			set { this.entries = value; }
+			get { return this.logo; }
+			set { this.logo = value; }
 		}
 
 		#endregion Properties
@@ -91,9 +56,29 @@ namespace MediaLib.Web.Feeds.Atom
 		private const string Namespace = "http://www.w3.org/2005/Atom";
 
 		#endregion Constants
+
+		#region Fields
+
+		private List<AtomEntry> entries = new List<AtomEntry>();
+
+		#endregion Fields
+
+		#region Properties
+
+		[XmlElement("entry")]
+		public List<AtomEntry> Entries
+		{
+			get { return this.entries; }
+			set { this.entries = value; }
+		}
+
+		#endregion Properties
 	}
 
-	[XmlRoot(AtomFeed10.ElementName, Namespace=AtomFeed03.Namespace)]
+	/// <summary>
+	/// http://www.mnot.net/drafts/draft-nottingham-atom-format-02.html
+	/// </summary>
+	[XmlRoot(AtomFeed03.ElementName, Namespace=AtomFeed03.Namespace)]
 	public class AtomFeed03 : AtomFeed
 	{
 		#region Constants
@@ -104,18 +89,39 @@ namespace MediaLib.Web.Feeds.Atom
 
 		#region Fields
 
-		private int fullCount = -1;
+		private List<AtomEntry03> entries = new List<AtomEntry03>();
 
 		#endregion Fields
 
 		#region Properties
 
-		[DefaultValue(-1)]
+		[DefaultValue(null)]
+		[XmlElement("modified")]
+		public AtomDate Modified
+		{
+			get { return base.Updated; }
+			set { base.Updated = value; }
+		}
+
+		[DefaultValue(0)]
 		[XmlElement("fullcount")]
 		public int FullCount
 		{
-			get { return this.fullCount; }
-			set { this.fullCount = value; }
+			get
+			{
+				if (this.Entries == null)
+				{
+					return 0;
+				}
+				return this.Entries.Count;
+			}
+		}
+
+		[XmlElement("entry")]
+		public List<AtomEntry03> Entries
+		{
+			get { return this.entries; }
+			set { this.entries = value; }
 		}
 
 		#endregion Properties

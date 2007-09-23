@@ -6,20 +6,17 @@ using System.Xml.Serialization;
 namespace MediaLib.Web.Feeds.Atom
 {
 	/// <summary>
-	/// http://tools.ietf.org/html/rfc4287
+	/// http://tools.ietf.org/html/rfc4287#section-4.1.2
 	/// </summary>
 	[Serializable]
-	public class AtomEntry
+	public class AtomEntry : AtomSource
 	{
 		#region Fields
 
-		private string id = null;
-		private AtomText title = null;
+		private AtomContent content = null;
+		private AtomDate published = null;
+		private AtomSource source = null;
 		private AtomText summary = null;
-		private AtomLink link = null;
-		private AtomDate modified = null;
-		private AtomDate issued = null;
-		private AtomPerson author = null;
 
 		#endregion Fields
 
@@ -35,11 +32,27 @@ namespace MediaLib.Web.Feeds.Atom
 		#region Properties
 
 		[DefaultValue(null)]
-		[XmlElement("title")]
-		public AtomText Title
+		[XmlElement("content")]
+		public AtomContent Content
 		{
-			get { return this.title; }
-			set { this.title = value; }
+			get { return this.content; }
+			set { this.content = value; }
+		}
+
+		[DefaultValue(null)]
+		[XmlElement("published")]
+		public AtomDate Published
+		{
+			get { return this.published; }
+			set { this.published = value; }
+		}
+
+		[DefaultValue(null)]
+		[XmlElement("source")]
+		public AtomSource Source
+		{
+			get { return this.source; }
+			set { this.source = value; }
 		}
 
 		[DefaultValue(null)]
@@ -50,44 +63,40 @@ namespace MediaLib.Web.Feeds.Atom
 			set { this.summary = value; }
 		}
 
-		[DefaultValue(null)]
-		[XmlElement("link")]
-		public AtomLink Link
-		{
-			get { return this.link; }
-			set { this.link = value; }
-		}
+		#endregion Properties
+	}
+
+	/// <summary>
+	/// 
+	/// </summary>
+	[Serializable]
+	public class AtomEntry03 : AtomEntry
+	{
+		#region Init
+
+		/// <summary>
+		/// Ctor.
+		/// </summary>
+		public AtomEntry03() { }
+
+		#endregion Init
+
+		#region Properties
 
 		[DefaultValue(null)]
 		[XmlElement("modified")]
 		public AtomDate Modified
 		{
-			get { return this.modified; }
-			set { this.modified = value; }
+			get { return base.Updated; }
+			set { base.Updated = value; }
 		}
 
 		[DefaultValue(null)]
 		[XmlElement("issued")]
 		public AtomDate Issued
 		{
-			get { return this.issued; }
-			set { this.issued = value; }
-		}
-
-		[DefaultValue(null)]
-		[XmlElement("id")]
-		public string ID
-		{
-			get { return this.id; }
-			set { this.id = value; }
-		}
-
-		[DefaultValue(null)]
-		[XmlElement("author")]
-		public AtomPerson Author
-		{
-			get { return this.author; }
-			set { this.author = value; }
+			get { return base.Published; }
+			set { base.Published = value; }
 		}
 
 		#endregion Properties
