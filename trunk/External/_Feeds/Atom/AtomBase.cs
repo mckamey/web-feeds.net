@@ -8,6 +8,17 @@ namespace MediaLib.Web.Feeds.Atom
 	/// <summary>
 	/// Common shared Atom base
 	/// </summary>
+	/// <remarks>
+	/// atomBase
+	///		atomAuthor*
+	///		atomCategory*
+	///		atomContributor*
+	///		atomId
+	///		atomLink*
+	///		atomRights?
+	///		atomTitle
+	///		atomUpdated
+	/// </remarks>
 	public abstract class AtomBase
 	{
 		#region Fields
@@ -96,6 +107,12 @@ namespace MediaLib.Web.Feeds.Atom
 	/// <summary>
 	/// http://tools.ietf.org/html/rfc4287#section-4.2.11
 	/// </summary>
+	/// <remarks>
+	/// atomSource : atomBase
+	///		atomGenerator?
+	///		atomIcon?
+	///		atomSubtitle?
+	/// </remarks>
 	public class AtomSource : AtomBase
 	{
 		#region Fields

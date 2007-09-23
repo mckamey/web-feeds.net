@@ -8,6 +8,13 @@ namespace MediaLib.Web.Feeds.Atom
 	/// <summary>
 	/// http://tools.ietf.org/html/rfc4287#section-4.1.2
 	/// </summary>
+	/// <remarks>
+	/// atomEntry : atomBase
+	///		atomContent?
+	///		atomPublished?
+	///		atomSource?
+	///		atomSummary?
+	/// </remarks>
 	[Serializable]
 	public class AtomEntry : AtomSource
 	{
@@ -67,7 +74,7 @@ namespace MediaLib.Web.Feeds.Atom
 	}
 
 	/// <summary>
-	/// 
+	/// Adaptor for Atom 0.3 compatibility
 	/// </summary>
 	[Serializable]
 	public class AtomEntry03 : AtomEntry

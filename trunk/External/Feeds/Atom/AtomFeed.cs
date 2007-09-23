@@ -8,6 +8,11 @@ namespace MediaLib.Web.Feeds.Atom
 	/// <summary>
 	/// http://tools.ietf.org/html/rfc4287#section-4.1.1
 	/// </summary>
+	/// <remarks>
+	/// atomFeed : atomSource
+	///		atomLogo?
+	///		atomEntry*
+	/// </remarks>
 	[Serializable]
 	[XmlInclude(typeof(AtomFeed03))]
 	[XmlInclude(typeof(AtomFeed10))]
