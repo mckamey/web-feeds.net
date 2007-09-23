@@ -28,6 +28,15 @@ namespace MediaLib.Web.Feeds.Atom
 		/// </summary>
 		public AtomContent() { }
 
+		/// <summary>
+		/// Ctor.
+		/// </summary>
+		/// <param name="text"></param>
+		public AtomContent(string text)
+		{
+			this.value = text;
+		}
+
 		#endregion Init
 
 		#region Properties
@@ -113,6 +122,15 @@ namespace MediaLib.Web.Feeds.Atom
 		/// </summary>
 		public AtomDate() { }
 
+		/// <summary>
+		/// Ctor.
+		/// </summary>
+		/// <param name="date"></param>
+		public AtomDate(DateTime date)
+		{
+			this.value = date;
+		}
+
 		#endregion Init
 
 		#region Properties
@@ -182,6 +200,15 @@ namespace MediaLib.Web.Feeds.Atom
 		/// Ctor.
 		/// </summary>
 		public AtomLink() { }
+
+		/// <summary>
+		/// Ctor.
+		/// </summary>
+		/// <param name="link"></param>
+		public AtomLink(string link)
+		{
+			this.href = link;
+		}
 
 		#endregion Init
 
@@ -325,6 +352,15 @@ namespace MediaLib.Web.Feeds.Atom
 		/// </summary>
 		public AtomText() { }
 
+		/// <summary>
+		/// Ctor.
+		/// </summary>
+		/// <param name="text"></param>
+		public AtomText(string text)
+		{
+			this.value = text;
+		}
+
 		#endregion Init
 
 		#region Properties
@@ -357,8 +393,6 @@ namespace MediaLib.Web.Feeds.Atom
 		#endregion Object Overrides
 	}
 
-	#endregion AtomText
-
 	#region AtomTextType
 
 	public enum AtomTextType
@@ -369,4 +403,6 @@ namespace MediaLib.Web.Feeds.Atom
 	}
 
 	#endregion AtomTextType
+
+	#endregion AtomText
 }
