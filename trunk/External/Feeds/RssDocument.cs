@@ -2,14 +2,14 @@ using System;
 using System.ComponentModel;
 using System.Xml.Serialization;
 
-namespace MediaLib.Web.Feeds
+namespace MediaLib.Web.Feeds.Rss
 {
 	/// <summary>
 	/// RSS 2.0 Root
 	///		http://blogs.law.harvard.edu/tech/rss
 	/// </summary>
-	[XmlRoot(RssDocument.ElementName, Namespace=RssDocument.Namespace)]
-	public class RssDocument
+	[XmlRoot(RssFeed.ElementName, Namespace=RssFeed.Namespace)]
+	public class RssFeed
 	{
 		#region Constants
 
@@ -28,7 +28,7 @@ namespace MediaLib.Web.Feeds
 
 		#region Init
 
-		public RssDocument()
+		public RssFeed()
 		{
 		}
 

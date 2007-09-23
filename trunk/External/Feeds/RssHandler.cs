@@ -5,7 +5,7 @@ using System.Xml.Serialization;
 
 using MediaLib.Web.Hosting;
 
-namespace MediaLib.Web.Feeds
+namespace MediaLib.Web.Feeds.Rss
 {
 	/// <summary>
 	/// Based upon RSS 2.0
@@ -28,7 +28,7 @@ namespace MediaLib.Web.Feeds
 
 		void IHttpHandler.ProcessRequest(System.Web.HttpContext context)
 		{
-			RssDocument rssDoc = null;
+			RssFeed rssDoc = null;
 			try
 			{
 				rssDoc = this.GenerateRssFeed(context);
@@ -56,7 +56,7 @@ namespace MediaLib.Web.Feeds
 		/// 
 		/// This tests the round-trip serialization of the RSS object model.
 		/// </remarks>
-		protected virtual RssDocument GenerateRssFeed(System.Web.HttpContext context)
+		protected virtual RssFeed GenerateRssFeed(System.Web.HttpContext context)
 		{
 			// this test code deserializes the RSS 2.0 feed and then serializes it
 			string url = context.Request["url"];
@@ -67,8 +67,8 @@ namespace MediaLib.Web.Feeds
 			{
 				using (System.IO.Stream stream = client.OpenRead(url))
 				{
-					System.Xml.Serialization.XmlSerializer serializer = new System.Xml.Serialization.XmlSerializer(typeof(RssDocument));
-					return serializer.Deserialize(stream) as RssDocument;
+					System.Xml.Serialization.XmlSerializer serializer = new System.Xml.Serialization.XmlSerializer(typeof(RssFeed));
+					return serializer.Deserialize(stream) as RssFeed;
 				}
 			}
 		}
@@ -83,9 +83,9 @@ namespace MediaLib.Web.Feeds
 		/// The default implementation handles any exceptions during the RSS generation by
 		/// producing the exception stack trace as a valid RSS document.
 		/// </remarks>
-		protected virtual RssDocument HandleError(System.Web.HttpContext context, System.Exception exception)
+		protected virtual RssFeed HandleError(System.Web.HttpContext context, System.Exception exception)
 		{
-			RssDocument rssDoc = new RssDocument();
+			RssFeed rssDoc = new RssFeed();
 			rssDoc.Channel.LastBuildDate = DateTime.UtcNow;
 			rssDoc.Channel.Title = "Server Error";
 			rssDoc.Channel.Description = "An error occurred while generating this feed. See feed items for details.";
