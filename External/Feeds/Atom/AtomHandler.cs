@@ -86,34 +86,25 @@ namespace MediaLib.Web.Feeds.Atom
 		protected virtual AtomFeed10 HandleError(System.Web.HttpContext context, System.Exception exception)
 		{
 			AtomFeed10 feed = new AtomFeed10();
-			feed.Updated = new AtomDate();
-			feed.Updated.Value = DateTime.UtcNow;
-			feed.Title = new AtomText();
-			feed.Title.Value = "Server Error";
-			feed.SubTitle = new AtomText();
-			feed.SubTitle.Value = "An error occurred while generating this feed. See feed items for details.";
+			feed.Updated = new AtomDate(DateTime.UtcNow);
+			feed.Title = new AtomText("Server Error");
+			feed.SubTitle = new AtomText("An error occurred while generating this feed. See feed items for details.");
 
-			//AtomCategory atomCategory = new AtomCategory();
-			//atomCategory.Value = "error";
+			//AtomCategory atomCategory = new AtomCategory("error");
 			//feed.Categories.Add(atomCategory);
 
 			while (exception != null)
 			{
 				AtomEntry entry = new AtomEntry();
-				entry.Title = new AtomText();
-				entry.Title.Value = exception.GetType().Name;
-				entry.Title.Type = AtomTextType.text;
+				entry.Title = new AtomText(exception.GetType().Name);
 
-				entry.Summary = new AtomText();
 #if DEBUG
+				entry.Summary = new AtomText("<pre>"+exception+"</pre>");
 				entry.Summary.Type = AtomTextType.html;
-				entry.Summary.Value = "<pre>"+exception+"</pre>";
 #else
-				entry.Summary.Type = AtomTextType.text;
-				entry.Summary.Value = exception.Message;
+				entry.Summary = new AtomText(exception.Message);
 #endif
-				AtomLink link = new AtomLink();
-				link.Href = exception.HelpLink;
+				AtomLink link = new AtomLink(exception.HelpLink);
 				entry.Links.Add(link);
 				entry.Published = feed.Updated;
 				feed.Entries.Add(entry);
