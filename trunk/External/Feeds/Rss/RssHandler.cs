@@ -28,17 +28,17 @@ namespace MediaLib.Web.Feeds.Rss
 
 		void IHttpHandler.ProcessRequest(System.Web.HttpContext context)
 		{
-			RssFeed rssDoc = null;
+			RssFeed feed = null;
 			try
 			{
-				rssDoc = this.GenerateRssFeed(context);
+				feed = this.GenerateRssFeed(context);
 			}
 			catch (Exception ex)
 			{
-				try { rssDoc = this.HandleError(context, ex); }
+				try { feed = this.HandleError(context, ex); }
 				catch { }
 			}
-			RssHandler.WriteRssXml(context, rssDoc);
+			RssHandler.WriteRssXml(context, feed);
 		}
 
 		#endregion IHttpHandler Members
@@ -49,7 +49,7 @@ namespace MediaLib.Web.Feeds.Rss
 		/// Implementations should override this method to produce a custom RSS feed based upon the request URL.
 		/// </summary>
 		/// <param name="context">HttpContext provides access to request</param>
-		/// <returns>RssDocument</returns>
+		/// <returns>RssFeed</returns>
 		/// <remarks>
 		/// The default implementation is a unit test which deserializes an RSS 2.0 feed
 		/// located at the URL provided in the query string param "url".
@@ -78,21 +78,21 @@ namespace MediaLib.Web.Feeds.Rss
 		/// </summary>
 		/// <param name="context"></param>
 		/// <param name="exception"></param>
-		/// <returns>RssDocument</returns>
+		/// <returns>RssFeed</returns>
 		/// <remarks>
 		/// The default implementation handles any exceptions during the RSS generation by
 		/// producing the exception stack trace as a valid RSS document.
 		/// </remarks>
 		protected virtual RssFeed HandleError(System.Web.HttpContext context, System.Exception exception)
 		{
-			RssFeed rssDoc = new RssFeed();
-			rssDoc.Channel.LastBuildDate = DateTime.UtcNow;
-			rssDoc.Channel.Title = "Server Error";
-			rssDoc.Channel.Description = "An error occurred while generating this feed. See feed items for details.";
+			RssFeed feed = new RssFeed();
+			feed.Channel.LastBuildDate = DateTime.UtcNow;
+			feed.Channel.Title = "Server Error";
+			feed.Channel.Description = "An error occurred while generating this feed. See feed items for details.";
 
 			RssCategory rssCategory = new RssCategory();
 			rssCategory.Value = "error";
-			rssDoc.Channel.Categories.Add(rssCategory);
+			feed.Channel.Categories.Add(rssCategory);
 
 			while (exception != null)
 			{
@@ -104,13 +104,13 @@ namespace MediaLib.Web.Feeds.Rss
 				item.Description = exception.Message;
 #endif
 				item.Link = exception.HelpLink;
-				item.PubDate = rssDoc.Channel.LastBuildDate;
-				rssDoc.Channel.Items.Add(item);
+				item.PubDate = feed.Channel.LastBuildDate;
+				feed.Channel.Items.Add(item);
 
 				exception = exception.InnerException;
 			}
 
-			return rssDoc;
+			return feed;
 		}
 
 		#endregion RSS Handler Methods
