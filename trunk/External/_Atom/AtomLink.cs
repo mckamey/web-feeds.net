@@ -3,7 +3,7 @@ using System.ComponentModel;
 using System.Collections.Generic;
 using System.Xml.Serialization;
 
-namespace Notifier.Atom
+namespace MediaLib.Web.Feeds.Atom
 {
 	/// <summary>
 	/// http://tools.ietf.org/html/rfc4287#section-4.2.7
