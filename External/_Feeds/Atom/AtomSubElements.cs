@@ -152,7 +152,7 @@ namespace MediaLib.Web.Feeds.Atom
 				{
 					return null;
 				}
-				return this.value.ToString("s");
+				return this.value.ToUniversalTime().ToString("s")+'Z';
 			}
 			set
 			{
@@ -190,7 +190,10 @@ namespace MediaLib.Web.Feeds.Atom
 
 		private string rel = null;
 		private string href = null;
+		private string hreflang = null;
 		private string type = null;
+		private string title = null;
+		private string length = null;
 
 		#endregion Fields
 
@@ -227,6 +230,30 @@ namespace MediaLib.Web.Feeds.Atom
 		{
 			get { return this.href; }
 			set { this.href = value; }
+		}
+
+		[XmlAttribute("hreflang")]
+		[DefaultValue(null)]
+		public string HrefLang
+		{
+			get { return this.hreflang; }
+			set { this.hreflang = value; }
+		}
+
+		[XmlAttribute("length")]
+		[DefaultValue(null)]
+		public string Length
+		{
+			get { return this.length; }
+			set { this.length = value; }
+		}
+
+		[XmlAttribute("title")]
+		[DefaultValue(null)]
+		public string Title
+		{
+			get { return this.title; }
+			set { this.title = value; }
 		}
 
 		[XmlAttribute("type")]
