@@ -5,12 +5,12 @@ using System.Collections.Generic;
 using System.Web;
 
 using MediaLib.Web;
-using MediaLib.Web.Feeds.Rss;
+using WebFeeds.Feeds.Rss;
 using MediaLib.Web.Hosting;
 
 namespace MediaLib.Web.Handlers
 {
-	public class FileBrowserRssHandler : MediaLib.Web.Feeds.Rss.RssHandler
+	public class FileBrowserRssHandler : WebFeeds.Feeds.Rss.RssHandler
 	{
 		#region Init
 

@@ -3,7 +3,7 @@ using System.ComponentModel;
 using System.Collections.Generic;
 using System.Xml.Serialization;
 
-namespace MediaLib.Web.Feeds.Atom
+namespace WebFeeds.Feeds.Atom
 {
 	/// <summary>
 	/// Common shared Atom base

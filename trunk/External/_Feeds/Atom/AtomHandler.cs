@@ -3,7 +3,7 @@ using System.Web;
 using System.Xml;
 using System.Xml.Serialization;
 
-namespace MediaLib.Web.Feeds.Atom
+namespace WebFeeds.Feeds.Atom
 {
 	/// <summary>
 	/// Based upon Atom 1.0
