@@ -3,8 +3,6 @@ using System.Web;
 using System.Xml;
 using System.Xml.Serialization;
 
-using MediaLib.Web.Hosting;
-
 namespace MediaLib.Web.Feeds.Atom
 {
 	/// <summary>
@@ -129,7 +127,7 @@ namespace MediaLib.Web.Feeds.Atom
 			string atomXslt = System.Configuration.ConfigurationManager.AppSettings[AtomHandler.AppSettingsKey_AtomXslt];
 			if (baseUri != null && !String.IsNullOrEmpty(atomXslt))
 			{
-				return FilePathMapper.Combine(baseUri.AbsoluteUri, atomXslt);
+				return System.IO.Path.Combine(baseUri.AbsoluteUri, atomXslt);
 			}
 
 			return atomXslt;
