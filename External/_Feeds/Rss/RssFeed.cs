@@ -2,7 +2,7 @@ using System;
 using System.ComponentModel;
 using System.Xml.Serialization;
 
-namespace MediaLib.Web.Feeds.Rss
+namespace WebFeeds.Feeds.Rss
 {
 	/// <summary>
 	/// RSS 2.0 Root
