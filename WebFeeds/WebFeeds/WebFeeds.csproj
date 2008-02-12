@@ -7,7 +7,7 @@
     <ProjectGuid>{301120A9-E032-4770-8589-552E80FF4C45}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>BuildTools.WedbFeeds</RootNamespace>
+    <RootNamespace>WebFeeds</RootNamespace>
     <AssemblyName>WebFeeds</AssemblyName>
     <SccProjectName>SAK</SccProjectName>
     <SccLocalPath>SAK</SccLocalPath>
@@ -36,11 +36,31 @@
     <UseVSHostingProcess>false</UseVSHostingProcess>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Feeds\Atom\AtomBase.cs" />
+    <Compile Include="Feeds\Atom\AtomEntry.cs" />
+    <Compile Include="Feeds\Atom\AtomFeed.cs" />
+    <Compile Include="Feeds\Atom\AtomHandler.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Feeds\Atom\AtomSubElements.cs" />
+    <Compile Include="Feeds\Rss\RssChannel.cs" />
+    <Compile Include="Feeds\Rss\RssFeed.cs" />
+    <Compile Include="Feeds\Rss\RssHandler.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Feeds\Rss\RssItem.cs" />
+    <Compile Include="Feeds\Rss\RssSubElements.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\AssemblyVersion.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.XML" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="License.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
