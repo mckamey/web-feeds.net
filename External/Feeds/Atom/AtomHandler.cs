@@ -166,7 +166,7 @@ namespace WebFeeds.Feeds.Atom
 			context.Response.Clear();
 			context.Response.ClearContent();
 			context.Response.ClearHeaders();
-			context.Response.ContentType = MediaLib.Web.MimeTypes.Xml.ContentType;
+			context.Response.ContentType = "application/xml";
 			context.Response.ContentEncoding = System.Text.Encoding.UTF8;
 			context.Response.AddHeader("Content-Disposition", "inline;filename=atom.xml");
 
