@@ -9,7 +9,7 @@ namespace WebFeeds.Feeds.Rss
 	/// Based upon RSS 2.0
 	///		http://blogs.law.harvard.edu/tech/rss
 	/// </summary>
-	public class RssHandler : System.Web.IHttpHandler
+	public class RssHandler : IHttpHandler
 	{
 		#region Constants
 
@@ -24,7 +24,7 @@ namespace WebFeeds.Feeds.Rss
 			get { return true; }
 		}
 
-		void IHttpHandler.ProcessRequest(System.Web.HttpContext context)
+		void IHttpHandler.ProcessRequest(HttpContext context)
 		{
 			RssFeed feed = null;
 			try
@@ -54,18 +54,20 @@ namespace WebFeeds.Feeds.Rss
 		/// 
 		/// This tests the round-trip serialization of the RSS object model.
 		/// </remarks>
-		protected virtual RssFeed GenerateRssFeed(System.Web.HttpContext context)
+		protected virtual RssFeed GenerateRssFeed(HttpContext context)
 		{
 			// this test code deserializes the RSS 2.0 feed and then serializes it
 			string url = context.Request["url"];
 			if (String.IsNullOrEmpty(url) || !url.StartsWith(Uri.UriSchemeHttp, StringComparison.InvariantCultureIgnoreCase))
+			{
 				return null;
+			}
 
 			using (System.Net.WebClient client = new System.Net.WebClient())
 			{
 				using (System.IO.Stream stream = client.OpenRead(url))
 				{
-					System.Xml.Serialization.XmlSerializer serializer = new System.Xml.Serialization.XmlSerializer(typeof(RssFeed));
+					XmlSerializer serializer = new XmlSerializer(typeof(RssFeed));
 					return serializer.Deserialize(stream) as RssFeed;
 				}
 			}
@@ -81,7 +83,7 @@ namespace WebFeeds.Feeds.Rss
 		/// The default implementation handles any exceptions during the RSS generation by
 		/// producing the exception stack trace as a valid RSS document.
 		/// </remarks>
-		protected virtual RssFeed HandleError(System.Web.HttpContext context, System.Exception exception)
+		protected virtual RssFeed HandleError(HttpContext context, System.Exception exception)
 		{
 			RssFeed feed = new RssFeed();
 			feed.Channel.LastBuildDate = DateTime.UtcNow;
@@ -159,7 +161,7 @@ namespace WebFeeds.Feeds.Rss
 		/// <remarks>
 		/// This has been tweaked to specifically output XML according to RSS 2.0.
 		/// </remarks>
-		private static void WriteRssXml(System.Web.HttpContext context, object rss)
+		private static void WriteRssXml(HttpContext context, object rss)
 		{
 			context.Response.Clear();
 			context.Response.ClearContent();
@@ -169,7 +171,9 @@ namespace WebFeeds.Feeds.Rss
 			context.Response.AddHeader("Content-Disposition", "inline;filename=rss.xml");
 
 			if (rss == null)
+			{
 				return;
+			}
 
 			XmlWriter writer = null;
 			try

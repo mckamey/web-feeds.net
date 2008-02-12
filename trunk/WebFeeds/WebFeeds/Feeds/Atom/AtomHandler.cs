@@ -9,7 +9,7 @@ namespace WebFeeds.Feeds.Atom
 	/// Based upon Atom 1.0
 	///		http://tools.ietf.org/html/rfc4287
 	/// </summary>
-	public class AtomHandler : System.Web.IHttpHandler
+	public class AtomHandler : IHttpHandler
 	{
 		#region Constants
 
@@ -24,7 +24,7 @@ namespace WebFeeds.Feeds.Atom
 			get { return true; }
 		}
 
-		void IHttpHandler.ProcessRequest(System.Web.HttpContext context)
+		void IHttpHandler.ProcessRequest(HttpContext context)
 		{
 			AtomFeed10 feed = null;
 			try
@@ -54,18 +54,20 @@ namespace WebFeeds.Feeds.Atom
 		/// 
 		/// This tests the round-trip serialization of the Atom object model.
 		/// </remarks>
-		protected virtual AtomFeed10 GenerateAtomFeed(System.Web.HttpContext context)
+		protected virtual AtomFeed10 GenerateAtomFeed(HttpContext context)
 		{
 			// this test code deserializes the Atom 1.0 feed and then serializes it
 			string url = context.Request["url"];
 			if (String.IsNullOrEmpty(url) || !url.StartsWith(Uri.UriSchemeHttp, StringComparison.InvariantCultureIgnoreCase))
+			{
 				return null;
+			}
 
 			using (System.Net.WebClient client = new System.Net.WebClient())
 			{
 				using (System.IO.Stream stream = client.OpenRead(url))
 				{
-					System.Xml.Serialization.XmlSerializer serializer = new System.Xml.Serialization.XmlSerializer(typeof(AtomFeed10));
+					XmlSerializer serializer = new XmlSerializer(typeof(AtomFeed10));
 					return serializer.Deserialize(stream) as AtomFeed10;
 				}
 			}
@@ -81,7 +83,7 @@ namespace WebFeeds.Feeds.Atom
 		/// The default implementation handles any exceptions during the Atom generation by
 		/// producing the exception stack trace as a valid Atom document.
 		/// </remarks>
-		protected virtual AtomFeed10 HandleError(System.Web.HttpContext context, System.Exception exception)
+		protected virtual AtomFeed10 HandleError(HttpContext context, System.Exception exception)
 		{
 			AtomFeed10 feed = new AtomFeed10();
 			feed.Updated = new AtomDate(DateTime.UtcNow);
@@ -161,7 +163,7 @@ namespace WebFeeds.Feeds.Atom
 		/// <remarks>
 		/// This has been tweaked to specifically output XML according to Atom 1.0.
 		/// </remarks>
-		private static void WriteAtomXml(System.Web.HttpContext context, object atom)
+		private static void WriteAtomXml(HttpContext context, object atom)
 		{
 			context.Response.Clear();
 			context.Response.ClearContent();
@@ -171,7 +173,9 @@ namespace WebFeeds.Feeds.Atom
 			context.Response.AddHeader("Content-Disposition", "inline;filename=atom.xml");
 
 			if (atom == null)
+			{
 				return;
+			}
 
 			XmlWriter writer = null;
 			try
