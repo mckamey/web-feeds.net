@@ -125,7 +125,7 @@ namespace WebFeeds.Feeds.Rss
 			string rssXslt = System.Configuration.ConfigurationManager.AppSettings[RssHandler.AppSettingsKey_RssXslt];
 			if (baseUri != null && !String.IsNullOrEmpty(rssXslt))
 			{
-				return System.IO.Path.Combine(baseUri.AbsoluteUri, rssXslt);
+				return new Uri(baseUri, rssXslt).AbsoluteUri;
 			}
 
 			return rssXslt;

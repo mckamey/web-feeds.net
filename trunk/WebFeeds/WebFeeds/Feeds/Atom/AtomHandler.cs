@@ -127,7 +127,7 @@ namespace WebFeeds.Feeds.Atom
 			string atomXslt = System.Configuration.ConfigurationManager.AppSettings[AtomHandler.AppSettingsKey_AtomXslt];
 			if (baseUri != null && !String.IsNullOrEmpty(atomXslt))
 			{
-				return System.IO.Path.Combine(baseUri.AbsoluteUri, atomXslt);
+				return new Uri(baseUri, atomXslt).AbsoluteUri;
 			}
 
 			return atomXslt;
