@@ -1,7 +1,7 @@
-﻿#region BuildTools License
+﻿#region WebFeeds License
 /*---------------------------------------------------------------------------------*\
 
-	BuildTools distributed under the terms of an MIT-style license:
+	WebFeeds distributed under the terms of an MIT-style license:
 
 	The MIT License
 
@@ -26,23 +26,23 @@
 	THE SOFTWARE.
 
 \*---------------------------------------------------------------------------------*/
-#endregion BuildTools License
+#endregion WebFeeds License
 
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
-[assembly: AssemblyTitle("FileConcat")]
+[assembly: AssemblyTitle("WebFeeds")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("BuildTools")]
-[assembly: AssemblyCopyright("Copyright © 2006-2007 Stephen M. McKamey. All rights reserved.")]
+[assembly: AssemblyProduct("WebFeeds")]
+[assembly: AssemblyCopyright("Copyright © 2006-2008 Stephen M. McKamey. All rights reserved.")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
 [assembly: ComVisible(false)]
 
-[assembly: Guid("62bf2884-b5fa-4568-b5cc-7747789f134a")]
+[assembly: Guid("B5397AD6-D4A9-40dc-B428-35F7AC5510E1")]
 
 [assembly: AssemblyFileVersion("1.0.0.0")]
