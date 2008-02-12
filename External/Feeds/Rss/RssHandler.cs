@@ -44,6 +44,7 @@ namespace WebFeeds.Feeds.Rss
 		#region Constants
 
 		public const string AppSettingsKey_RssXslt = "RssXslt";
+		private const string MimeType = "application/rss+xml";
 
 		#endregion Constants
 
@@ -196,7 +197,7 @@ namespace WebFeeds.Feeds.Rss
 			context.Response.Clear();
 			context.Response.ClearContent();
 			context.Response.ClearHeaders();
-			context.Response.ContentType = "application/xml";
+			context.Response.ContentType = RssHandler.MimeType;
 			context.Response.ContentEncoding = System.Text.Encoding.UTF8;
 			context.Response.AddHeader("Content-Disposition", "inline;filename=rss.xml");
 
@@ -230,10 +231,11 @@ namespace WebFeeds.Feeds.Rss
 			}
 			finally
 			{
-				if (writer != null)
+				if (context.ApplicationInstance != null)
 				{
-					writer.Flush();
-					writer.Close();
+					// prevents "Transfer-Encoding: Chunked" header which chokes IE6 (unlike Response.Flush/Close)
+					// and prevents ending response too early (unlike Response.End)
+					context.ApplicationInstance.CompleteRequest();
 				}
 			}
 		}

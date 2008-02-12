@@ -44,6 +44,7 @@ namespace WebFeeds.Feeds.Atom
 		#region Constants
 
 		public const string AppSettingsKey_AtomXslt = "AtomXslt";
+		private const string MimeType = "application/atom+xml";
 
 		#endregion Constants
 
@@ -198,7 +199,7 @@ namespace WebFeeds.Feeds.Atom
 			context.Response.Clear();
 			context.Response.ClearContent();
 			context.Response.ClearHeaders();
-			context.Response.ContentType = "application/xml";
+			context.Response.ContentType = AtomHandler.MimeType;
 			context.Response.ContentEncoding = System.Text.Encoding.UTF8;
 			context.Response.AddHeader("Content-Disposition", "inline;filename=atom.xml");
 
@@ -232,10 +233,11 @@ namespace WebFeeds.Feeds.Atom
 			}
 			finally
 			{
-				if (writer != null)
+				if (context.ApplicationInstance != null)
 				{
-					writer.Flush();
-					writer.Close();
+					// prevents "Transfer-Encoding: Chunked" header which chokes IE6 (unlike Response.Flush/Close)
+					// and prevents ending response too early (unlike Response.End)
+					context.ApplicationInstance.CompleteRequest();
 				}
 			}
 		}
