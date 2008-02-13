@@ -134,7 +134,7 @@ namespace WebFeeds.Feeds
 		/// The default implementation handles any exceptions during the Feed generation by
 		/// producing the exception stack trace as a valid Feed document.
 		/// </remarks>
-		protected abstract object HandleError(HttpContext context, System.Exception exception);
+		protected abstract object HandleError(HttpContext context, Exception exception);
 
 		#endregion Feed Handler Methods
 
