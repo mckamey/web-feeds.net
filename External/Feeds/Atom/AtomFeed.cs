@@ -46,7 +46,7 @@ namespace WebFeeds.Feeds.Atom
 	[Serializable]
 	[XmlInclude(typeof(AtomFeed03))]
 	[XmlInclude(typeof(AtomFeed10))]
-	public abstract class AtomFeed : AtomSource
+	public abstract class AtomFeed : AtomSource, IWebFeed
 	{
 		#region Constants
 
@@ -84,7 +84,7 @@ namespace WebFeeds.Feeds.Atom
 	}
 
 	[XmlRoot(AtomFeed10.ElementName, Namespace=AtomFeed10.Namespace)]
-	public class AtomFeed10 : AtomFeed
+	public class AtomFeed10 : AtomFeed, IWebFeed
 	{
 		#region Constants
 
@@ -114,7 +114,7 @@ namespace WebFeeds.Feeds.Atom
 	/// http://www.mnot.net/drafts/draft-nottingham-atom-format-02.html
 	/// </summary>
 	[XmlRoot(AtomFeed03.ElementName, Namespace=AtomFeed03.Namespace)]
-	public class AtomFeed03 : AtomFeed
+	public class AtomFeed03 : AtomFeed, IWebFeed
 	{
 		#region Constants
 

@@ -72,7 +72,7 @@ namespace WebFeeds.Feeds.Rss
 		/// The default implementation handles any exceptions during the RSS generation by
 		/// producing the exception stack trace as a valid RSS document.
 		/// </remarks>
-		protected override object HandleError(HttpContext context, Exception exception)
+		protected override IWebFeed HandleError(HttpContext context, Exception exception)
 		{
 			RssFeed feed = new RssFeed();
 			feed.Channel.LastBuildDate = DateTime.UtcNow;

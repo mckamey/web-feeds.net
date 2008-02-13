@@ -72,7 +72,7 @@ namespace WebFeeds.Feeds.Atom
 		/// The default implementation handles any exceptions during the Atom generation by
 		/// producing the exception stack trace as a valid Atom document.
 		/// </remarks>
-		protected override object HandleError(HttpContext context, Exception exception)
+		protected override IWebFeed HandleError(HttpContext context, Exception exception)
 		{
 			AtomFeed10 feed = new AtomFeed10();
 			feed.Updated = new AtomDate(DateTime.UtcNow);
