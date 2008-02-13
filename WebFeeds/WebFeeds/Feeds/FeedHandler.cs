@@ -43,6 +43,13 @@ namespace WebFeeds.Feeds
 	/// </summary>
 	public abstract class FeedHandler : IHttpAsyncHandler
 	{
+		#region Constants
+
+		private const string Key_Context = "Context";
+		private const string Key_Feed = "Feed";
+
+		#endregion Constants
+
 		#region Properties
 
 		/// <summary>
@@ -67,6 +74,18 @@ namespace WebFeeds.Feeds
 		protected abstract Type FeedType
 		{
 			get;
+		}
+
+		/// <summary>
+		/// Gets the timeout in milliseconds
+		/// </summary>
+		protected virtual int Timeout
+		{
+			get
+			{
+				// 5 seconds
+				return 5000;
+			}
 		}
 
 		#endregion Properties
@@ -96,9 +115,8 @@ namespace WebFeeds.Feeds
 			HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
 			request.AllowAutoRedirect = true;
 			request.UserAgent = "WebFeeds/1.0";
-			request.Timeout = 10000;//10 seconds
+			request.Timeout = this.Timeout;
 
-			// TODO: make this asynchronous...
 			using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
 			{
 				XmlSerializer serializer = new XmlSerializer(this.FeedType);
@@ -225,8 +243,10 @@ namespace WebFeeds.Feeds
 
 		void IHttpHandler.ProcessRequest(HttpContext context)
 		{
-			IAsyncResult result = ((IHttpAsyncHandler)this).BeginProcessRequest(context, null, null);
-			((IHttpAsyncHandler)this).EndProcessRequest(result);
+			IHttpAsyncHandler async = ((IHttpAsyncHandler)this);
+
+			IAsyncResult result = async.BeginProcessRequest(context, null, null);
+			async.EndProcessRequest(result);
 		}
 
 		#endregion IHttpHandler Members
@@ -235,10 +255,35 @@ namespace WebFeeds.Feeds
 
 		IAsyncResult IHttpAsyncHandler.BeginProcessRequest(HttpContext context, AsyncCallback callback, object state)
 		{
-			AsyncWorker worker = new AsyncWorker(this, context, callback, state);
+			AsyncResult worker = new AsyncResult(callback, state);
 
-			ThreadStart ts = new ThreadStart(worker.DoWork);
-			Thread thread = new Thread(ts);
+			worker[Key_Context] = context;
+			Thread thread = new Thread(
+				delegate()
+				{
+					// create a closure via anonymous delegate
+					// this way we don't have to jump through
+					// elaborate hoops to pass in the arguments
+
+					try
+					{
+						worker[Key_Feed] = this.GenerateFeed(context);
+					}
+					catch (Exception ex)
+					{
+						try
+						{
+							worker[Key_Feed] = this.HandleError(context, ex);
+						}
+						catch { }
+					}
+					finally
+					{
+						worker.CompleteCall();
+					}
+				});
+
+			// spawn the new thread
 			thread.Start();
 
 			return worker;
@@ -246,86 +291,23 @@ namespace WebFeeds.Feeds
 
 		void IHttpAsyncHandler.EndProcessRequest(IAsyncResult result)
 		{
-			AsyncWorker worker = result as AsyncWorker;
-			this.WriteFeedXml(worker.Context, worker.Feed);
-		}
-
-		#endregion IHttpAsyncHandler Members
-
-		#region AsyncWorker
-
-		/// <summary>
-		/// Wrapper for worker process
-		/// </summary>
-		private class AsyncWorker : AsyncResult
-		{
-			#region Fields
-
-			private FeedHandler handler = null;
-			private HttpContext context = null;
-			private IWebFeed feed = null;
-
-			#endregion Fields
-
-			#region Init
-
-			/// <summary>
-			/// Ctor
-			/// </summary>
-			/// <param name="context"></param>
-			/// <param name="callback"></param>
-			/// <param name="state"></param>
-			public AsyncWorker(FeedHandler handler, HttpContext context, AsyncCallback callback, object state)
-				: base(callback, state)
-			{
-				this.handler = handler;
-				this.context = context;
-			}
-
-			#endregion Init
-
-			#region Properties
-
-			/// <summary>
-			/// Gets the HttpContext for this request
-			/// </summary>
-			public HttpContext Context
-			{
-				get { return this.context; }
-			}
-
-			/// <summary>
-			/// Gets the resulting Feed for this request
-			/// </summary>
-			public IWebFeed Feed
-			{
-				get { return this.feed; }
-			}
-
-			#endregion Properties
-
-			#region Methods
-
-			/// <summary>
-			/// Worker Thread Method
-			/// </summary>
-			public void DoWork()
+			AsyncResult worker = (AsyncResult)result;
+			if (!worker.AsyncWaitHandle.WaitOne(this.Timeout, true))
 			{
 				try
 				{
-					this.feed = this.handler.GenerateFeed(context);
+					worker[Key_Feed] = this.HandleError(
+						worker[Key_Context] as HttpContext,
+						new TimeoutException("Timeout exceeded."));
 				}
-				catch (Exception ex)
-				{
-					try { this.feed = this.handler.HandleError(context, ex); }
-					catch { }
-				}
-				this.CompleteCall();
+				catch { }
 			}
 
-			#endregion Methods
+			this.WriteFeedXml(
+				worker[Key_Context] as HttpContext,
+				worker[Key_Feed] as IWebFeed);
 		}
 
-		#endregion AsyncWorker
+		#endregion IHttpAsyncHandler Members
 	}
 }
