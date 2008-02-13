@@ -115,7 +115,7 @@ namespace WebFeeds.Feeds
 			get { return this.asyncState; }
 		}
 
-		WaitHandle IAsyncResult.AsyncWaitHandle
+		public WaitHandle AsyncWaitHandle
 		{
 			get
 			{
