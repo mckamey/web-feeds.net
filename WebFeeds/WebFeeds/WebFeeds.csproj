@@ -36,6 +36,7 @@
     <UseVSHostingProcess>false</UseVSHostingProcess>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Feeds\FeedHandler.cs" />
     <Compile Include="Feeds\Atom\AtomBase.cs" />
     <Compile Include="Feeds\Atom\AtomEntry.cs" />
     <Compile Include="Feeds\Atom\AtomFeed.cs" />
