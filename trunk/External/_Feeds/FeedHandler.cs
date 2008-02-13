@@ -29,16 +29,19 @@
 #endregion WebFeeds License
 
 using System;
+using System.IO;
 using System.Web;
+using System.Net;
 using System.Xml;
 using System.Xml.Serialization;
+using System.Threading;
 
 namespace WebFeeds.Feeds
 {
 	/// <summary>
 	/// Base class for feed generator handlers.
 	/// </summary>
-	public abstract class FeedHandler : IHttpHandler
+	public abstract class FeedHandler : IHttpAsyncHandler
 	{
 		#region Properties
 
@@ -68,30 +71,6 @@ namespace WebFeeds.Feeds
 
 		#endregion Properties
 
-		#region IHttpHandler Members
-
-		bool IHttpHandler.IsReusable
-		{
-			get { return true; }
-		}
-
-		void IHttpHandler.ProcessRequest(HttpContext context)
-		{
-			object feed = null;
-			try
-			{
-				feed = this.GenerateFeed(context);
-			}
-			catch (Exception ex)
-			{
-				try { feed = this.HandleError(context, ex); }
-				catch { }
-			}
-			this.WriteFeedXml(context, feed);
-		}
-
-		#endregion IHttpHandler Members
-
 		#region Feed Handler Methods
 
 		/// <summary>
@@ -105,7 +84,7 @@ namespace WebFeeds.Feeds
 		/// 
 		/// This tests the round-trip serialization of the Feed object model.
 		/// </remarks>
-		protected virtual object GenerateFeed(HttpContext context)
+		protected virtual IWebFeed GenerateFeed(HttpContext context)
 		{
 			// this test code deserializes the feed and then serializes it
 			string url = context.Request["url"];
@@ -114,13 +93,16 @@ namespace WebFeeds.Feeds
 				return null;
 			}
 
-			using (System.Net.WebClient client = new System.Net.WebClient())
+			HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+			request.AllowAutoRedirect = true;
+			request.UserAgent = "WebFeeds/1.0";
+			request.Timeout = 10000;//10 seconds
+
+			// TODO: make this asynchronous...
+			using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
 			{
-				using (System.IO.Stream stream = client.OpenRead(url))
-				{
-					XmlSerializer serializer = new XmlSerializer(this.FeedType);
-					return serializer.Deserialize(stream);
-				}
+				XmlSerializer serializer = new XmlSerializer(this.FeedType);
+				return serializer.Deserialize(response.GetResponseStream()) as IWebFeed;
 			}
 		}
 
@@ -134,7 +116,7 @@ namespace WebFeeds.Feeds
 		/// The default implementation handles any exceptions during the Feed generation by
 		/// producing the exception stack trace as a valid Feed document.
 		/// </remarks>
-		protected abstract object HandleError(HttpContext context, Exception exception);
+		protected abstract IWebFeed HandleError(HttpContext context, Exception exception);
 
 		#endregion Feed Handler Methods
 
@@ -184,7 +166,7 @@ namespace WebFeeds.Feeds
 		/// <remarks>
 		/// This has been tweaked to specifically output XML according to Feed.
 		/// </remarks>
-		private void WriteFeedXml(HttpContext context, object feed)
+		private void WriteFeedXml(HttpContext context, IWebFeed feed)
 		{
 			context.Response.Clear();
 			context.Response.ClearContent();
@@ -233,5 +215,117 @@ namespace WebFeeds.Feeds
 		}
 
 		#endregion Xml Methods
+
+		#region IHttpHandler Members
+
+		bool IHttpHandler.IsReusable
+		{
+			get { return true; }
+		}
+
+		void IHttpHandler.ProcessRequest(HttpContext context)
+		{
+			IAsyncResult result = ((IHttpAsyncHandler)this).BeginProcessRequest(context, null, null);
+			((IHttpAsyncHandler)this).EndProcessRequest(result);
+		}
+
+		#endregion IHttpHandler Members
+
+		#region IHttpAsyncHandler Members
+
+		IAsyncResult IHttpAsyncHandler.BeginProcessRequest(HttpContext context, AsyncCallback callback, object state)
+		{
+			AsyncWorker worker = new AsyncWorker(this, context, callback, state);
+
+			ThreadStart ts = new ThreadStart(worker.DoWork);
+			Thread thread = new Thread(ts);
+			thread.Start();
+
+			return worker;
+		}
+
+		void IHttpAsyncHandler.EndProcessRequest(IAsyncResult result)
+		{
+			AsyncWorker worker = result as AsyncWorker;
+			this.WriteFeedXml(worker.Context, worker.Feed);
+		}
+
+		#endregion IHttpAsyncHandler Members
+
+		#region AsyncWorker
+
+		/// <summary>
+		/// Wrapper for worker process
+		/// </summary>
+		private class AsyncWorker : AsyncResult
+		{
+			#region Fields
+
+			private FeedHandler handler = null;
+			private HttpContext context = null;
+			private IWebFeed feed = null;
+
+			#endregion Fields
+
+			#region Init
+
+			/// <summary>
+			/// Ctor
+			/// </summary>
+			/// <param name="context"></param>
+			/// <param name="callback"></param>
+			/// <param name="state"></param>
+			public AsyncWorker(FeedHandler handler, HttpContext context, AsyncCallback callback, object state)
+				: base(callback, state)
+			{
+				this.handler = handler;
+				this.context = context;
+			}
+
+			#endregion Init
+
+			#region Properties
+
+			/// <summary>
+			/// Gets the HttpContext for this request
+			/// </summary>
+			public HttpContext Context
+			{
+				get { return this.context; }
+			}
+
+			/// <summary>
+			/// Gets the resulting Feed for this request
+			/// </summary>
+			public IWebFeed Feed
+			{
+				get { return this.feed; }
+			}
+
+			#endregion Properties
+
+			#region Methods
+
+			/// <summary>
+			/// Worker Thread Method
+			/// </summary>
+			public void DoWork()
+			{
+				try
+				{
+					this.feed = this.handler.GenerateFeed(context);
+				}
+				catch (Exception ex)
+				{
+					try { this.feed = this.handler.HandleError(context, ex); }
+					catch { }
+				}
+				this.CompleteCall();
+			}
+
+			#endregion Methods
+		}
+
+		#endregion AsyncWorker
 	}
 }

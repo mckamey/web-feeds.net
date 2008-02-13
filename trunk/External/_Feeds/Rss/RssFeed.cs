@@ -39,7 +39,7 @@ namespace WebFeeds.Feeds.Rss
 	///		http://blogs.law.harvard.edu/tech/rss
 	/// </summary>
 	[XmlRoot(RssFeed.ElementName, Namespace=RssFeed.Namespace)]
-	public class RssFeed
+	public class RssFeed : IWebFeed
 	{
 		#region Constants
 

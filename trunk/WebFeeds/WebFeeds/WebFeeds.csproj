@@ -36,6 +36,7 @@
     <UseVSHostingProcess>false</UseVSHostingProcess>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Feeds\AsyncResult.cs" />
     <Compile Include="Feeds\FeedHandler.cs" />
     <Compile Include="Feeds\Atom\AtomBase.cs" />
     <Compile Include="Feeds\Atom\AtomEntry.cs" />
@@ -44,6 +45,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Feeds\Atom\AtomSubElements.cs" />
+    <Compile Include="Feeds\IWebFeed.cs" />
     <Compile Include="Feeds\Rss\RssChannel.cs" />
     <Compile Include="Feeds\Rss\RssFeed.cs" />
     <Compile Include="Feeds\Rss\RssHandler.cs">
