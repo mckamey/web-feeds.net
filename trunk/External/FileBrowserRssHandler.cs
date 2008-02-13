@@ -22,11 +22,11 @@ namespace MediaLib.Web.Handlers
 
 		#region RssHandler Members
 
-		protected override RssFeed GenerateRssFeed(System.Web.HttpContext context)
+		protected override object GenerateFeed(System.Web.HttpContext context)
 		{
 #if DEBUG
 			if (!String.IsNullOrEmpty(context.Request.QueryString["url"]))
-				return base.GenerateRssFeed(context);
+				return base.GenerateFeed(context);
 #endif
 			if (!FilePathMapper.IsPathVirtual(context.Request.CurrentExecutionFilePath))
 				context.Response.Redirect(FilePathMapper.MediaVirtualRoot, true);
