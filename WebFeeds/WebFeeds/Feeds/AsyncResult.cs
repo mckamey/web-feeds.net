@@ -39,9 +39,11 @@ namespace WebFeeds.Feeds
 	/// Generic IAsyncResult implementation
 	/// </summary>
 	/// <remarks>
-	/// http://msdn.microsoft.com/msdnmag/issues/05/10/WickedCode/
-	/// http://msdn.microsoft.com/msdnmag/issues/07/03/WickedCode/
-	/// http://msdn.microsoft.com/msdnmag/issues/03/06/Threading/#S5
+	/// Helpful articles:
+	///		http://msdn.microsoft.com/msdnmag/issues/05/10/WickedCode/
+	///		http://msdn.microsoft.com/msdnmag/issues/07/03/WickedCode/
+	///		http://msdn.microsoft.com/msdnmag/issues/03/06/Threading/#S5
+	///		http://support.microsoft.com/kb/821268
 	/// </remarks>
 	public class AsyncResult : IAsyncResult
 	{
