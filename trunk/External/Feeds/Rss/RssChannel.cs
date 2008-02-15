@@ -110,7 +110,7 @@ namespace WebFeeds.Feeds.Rss
 					return;
 				}
 
-				this.link = new Uri(value, UriKind.Absolute);
+				this.link = new Uri(value);
 			}
 		}
 

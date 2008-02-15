@@ -104,7 +104,7 @@ namespace WebFeeds.Feeds.Rss
 					return;
 				}
 
-				this.link = new Uri(value, UriKind.Absolute);
+				this.link = new Uri(value);
 			}
 		}
 
@@ -176,7 +176,7 @@ namespace WebFeeds.Feeds.Rss
 					return;
 				}
 
-				this.comments = new Uri(value, UriKind.Absolute);
+				this.comments = new Uri(value);
 			}
 		}
 
