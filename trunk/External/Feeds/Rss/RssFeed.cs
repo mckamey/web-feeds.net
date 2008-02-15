@@ -38,13 +38,13 @@ namespace WebFeeds.Feeds.Rss
 	/// RSS 2.0 Root
 	///		http://blogs.law.harvard.edu/tech/rss
 	/// </summary>
-	[XmlRoot(RssFeed.ElementName, Namespace=RssFeed.Namespace)]
+	[XmlRoot(RssFeed.RootElement, Namespace=RssFeed.Namespace)]
 	public class RssFeed : IWebFeed
 	{
 		#region Constants
 
-		public const string RssSpecificationUrl = "http://blogs.law.harvard.edu/tech/rss";
-		public const string ElementName = "rss";
+		public const string SpecificationUrl = "http://blogs.law.harvard.edu/tech/rss";
+		public const string RootElement = "rss";
 		public const string Namespace = "";
 
 		#endregion Constants
@@ -58,6 +58,9 @@ namespace WebFeeds.Feeds.Rss
 
 		#region Init
 
+		/// <summary>
+		/// Ctor
+		/// </summary>
 		public RssFeed()
 		{
 		}

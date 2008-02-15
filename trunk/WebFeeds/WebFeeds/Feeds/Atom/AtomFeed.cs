@@ -50,7 +50,7 @@ namespace WebFeeds.Feeds.Atom
 	{
 		#region Constants
 
-		public const string ElementName = "feed";
+		public const string RootElement = "feed";
 
 		#endregion Constants
 
@@ -63,7 +63,7 @@ namespace WebFeeds.Feeds.Atom
 		#region Init
 
 		/// <summary>
-		/// Ctor.
+		/// Ctor
 		/// </summary>
 		protected AtomFeed() { }
 
@@ -82,12 +82,12 @@ namespace WebFeeds.Feeds.Atom
 		#endregion Properties
 	}
 
-	[XmlRoot(AtomFeed10.ElementName, Namespace=AtomFeed10.Namespace)]
+	[XmlRoot(AtomFeed10.RootElement, Namespace=AtomFeed10.Namespace)]
 	public class AtomFeed10 : AtomFeed, IWebFeed
 	{
 		#region Constants
 
-		public const string AtomSpecificationUrl = "http://tools.ietf.org/html/rfc4287";
+		public const string SpecificationUrl = "http://tools.ietf.org/html/rfc4287";
 		public const string Namespace = "http://www.w3.org/2005/Atom";
 
 		#endregion Constants
@@ -110,12 +110,12 @@ namespace WebFeeds.Feeds.Atom
 		#endregion Properties
 	}
 
-	[XmlRoot(AtomFeed03.ElementName, Namespace=AtomFeed03.Namespace)]
+	[XmlRoot(AtomFeed03.RootElement, Namespace=AtomFeed03.Namespace)]
 	public class AtomFeed03 : AtomFeed, IWebFeed
 	{
 		#region Constants
 
-		public const string AtomSpecificationUrl = "http://www.mnot.net/drafts/draft-nottingham-atom-format-02.html";
+		public const string SpecificationUrl = "http://www.mnot.net/drafts/draft-nottingham-atom-format-02.html";
 		public const string Namespace = "http://purl.org/atom/ns#";
 
 		#endregion Constants
