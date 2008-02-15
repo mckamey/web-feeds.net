@@ -30,91 +30,99 @@
 
 using System;
 using System.ComponentModel;
+using System.Collections.Generic;
 using System.Xml.Serialization;
 
-namespace WebFeeds.Feeds.Rss
+namespace WebFeeds.Feeds.Rdf
 {
 	/// <summary>
-	/// Really Simple Syndication (RSS 2.0)
-	///		http://www.rssboard.org/rss-specification
-	///		http://blogs.law.harvard.edu/tech/rss
+	/// RDF 1.0 Channel
+	///		http://web.resource.org/rss/1.0/spec#s5.3
 	/// </summary>
-	[XmlRoot(RssFeed.RootElement, Namespace=RssFeed.Namespace)]
-	public class RssFeed : IWebFeed
+	[Serializable]
+	public class RdfChannel : RdfItemBase
 	{
-		#region Constants
-
-		public const string SpecificationUrl = "http://blogs.law.harvard.edu/tech/rss";
-		protected internal const string RootElement = "rss";
-		protected internal const string Namespace = "";
-		protected internal const string MimeType = "application/rss+xml";
-
-		#endregion Constants
-
 		#region Fields
 
-		private RssChannel channel = null;
-		private Version version = new Version(2,0);
+		private RdfFeed parent = null;
+		private List<RdfItem> items = new List<RdfItem>();
 
 		#endregion Fields
 
-		#region Init
-
-		/// <summary>
-		/// Ctor
-		/// </summary>
-		public RssFeed()
-		{
-		}
-
-		#endregion Init
-
 		#region Properties
 
+		/// <summary>
+		/// Gets and sets an RDF association between the optional image element
+		/// and this particular RSS channel.
+		/// </summary>
 		[DefaultValue(null)]
-		[XmlElement("channel")]
-		public RssChannel Channel
+		[XmlElement("image", Namespace=RdfFeed.NamespaceRss10)]
+		public RdfResource Image
 		{
 			get
 			{
-				if (this.channel == null)
+				if (this.parent == null ||
+					!this.parent.ImageSpecified)
 				{
-					this.channel = new RssChannel();
+					return null;
 				}
 
-				return this.channel;
+				return new RdfResource(this.parent.Image);
 			}
-			set { this.channel = value; }
+			set {  }
 		}
 
-		[XmlAttribute("version")]
-		public string Version
+		/// <summary>
+		/// Gets and sets an RDF table of contents, associating the document's items
+		/// with this particular RSS channel.
+		/// </summary>
+		[DefaultValue(null)]
+		[XmlElement("items", Namespace=RdfFeed.NamespaceRss10)]
+		public RdfSequence Items
 		{
-			get { return this.version.ToString(); }
-			set { this.version = new Version(value); }
+			get
+			{
+				if (this.parent == null ||
+					this.parent.Items == null ||
+					this.parent.Items.Count == 0)
+				{
+					return null;
+				}
+
+				return new RdfSequence(this.parent);
+			}
+			set {  }
+		}
+
+		/// <summary>
+		/// Gets and sets an RDF association between the optional image element and this particular RSS channel.
+		/// </summary>
+		[DefaultValue(null)]
+		[XmlElement("textinput", Namespace=RdfFeed.NamespaceRss10)]
+		public RdfResource TextInput
+		{
+			get
+			{
+				if (this.parent == null ||
+					!this.parent.TextInputSpecified)
+				{
+					return null;
+				}
+
+				return new RdfResource(this.parent.TextInput);
+			}
+			set { }
 		}
 
 		#endregion Properties
 
-		#region IWebFeed Members
+		#region Methods
 
-		[XmlIgnore]
-		string IWebFeed.MimeType
+		internal void SetParent(RdfFeed feed)
 		{
-			get { return RssFeed.MimeType; }
+			this.parent = feed;
 		}
 
-		[XmlIgnore]
-		XmlSerializerNamespaces IWebFeed.Namespaces
-		{
-			get
-			{
-				XmlSerializerNamespaces namespaces = new XmlSerializerNamespaces();
-				namespaces.Add("", RssFeed.Namespace);
-				return namespaces;
-			}
-		}
-
-		#endregion IWebFeed Members
+		#endregion Methods
 	}
 }

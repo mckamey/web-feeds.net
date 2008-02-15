@@ -47,6 +47,7 @@ namespace WebFeeds.Feeds.Rss
 		public const string SpecificationUrl = "http://blogs.law.harvard.edu/tech/rss";
 		protected internal const string RootElement = "rss";
 		protected internal const string Namespace = "";
+		protected internal const string MimeType = "application/rss+xml";
 
 		#endregion Constants
 
@@ -93,12 +94,27 @@ namespace WebFeeds.Feeds.Rss
 			set { this.version = new Version(value); }
 		}
 
+		#endregion Properties
+
+		#region IWebFeed Members
+
 		[XmlIgnore]
-		public string MimeType
+		string IWebFeed.MimeType
 		{
-			get { return "application/rss+xml"; }
+			get { return RssFeed.MimeType; }
 		}
 
-		#endregion Properties
+		[XmlIgnore]
+		XmlSerializerNamespaces IWebFeed.Namespaces
+		{
+			get
+			{
+				XmlSerializerNamespaces namespaces = new XmlSerializerNamespaces();
+				namespaces.Add("", RssFeed.Namespace);
+				return namespaces;
+			}
+		}
+
+		#endregion IWebFeed Members
 	}
 }
