@@ -31,6 +31,7 @@
 using System;
 using System.ComponentModel;
 using System.Collections.Generic;
+using System.Xml;
 using System.Xml.Serialization;
 
 namespace WebFeeds.Feeds.Atom
@@ -505,21 +506,40 @@ namespace WebFeeds.Feeds.Atom
 			}
 		}
 
-		System.Xml.XmlNode xhtmlValue = null;
-		[DefaultValue(null)]
-		[XmlElement("div", Namespace="http://www.w3.org/1999/xhtml")]
-		public System.Xml.XmlNode XhtmlValue
-		{
-			get { return this.xhtmlValue; }
-			set { this.xhtmlValue = value; }
-		}
-
 		[XmlText]
 		[DefaultValue(null)]
 		public string Value
 		{
-			get { return this.value; }
+			get
+			{
+				if (this.TextType == AtomTextType.xhtml)
+				{
+					return null;
+				}
+				return this.value;
+			}
 			set { this.value = value; }
+		}
+
+		[DefaultValue(null)]
+		[XmlAnyElement(Namespace="http://www.w3.org/1999/xhtml")]
+		public XmlNode XhtmlValue
+		{
+			get
+			{
+				if (this.TextType != AtomTextType.xhtml)
+				{
+					return null;
+				}
+				XmlDocument doc = new XmlDocument();
+				doc.LoadXml(this.value);
+				return doc;
+			}
+			set
+			{
+				this.TextType = AtomTextType.xhtml;
+				this.value = value.OuterXml;
+			}
 		}
 
 		#endregion Properties
