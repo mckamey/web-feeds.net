@@ -45,6 +45,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Feeds\Atom\AtomSubElements.cs" />
+    <Compile Include="Feeds\FeedSerializer.cs" />
     <Compile Include="Feeds\IWebFeed.cs" />
     <Compile Include="Feeds\Rss\RssChannel.cs" />
     <Compile Include="Feeds\Rss\RssFeed.cs" />

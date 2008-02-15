@@ -35,7 +35,8 @@ using System.Xml.Serialization;
 namespace WebFeeds.Feeds.Rss
 {
 	/// <summary>
-	/// RSS 2.0 Root
+	/// Really Simple Syndication (RSS 2.0)
+	///		http://www.rssboard.org/rss-specification
 	///		http://blogs.law.harvard.edu/tech/rss
 	/// </summary>
 	[XmlRoot(RssFeed.RootElement, Namespace=RssFeed.Namespace)]
@@ -44,8 +45,8 @@ namespace WebFeeds.Feeds.Rss
 		#region Constants
 
 		public const string SpecificationUrl = "http://blogs.law.harvard.edu/tech/rss";
-		public const string RootElement = "rss";
-		public const string Namespace = "";
+		protected internal const string RootElement = "rss";
+		protected internal const string Namespace = "";
 
 		#endregion Constants
 
@@ -90,6 +91,12 @@ namespace WebFeeds.Feeds.Rss
 		{
 			get { return this.version.ToString(); }
 			set { this.version = new Version(value); }
+		}
+
+		[XmlIgnore]
+		public string MimeType
+		{
+			get { return "application/rss+xml"; }
 		}
 
 		#endregion Properties
