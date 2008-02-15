@@ -45,17 +45,7 @@ namespace WebFeeds.Feeds.Atom
 
 		public override string AppSettingsKey
 		{
-			get { return "AtomXslt"; }
-		}
-
-		protected override string MimeType
-		{
-			get { return "application/atom+xml"; }
-		}
-
-		protected override Type FeedType
-		{
-			get { return typeof(AtomFeed10); }
+			get { return "WebFeeds.AtomXslt"; }
 		}
 
 		#endregion Properties

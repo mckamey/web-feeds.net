@@ -7,5 +7,9 @@ namespace WebFeeds.Feeds
 	/// </summary>
 	public interface IWebFeed
 	{
+		/// <summary>
+		/// Gets the MIME Type designation for the feed
+		/// </summary>
+		string MimeType { get; }
 	}
 }

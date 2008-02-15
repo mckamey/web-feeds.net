@@ -45,17 +45,7 @@ namespace WebFeeds.Feeds.Rss
 
 		public override string AppSettingsKey
 		{
-			get { return "RssXslt"; }
-		}
-
-		protected override string MimeType
-		{
-			get { return "application/rss+xml"; }
-		}
-
-		protected override Type FeedType
-		{
-			get { return typeof(RssFeed); }
+			get { return "WebFeeds.RssXslt"; }
 		}
 
 		#endregion Properties

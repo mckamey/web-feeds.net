@@ -36,7 +36,8 @@ using System.Xml.Serialization;
 namespace WebFeeds.Feeds.Atom
 {
 	/// <summary>
-	/// http://tools.ietf.org/html/rfc4287#section-4.1.1
+	/// The Atom Syndication Format
+	///		http://tools.ietf.org/html/rfc4287#section-4.1.1
 	/// </summary>
 	/// <remarks>
 	/// atomFeed : atomSource
@@ -50,7 +51,7 @@ namespace WebFeeds.Feeds.Atom
 	{
 		#region Constants
 
-		public const string RootElement = "feed";
+		protected internal const string RootElement = "feed";
 
 		#endregion Constants
 
@@ -79,6 +80,12 @@ namespace WebFeeds.Feeds.Atom
 			set { this.logo = value; }
 		}
 
+		[XmlIgnore]
+		public string MimeType
+		{
+			get { return "application/atom+xml"; }
+		}
+
 		#endregion Properties
 	}
 
@@ -88,7 +95,7 @@ namespace WebFeeds.Feeds.Atom
 		#region Constants
 
 		public const string SpecificationUrl = "http://tools.ietf.org/html/rfc4287";
-		public const string Namespace = "http://www.w3.org/2005/Atom";
+		protected internal const string Namespace = "http://www.w3.org/2005/Atom";
 
 		#endregion Constants
 
@@ -116,7 +123,7 @@ namespace WebFeeds.Feeds.Atom
 		#region Constants
 
 		public const string SpecificationUrl = "http://www.mnot.net/drafts/draft-nottingham-atom-format-02.html";
-		public const string Namespace = "http://purl.org/atom/ns#";
+		protected internal const string Namespace = "http://purl.org/atom/ns#";
 
 		#endregion Constants
 

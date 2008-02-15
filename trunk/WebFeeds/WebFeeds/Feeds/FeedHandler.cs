@@ -32,14 +32,14 @@ using System;
 using System.IO;
 using System.Web;
 using System.Net;
-using System.Xml;
-using System.Xml.Serialization;
+using System.Text;
 using System.Threading;
+using System.Configuration;
 
 namespace WebFeeds.Feeds
 {
 	/// <summary>
-	/// Base class for feed generator handlers.
+	/// Base class for feed generators.
 	/// </summary>
 	public abstract class FeedHandler : IHttpAsyncHandler
 	{
@@ -56,22 +56,6 @@ namespace WebFeeds.Feeds
 		/// Gets the AppSettings Key which designates where to point the XSLT.
 		/// </summary>
 		public abstract string AppSettingsKey
-		{
-			get;
-		}
-
-		/// <summary>
-		/// Gets the MIME Type designation for this feed type
-		/// </summary>
-		protected abstract string MimeType
-		{
-			get;
-		}
-
-		/// <summary>
-		/// Gets the Type of the root Feed object
-		/// </summary>
-		protected abstract Type FeedType
 		{
 			get;
 		}
@@ -112,16 +96,7 @@ namespace WebFeeds.Feeds
 				return null;
 			}
 
-			HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
-			request.AllowAutoRedirect = true;
-			request.UserAgent = "WebFeeds/1.0";
-			request.Timeout = this.Timeout;
-
-			using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
-			{
-				XmlSerializer serializer = new XmlSerializer(this.FeedType);
-				return serializer.Deserialize(response.GetResponseStream()) as IWebFeed;
-			}
+			return FeedSerializer.DeserializeXml(url, this.Timeout);
 		}
 
 		/// <summary>
@@ -130,24 +105,21 @@ namespace WebFeeds.Feeds
 		/// <param name="context"></param>
 		/// <param name="exception"></param>
 		/// <returns>Feed</returns>
-		/// <remarks>
-		/// The default implementation handles any exceptions during the Feed generation by
-		/// producing the exception stack trace as a valid Feed document.
-		/// </remarks>
 		protected abstract IWebFeed HandleError(HttpContext context, Exception exception);
 
 		#endregion Feed Handler Methods
 
-		#region Xslt Methods
+		#region Xml Methods
 
 		/// <summary>
 		/// Creates the absolute url for the Feed XSLT.
 		/// </summary>
 		/// <param name="baseUri"></param>
 		/// <returns></returns>
-		private string GetFeedXslt(Uri baseUri)
+		private string GetXsltUri(HttpContext context)
 		{
-			string feedXslt = System.Configuration.ConfigurationManager.AppSettings[this.AppSettingsKey];
+			Uri baseUri = context.Request.Url;
+			string feedXslt = ConfigurationManager.AppSettings[this.AppSettingsKey];
 			if (baseUri != null && !String.IsNullOrEmpty(feedXslt))
 			{
 				return new Uri(baseUri, feedXslt).AbsoluteUri;
@@ -157,69 +129,38 @@ namespace WebFeeds.Feeds
 		}
 
 		/// <summary>
-		/// Renders the XSLT processor instruction.
-		/// </summary>
-		/// <param name="writer"></param>
-		/// <param name="baseUri"></param>
-		private void AddXsltInstruction(XmlWriter writer, Uri baseUri)
-		{
-			string feedXslt = this.GetFeedXslt(baseUri);
-			if (!String.IsNullOrEmpty(feedXslt))
-			{
-				// add a stylesheet for browser viewing
-				writer.WriteProcessingInstruction("xml-stylesheet",
-					String.Format("type=\"text/xsl\" href=\"{0}\" version=\"1.0\"", feedXslt));
-			}
-		}
-
-		#endregion Xslt Methods
-
-		#region Xml Methods
-
-		/// <summary>
 		/// Controls the XML serialization and response header generation.
 		/// </summary>
 		/// <param name="context"></param>
 		/// <param name="feed"></param>
-		/// <remarks>
-		/// This has been tweaked to specifically output XML according to Feed.
-		/// </remarks>
-		private void WriteFeedXml(HttpContext context, IWebFeed feed)
+		private void RenderFeed(HttpContext context, IWebFeed feed)
 		{
 			context.Response.Clear();
 			context.Response.ClearContent();
 			context.Response.ClearHeaders();
-			context.Response.ContentType = this.MimeType;
-			context.Response.ContentEncoding = System.Text.Encoding.UTF8;
+			context.Response.ContentEncoding = Encoding.UTF8;
 			context.Response.AddHeader("Content-Disposition", "inline;filename=feed.xml");
 
-			XmlWriter writer = null;
 			try
 			{
 				if (feed == null)
 				{
+					context.Response.Write("Feed was null");
 					return;
 				}
+				context.Response.ContentType = feed.MimeType;
 
-				// setup document formatting, make human readable
-				XmlWriterSettings settings = new XmlWriterSettings();
-				settings.CheckCharacters = true;
-				settings.CloseOutput = true;
-				settings.ConformanceLevel = ConformanceLevel.Document;
-				settings.Encoding = System.Text.Encoding.UTF8;
-				settings.Indent = true;
-				settings.IndentChars = "\t";
-				writer = XmlWriter.Create(context.Response.OutputStream, settings);
-
-				this.AddXsltInstruction(writer, context.Request.Url);
-
-				// write out feed
-				XmlSerializer serializer = new XmlSerializer(feed.GetType());
-				serializer.Serialize(writer, feed);
+				string xsltUrl = this.GetXsltUri(context);
+				Stream output = context.Response.OutputStream;
+				FeedSerializer.SerializeXml(feed, output, xsltUrl);
 			}
 			catch (Exception ex)
 			{
+#if DEBUG
 				context.Response.Write(ex);
+#else
+				context.Response.Write(ex.Message);
+#endif
 			}
 			finally
 			{
@@ -303,7 +244,7 @@ namespace WebFeeds.Feeds
 				catch { }
 			}
 
-			this.WriteFeedXml(
+			this.RenderFeed(
 				worker[Key_Context] as HttpContext,
 				worker[Key_Feed] as IWebFeed);
 		}
