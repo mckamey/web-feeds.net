@@ -44,8 +44,8 @@ namespace WebFeeds.Feeds.Rss
 		#region Constants
 
 		public const string RssSpecificationUrl = "http://blogs.law.harvard.edu/tech/rss";
-		private const string ElementName = "rss";
-		private const string Namespace = "";
+		public const string ElementName = "rss";
+		public const string Namespace = "";
 
 		#endregion Constants
 
@@ -73,7 +73,9 @@ namespace WebFeeds.Feeds.Rss
 			get
 			{
 				if (this.channel == null)
+				{
 					this.channel = new RssChannel();
+				}
 
 				return this.channel;
 			}

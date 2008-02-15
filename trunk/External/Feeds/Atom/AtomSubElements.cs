@@ -141,7 +141,7 @@ namespace WebFeeds.Feeds.Atom
 	{
 		#region Fields
 
-		private DateTime value = DateTime.MinValue;
+		private DateTime? value = null;
 
 		#endregion Fields
 
@@ -168,7 +168,7 @@ namespace WebFeeds.Feeds.Atom
 		[XmlIgnore]
 		public DateTime Value
 		{
-			get { return this.value; }
+			get { return this.value.Value; }
 			set { this.value = value; }
 		}
 
@@ -178,19 +178,22 @@ namespace WebFeeds.Feeds.Atom
 		{
 			get
 			{
-				if (this.value == DateTime.MinValue)
+				if (!this.value.HasValue)
 				{
 					return null;
 				}
-				return this.value.ToUniversalTime().ToString("s")+'Z';
+				return this.value.Value.ToString("s")+'Z';
 			}
 			set
 			{
-				if (String.IsNullOrEmpty(value) ||
-					!DateTime.TryParse(value, out this.value))
+				DateTime dateTime;
+				if (!DateTime.TryParse(value, out dateTime))
 				{
-					this.value = DateTime.MinValue;
+					this.value = null;
+					return;
 				}
+
+				this.value = dateTime.ToUniversalTime();
 			}
 		}
 
@@ -204,6 +207,20 @@ namespace WebFeeds.Feeds.Atom
 		}
 
 		#endregion Object Overrides
+
+		#region Operators
+
+		public static implicit operator AtomDate(DateTime value)
+		{
+			return new AtomDate(value);
+		}
+
+		public static explicit operator DateTime(AtomDate value)
+		{
+			return value.Value;
+		}
+
+		#endregion Operators
 	}
 
 	#endregion AtomDate
