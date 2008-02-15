@@ -59,7 +59,7 @@ namespace WebFeeds.Feeds.Atom
 		private AtomDate updated = null;
 
 		private List<AtomPerson> authors = new List<AtomPerson>();
-		private List<AtomText> categories = new List<AtomText>();
+		private List<AtomCategory> categories = new List<AtomCategory>();
 		private List<AtomPerson> contributors = new List<AtomPerson>();
 		private List<AtomLink> links = new List<AtomLink>();
 
@@ -77,7 +77,7 @@ namespace WebFeeds.Feeds.Atom
 
 		[DefaultValue(null)]
 		[XmlElement("category")]
-		public List<AtomText> Categories
+		public List<AtomCategory> Categories
 		{
 			get { return this.categories; }
 			set { this.categories = value; }
