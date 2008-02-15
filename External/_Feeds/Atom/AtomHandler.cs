@@ -89,7 +89,7 @@ namespace WebFeeds.Feeds.Atom
 
 #if DEBUG
 				entry.Summary = new AtomText("<pre>"+exception+"</pre>");
-				entry.Summary.Type = AtomTextType.html;
+				entry.Summary.TextType = AtomTextType.html;
 #else
 				entry.Summary = new AtomText(exception.Message);
 #endif

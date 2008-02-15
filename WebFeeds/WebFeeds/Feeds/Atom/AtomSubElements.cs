@@ -41,13 +41,11 @@ namespace WebFeeds.Feeds.Atom
 	/// http://tools.ietf.org/html/rfc4287#section-4.1.3
 	/// </summary>
 	[Serializable]
-	public class AtomContent
+	public class AtomContent : AtomText
 	{
 		#region Fields
 
-		private string type = null;
 		private string src = null;
-		private string value = null;
 
 		#endregion Fields
 
@@ -62,44 +60,13 @@ namespace WebFeeds.Feeds.Atom
 		/// Ctor.
 		/// </summary>
 		/// <param name="text"></param>
-		public AtomContent(string text)
+		public AtomContent(string text) : base(text)
 		{
-			this.value = text;
 		}
 
 		#endregion Init
 
 		#region Properties
-
-		[DefaultValue(AtomTextType.text)]
-		[XmlIgnore]
-		public AtomTextType TextType
-		{
-			get
-			{
-				if (String.IsNullOrEmpty(this.type))
-				{
-					return AtomTextType.text;
-				}
-				try
-				{
-					return (AtomTextType)Enum.Parse(typeof(AtomTextType), this.type, false);
-				}
-				catch
-				{
-					return AtomTextType.text;
-				}
-			}
-			set { this.type = value.ToString(); }
-		}
-
-		[DefaultValue(null)]
-		[XmlAttribute("type")]
-		public string Type
-		{
-			get { return this.type; }
-			set { this.type = value; }
-		}
 
 		[DefaultValue(null)]
 		[XmlAttribute("src")]
@@ -109,24 +76,7 @@ namespace WebFeeds.Feeds.Atom
 			set { this.src = value; }
 		}
 
-		[XmlText]
-		[DefaultValue(null)]
-		public string Value
-		{
-			get { return this.value; }
-			set { this.value = value; }
-		}
-
 		#endregion Properties
-
-		#region Object Overrides
-
-		public override string ToString()
-		{
-			return this.Value;
-		}
-
-		#endregion Object Overrides
 	}
 
 	#endregion AtomContent
@@ -414,7 +364,8 @@ namespace WebFeeds.Feeds.Atom
 	{
 		#region Fields
 
-		private AtomTextType type = AtomTextType.text;
+		private AtomTextType textType = AtomTextType.text;
+		private string type = null;
 		private string value = null;
 
 		#endregion Fields
@@ -439,12 +390,45 @@ namespace WebFeeds.Feeds.Atom
 
 		#region Properties
 
+		[XmlIgnore]
 		[DefaultValue(AtomTextType.text)]
+		public AtomTextType TextType
+		{
+			get { return this.textType; }
+			set
+			{
+				this.textType = value;
+				this.type = value.ToString();
+			}
+		}
+
+		[DefaultValue(null)]
 		[XmlAttribute("type")]
-		public AtomTextType Type
+		public string Type
 		{
 			get { return this.type; }
-			set { this.type = value; }
+			set
+			{
+				if (String.IsNullOrEmpty(value))
+				{
+					this.textType = AtomTextType.text;
+					this.type = null;
+					return;
+				}
+
+				this.type = value;
+				try
+				{
+					this.textType = (AtomTextType)Enum.Parse(
+						typeof(AtomTextType),
+						value.Substring(value.IndexOf("/")+1), // crude MIME parse
+						false);
+				}
+				catch
+				{
+					this.textType = AtomTextType.text;
+				}
+			}
 		}
 
 		[XmlText]
@@ -467,6 +451,8 @@ namespace WebFeeds.Feeds.Atom
 		#endregion Object Overrides
 	}
 
+	#endregion AtomText
+
 	#region AtomTextType
 
 	public enum AtomTextType
@@ -477,6 +463,4 @@ namespace WebFeeds.Feeds.Atom
 	}
 
 	#endregion AtomTextType
-
-	#endregion AtomText
 }
