@@ -56,9 +56,9 @@ namespace WebFeeds.Feeds.Rss
 		private string copyright = null;
 		private RssEmail managingEditor = null;
 		private RssEmail webMaster = null;
-		private DateTime pubDate = DateTime.MinValue;
+		private DateTime? pubDate = null;
 		private string pubDate_Rfc822 = null;
-		private DateTime lastBuildDate = DateTime.MinValue;
+		private DateTime? lastBuildDate = null;
 		private string lastBuildDate_Rfc822 = null;
 		private List<RssCategory> categories = new List<RssCategory>();
 		private string generator = null;
@@ -96,7 +96,9 @@ namespace WebFeeds.Feeds.Rss
 			get
 			{
 				if (this.link == null)
+				{
 					return null;
+				}
 
 				return this.link.AbsoluteUri;
 			}
@@ -145,7 +147,9 @@ namespace WebFeeds.Feeds.Rss
 			get
 			{
 				if (this.managingEditor == null)
+				{
 					this.managingEditor = new RssEmail();
+				}
 
 				return this.managingEditor;
 			}
@@ -169,7 +173,9 @@ namespace WebFeeds.Feeds.Rss
 			get
 			{
 				if (this.webMaster == null)
+				{
 					this.webMaster = new RssEmail();
+				}
 
 				return this.webMaster;
 			}
@@ -187,7 +193,7 @@ namespace WebFeeds.Feeds.Rss
 		[XmlIgnore]
 		public DateTime PubDate
 		{
-			get { return this.pubDate; }
+			get { return this.pubDate.Value; }
 			set { this.pubDate = value; }
 		}
 
@@ -200,19 +206,24 @@ namespace WebFeeds.Feeds.Rss
 		{
 			get
 			{
-				if (this.pubDate == DateTime.MinValue)
+				if (!this.pubDate.HasValue)
+				{
 					return this.pubDate_Rfc822;
+				}
 
-				return this.pubDate.ToString("R");
+				return this.pubDate.Value.ToString("R");
 			}
 			set
 			{
-				if (DateTime.TryParse(value, out this.pubDate))
+				DateTime dateTime;
+				if (!DateTime.TryParse(value, out dateTime))
 				{
+					this.pubDate = null;
 					this.pubDate_Rfc822 = null;
 					return;
 				}
 
+				this.pubDate = dateTime;
 				this.pubDate_Rfc822 = value;
 			}
 		}
@@ -220,7 +231,7 @@ namespace WebFeeds.Feeds.Rss
 		[XmlIgnore]
 		public DateTime LastBuildDate
 		{
-			get { return this.lastBuildDate; }
+			get { return this.lastBuildDate.Value; }
 			set { this.lastBuildDate = value; }
 		}
 
@@ -233,19 +244,24 @@ namespace WebFeeds.Feeds.Rss
 		{
 			get
 			{
-				if (this.lastBuildDate == DateTime.MinValue)
+				if (!this.lastBuildDate.HasValue)
+				{
 					return this.lastBuildDate_Rfc822;
+				}
 
-				return this.lastBuildDate.ToString("R");
+				return this.lastBuildDate.Value.ToString("R");
 			}
 			set
 			{
-				if (DateTime.TryParse(value, out this.lastBuildDate))
+				DateTime dateTime;
+				if (!DateTime.TryParse(value, out dateTime))
 				{
+					this.lastBuildDate = null;
 					this.lastBuildDate_Rfc822 = null;
 					return;
 				}
 
+				this.lastBuildDate = dateTime;
 				this.lastBuildDate_Rfc822 = value;
 			}
 		}
@@ -280,7 +296,9 @@ namespace WebFeeds.Feeds.Rss
 			get
 			{
 				if (this.cloud == null)
+				{
 					this.cloud = new RssCloud();
+				}
 
 				return this.cloud;
 			}
@@ -316,7 +334,9 @@ namespace WebFeeds.Feeds.Rss
 			get
 			{
 				if (this.image == null)
+				{
 					this.image = new RssImage();
+				}
 
 				return this.image;
 			}
@@ -345,7 +365,9 @@ namespace WebFeeds.Feeds.Rss
 			get
 			{
 				if (this.textInput == null)
+				{
 					this.textInput = new RssTextInput();
+				}
 
 				return this.textInput;
 			}
@@ -367,7 +389,9 @@ namespace WebFeeds.Feeds.Rss
 			get
 			{
 				if (this.skipHours == null)
+				{
 					this.skipHours = new RssSkipHours();
+				}
 
 				return this.skipHours;
 			}
@@ -389,7 +413,9 @@ namespace WebFeeds.Feeds.Rss
 			get
 			{
 				if (this.skipDays == null)
+				{
 					this.skipDays = new RssSkipDays();
+				}
 
 				return this.skipDays;
 			}

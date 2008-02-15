@@ -55,7 +55,7 @@ namespace WebFeeds.Feeds.Rss
 		private Uri comments = null;
 		private RssEnclosure enclosure = null;
 		private RssGuid guid = null;
-		private DateTime pubDate = DateTime.MinValue;
+		private DateTime? pubDate = null;
 		private string pubDate_Rfc822 = null;
 		private RssSource source = null;
 
@@ -90,7 +90,9 @@ namespace WebFeeds.Feeds.Rss
 			get
 			{
 				if (this.link == null)
+				{
 					return null;
+				}
 
 				return this.link.AbsoluteUri;
 			}
@@ -126,7 +128,9 @@ namespace WebFeeds.Feeds.Rss
 			get
 			{
 				if (this.author == null)
+				{
 					this.author = new RssEmail();
+				}
 
 				return this.author;
 			}
@@ -158,7 +162,9 @@ namespace WebFeeds.Feeds.Rss
 			get
 			{
 				if (this.comments == null)
+				{
 					return null;
+				}
 
 				return this.comments.AbsoluteUri;
 			}
@@ -180,7 +186,9 @@ namespace WebFeeds.Feeds.Rss
 			get
 			{
 				if (this.enclosure == null)
+				{
 					this.enclosure = new RssEnclosure();
+				}
 
 				return this.enclosure;
 			}
@@ -201,7 +209,9 @@ namespace WebFeeds.Feeds.Rss
 			get
 			{
 				if (this.guid == null)
+				{
 					this.guid = new RssGuid();
+				}
 
 				return this.guid;
 			}
@@ -219,7 +229,7 @@ namespace WebFeeds.Feeds.Rss
 		[XmlIgnore]
 		public DateTime PubDate
 		{
-			get { return this.pubDate; }
+			get { return this.pubDate.Value; }
 			set { this.pubDate = value; }
 		}
 
@@ -232,19 +242,24 @@ namespace WebFeeds.Feeds.Rss
 		{
 			get
 			{
-				if (this.pubDate == DateTime.MinValue)
+				if (!this.pubDate.HasValue)
+				{
 					return this.pubDate_Rfc822;
+				}
 
-				return this.pubDate.ToString("R");
+				return this.pubDate.Value.ToString("R");
 			}
 			set
 			{
-				if (DateTime.TryParse(value, out this.pubDate))
+				DateTime dateTime;
+				if (!DateTime.TryParse(value, out dateTime))
 				{
+					this.pubDate = null;
 					this.pubDate_Rfc822 = null;
 					return;
 				}
 
+				this.pubDate = dateTime;
 				this.pubDate_Rfc822 = value;
 			}
 		}

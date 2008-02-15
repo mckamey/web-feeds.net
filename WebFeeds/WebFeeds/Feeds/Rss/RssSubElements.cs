@@ -326,7 +326,9 @@ namespace WebFeeds.Feeds.Rss
 			get
 			{
 				if (this.url == null)
+				{
 					return null;
+				}
 
 				return this.url.AbsoluteUri;
 			}
@@ -485,7 +487,9 @@ namespace WebFeeds.Feeds.Rss
 			get
 			{
 				if (this.url == null)
+				{
 					return null;
+				}
 
 				return this.url.AbsoluteUri;
 			}
@@ -522,7 +526,9 @@ namespace WebFeeds.Feeds.Rss
 			get
 			{
 				if (this.link == null)
+				{
 					return null;
+				}
 
 				return this.link.AbsoluteUri;
 			}
@@ -647,7 +653,9 @@ namespace WebFeeds.Feeds.Rss
 				foreach (DayOfWeek day in Enum.GetValues(typeof(DayOfWeek)))
 				{
 					if (this[day])
+					{
 						skipped.Add(day.ToString("G"));
+					}
 				}
 
 				return skipped.ToArray();
@@ -656,12 +664,16 @@ namespace WebFeeds.Feeds.Rss
 			{
 				this.days = new BitVector32(EmptyDays);
 				if (value == null)
+				{
 					return;
+				}
 
 				foreach (string day in value)
 				{
 					if (Enum.IsDefined(typeof(DayOfWeek), day))
+					{
 						this[(DayOfWeek)Enum.Parse(typeof(DayOfWeek), day)] = true;
+					}
 				}
 			}
 		}
@@ -728,14 +740,18 @@ namespace WebFeeds.Feeds.Rss
 			get
 			{
 				if (hour < MinHour || hour > MaxHour)
+				{
 					return false;
+				}
 
 				return this.hours[RssSkipHours.HourMasks[hour]];
 			}
 			set
 			{
 				if (hour < MinHour || hour > MaxHour)
+				{
 					return;
+				}
 
 				this.hours[RssSkipHours.HourMasks[hour]] = value;
 			}
@@ -760,7 +776,9 @@ namespace WebFeeds.Feeds.Rss
 			{
 				this.hours = new BitVector32(EmptyHours);
 				if (value == null)
+				{
 					return;
+				}
 
 				foreach (int i in value)
 				{
@@ -817,7 +835,9 @@ namespace WebFeeds.Feeds.Rss
 			get
 			{
 				if (this.url == null)
+				{
 					return null;
+				}
 
 				return this.url.AbsoluteUri;
 			}
@@ -915,7 +935,9 @@ namespace WebFeeds.Feeds.Rss
 			get
 			{
 				if (this.link == null)
+				{
 					return null;
+				}
 
 				return this.link.AbsoluteUri;
 			}

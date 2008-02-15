@@ -50,8 +50,7 @@ namespace WebFeeds.Feeds.Atom
 	{
 		#region Constants
 
-		public const string AtomSpecificationUrl = "http://tools.ietf.org/html/rfc4287";
-		protected const string ElementName = "feed";
+		public const string ElementName = "feed";
 
 		#endregion Constants
 
@@ -88,7 +87,8 @@ namespace WebFeeds.Feeds.Atom
 	{
 		#region Constants
 
-		private const string Namespace = "http://www.w3.org/2005/Atom";
+		public const string AtomSpecificationUrl = "http://tools.ietf.org/html/rfc4287";
+		public const string Namespace = "http://www.w3.org/2005/Atom";
 
 		#endregion Constants
 
@@ -110,15 +110,13 @@ namespace WebFeeds.Feeds.Atom
 		#endregion Properties
 	}
 
-	/// <summary>
-	/// http://www.mnot.net/drafts/draft-nottingham-atom-format-02.html
-	/// </summary>
 	[XmlRoot(AtomFeed03.ElementName, Namespace=AtomFeed03.Namespace)]
 	public class AtomFeed03 : AtomFeed, IWebFeed
 	{
 		#region Constants
 
-		private const string Namespace = "http://purl.org/atom/ns#";
+		public const string AtomSpecificationUrl = "http://www.mnot.net/drafts/draft-nottingham-atom-format-02.html";
+		public const string Namespace = "http://purl.org/atom/ns#";
 
 		#endregion Constants
 
