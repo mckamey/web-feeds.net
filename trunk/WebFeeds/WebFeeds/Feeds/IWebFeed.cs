@@ -1,4 +1,5 @@
 using System;
+using System.Xml.Serialization;
 
 namespace WebFeeds.Feeds
 {
@@ -11,5 +12,10 @@ namespace WebFeeds.Feeds
 		/// Gets the MIME Type designation for the feed
 		/// </summary>
 		string MimeType { get; }
+
+		/// <summary>
+		/// Gets the default namespace URI for the feed
+		/// </summary>
+		XmlSerializerNamespaces Namespaces { get; }
 	}
 }

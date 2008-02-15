@@ -6,7 +6,7 @@ using System.Xml.Serialization;
 
 using WebFeeds.Feeds.Atom;
 using WebFeeds.Feeds.Rss;
-//using WebFeeds.Feeds.Rdf;
+using WebFeeds.Feeds.Rdf;
 
 namespace WebFeeds.Feeds
 {
@@ -16,6 +16,22 @@ namespace WebFeeds.Feeds
 	public static class FeedSerializer
 	{
 		#region Serialization Methods
+
+		/*
+		 * From MSDN:
+		 * 
+		 * To increase performance, the XML serialization infrastructure dynamically generates
+		 * assemblies to serialize and deserialize specified types. The infrastructure finds and
+		 * reuses those assemblies. This behavior occurs only when using the following constructors:
+		 * 
+		 *		System.Xml.Serialization.XmlSerializer(Type) 
+		 *		System.Xml.Serialization.XmlSerializer(Type,String) 
+		 * 
+		 * If you use any of the other constructors, multiple versions of the same assembly are generated
+		 * and never unloaded, resulting in a memory leak and poor performance. The simplest solution is
+		 * to use one of the two constructors above. Otherwise, you must cache the assemblies in a Hashtable,
+		 * as shown in the following example.
+		 */
 
 		public static IWebFeed DeserializeXml(string url, int timeout)
 		{
@@ -29,7 +45,7 @@ namespace WebFeeds.Feeds
 
 			using (WebResponse response = request.GetResponse())
 			{
-				return DeserializeXml(response.GetResponseStream()) ;
+				return FeedSerializer.DeserializeXml(response.GetResponseStream());
 			}
 		}
 
@@ -44,7 +60,7 @@ namespace WebFeeds.Feeds
 			{
 				reader.MoveToContent();
 
-				Type type = GetFeedType(reader.NamespaceURI, reader.LocalName);
+				Type type = FeedSerializer.GetFeedType(reader.NamespaceURI, reader.LocalName);
 
 				XmlSerializer serializer = new XmlSerializer(type);
 				return serializer.Deserialize(reader) as IWebFeed;
@@ -61,6 +77,8 @@ namespace WebFeeds.Feeds
 			settings.Encoding = System.Text.Encoding.UTF8;
 			settings.Indent = true;
 			settings.IndentChars = "\t";
+			settings.NewLineHandling = NewLineHandling.Replace;
+
 			XmlWriter writer = XmlWriter.Create(output, settings);
 
 			if (!String.IsNullOrEmpty(xsltUrl))
@@ -74,7 +92,7 @@ namespace WebFeeds.Feeds
 
 			// write out feed
 			XmlSerializer serializer = new XmlSerializer(feed.GetType());
-			serializer.Serialize(writer, feed);
+			serializer.Serialize(writer, feed, feed.Namespaces);
 		}
 
 		#endregion Serialization Methods
@@ -104,10 +122,10 @@ namespace WebFeeds.Feeds
 				{
 					return typeof(RssFeed);
 				}
-				//case RdfFeed.RootElement:
-				//{
-				//    return typeof(RdfFeed);
-				//}
+				case RdfFeed.RootElement:
+				{
+					return typeof(RdfFeed);
+				}
 			}
 
 			return typeof(Object);

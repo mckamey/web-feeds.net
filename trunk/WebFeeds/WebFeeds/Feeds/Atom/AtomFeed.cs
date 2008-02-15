@@ -47,11 +47,12 @@ namespace WebFeeds.Feeds.Atom
 	[Serializable]
 	[XmlInclude(typeof(AtomFeed03))]
 	[XmlInclude(typeof(AtomFeed10))]
-	public abstract class AtomFeed : AtomSource, IWebFeed
+	public abstract class AtomFeed : AtomSource
 	{
 		#region Constants
 
 		protected internal const string RootElement = "feed";
+		protected internal const string MimeType = "application/atom+xml";
 
 		#endregion Constants
 
@@ -78,12 +79,6 @@ namespace WebFeeds.Feeds.Atom
 		{
 			get { return this.logo; }
 			set { this.logo = value; }
-		}
-
-		[XmlIgnore]
-		public string MimeType
-		{
-			get { return "application/atom+xml"; }
 		}
 
 		#endregion Properties
@@ -115,6 +110,27 @@ namespace WebFeeds.Feeds.Atom
 		}
 
 		#endregion Properties
+
+		#region IWebFeed Members
+
+		[XmlIgnore]
+		string IWebFeed.MimeType
+		{
+			get { return AtomFeed10.MimeType; }
+		}
+
+		[XmlIgnore]
+		XmlSerializerNamespaces IWebFeed.Namespaces
+		{
+			get
+			{
+				XmlSerializerNamespaces namespaces = new XmlSerializerNamespaces();
+				namespaces.Add("atom", AtomFeed10.Namespace);
+				return namespaces;
+			}
+		}
+
+		#endregion IWebFeed Members
 	}
 
 	[XmlRoot(AtomFeed03.RootElement, Namespace=AtomFeed03.Namespace)]
@@ -165,5 +181,26 @@ namespace WebFeeds.Feeds.Atom
 		}
 
 		#endregion Properties
+
+		#region IWebFeed Members
+
+		[XmlIgnore]
+		string IWebFeed.MimeType
+		{
+			get { return AtomFeed03.MimeType; }
+		}
+
+		[XmlIgnore]
+		XmlSerializerNamespaces IWebFeed.Namespaces
+		{
+			get
+			{
+				XmlSerializerNamespaces namespaces = new XmlSerializerNamespaces();
+				namespaces.Add("atom", AtomFeed03.Namespace);
+				return namespaces;
+			}
+		}
+
+		#endregion IWebFeed Members
 	}
 }
