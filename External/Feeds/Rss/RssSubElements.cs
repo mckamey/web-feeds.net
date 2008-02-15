@@ -340,7 +340,7 @@ namespace WebFeeds.Feeds.Rss
 					return;
 				}
 
-				this.url = new Uri(value, UriKind.Absolute);
+				this.url = new Uri(value);
 			}
 		}
 
@@ -501,7 +501,7 @@ namespace WebFeeds.Feeds.Rss
 					return;
 				}
 
-				this.url = new Uri(value, UriKind.Absolute);
+				this.url = new Uri(value);
 			}
 		}
 
@@ -540,7 +540,7 @@ namespace WebFeeds.Feeds.Rss
 					return;
 				}
 
-				this.link = new Uri(value, UriKind.Absolute);
+				this.link = new Uri(value);
 			}
 		}
 
@@ -849,7 +849,7 @@ namespace WebFeeds.Feeds.Rss
 					return;
 				}
 
-				this.url = new Uri(value, UriKind.Absolute);
+				this.url = new Uri(value);
 			}
 		}
 
@@ -949,7 +949,7 @@ namespace WebFeeds.Feeds.Rss
 					return;
 				}
 
-				this.link = new Uri(value, UriKind.Absolute);
+				this.link = new Uri(value);
 			}
 		}
 
