@@ -60,7 +60,7 @@ namespace WebFeeds.Feeds.Atom
 		#region Init
 
 		/// <summary>
-		/// Ctor.
+		/// Ctor
 		/// </summary>
 		public AtomEntry() { }
 
@@ -112,7 +112,7 @@ namespace WebFeeds.Feeds.Atom
 		#region Init
 
 		/// <summary>
-		/// Ctor.
+		/// Ctor
 		/// </summary>
 		public AtomEntry03() { }
 

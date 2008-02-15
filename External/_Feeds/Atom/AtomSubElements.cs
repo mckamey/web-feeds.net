@@ -38,6 +38,80 @@ namespace WebFeeds.Feeds.Atom
 	#region AtomContent
 
 	/// <summary>
+	/// http://tools.ietf.org/html/rfc4287#section-4.2.2
+	/// </summary>
+	[Serializable]
+	public class AtomCategory
+	{
+		#region Fields
+
+		private string label = null;
+		private string scheme = null;
+		private string term = null;
+		private string value = null;
+
+		#endregion Fields
+
+		#region Init
+
+		/// <summary>
+		/// Ctor
+		/// </summary>
+		public AtomCategory() { }
+
+		/// <summary>
+		/// Ctor
+		/// </summary>
+		/// <param name="text"></param>
+		public AtomCategory(string term)
+		{
+			this.term = term;
+		}
+
+		#endregion Init
+
+		#region Properties
+
+		[DefaultValue(null)]
+		[XmlAttribute("label")]
+		public string Label
+		{
+			get { return this.label; }
+			set { this.label = value; }
+		}
+
+		[DefaultValue(null)]
+		[XmlAttribute("scheme")]
+		public string Scheme
+		{
+			get { return this.scheme; }
+			set { this.scheme = value; }
+		}
+
+		[DefaultValue(null)]
+		[XmlAttribute("term")]
+		public string Term
+		{
+			get { return this.term; }
+			set { this.term = value; }
+		}
+
+		[XmlText]
+		[DefaultValue(null)]
+		public string Value
+		{
+			get { return this.value; }
+			set { this.value = value; }
+		}
+
+		#endregion Properties
+	}
+
+	#endregion AtomContent
+
+	#region AtomContent
+
+	/// <summary>
 	/// http://tools.ietf.org/html/rfc4287#section-4.1.3
 	/// </summary>
 	[Serializable]
@@ -52,12 +126,12 @@ namespace WebFeeds.Feeds.Atom
 		#region Init
 
 		/// <summary>
-		/// Ctor.
+		/// Ctor
 		/// </summary>
 		public AtomContent() { }
 
 		/// <summary>
-		/// Ctor.
+		/// Ctor
 		/// </summary>
 		/// <param name="text"></param>
 		public AtomContent(string text) : base(text)
@@ -98,12 +172,12 @@ namespace WebFeeds.Feeds.Atom
 		#region Init
 
 		/// <summary>
-		/// Ctor.
+		/// Ctor
 		/// </summary>
 		public AtomDate() { }
 
 		/// <summary>
-		/// Ctor.
+		/// Ctor
 		/// </summary>
 		/// <param name="date"></param>
 		public AtomDate(DateTime date)
@@ -197,12 +271,12 @@ namespace WebFeeds.Feeds.Atom
 		#region Init
 
 		/// <summary>
-		/// Ctor.
+		/// Ctor
 		/// </summary>
 		public AtomLink() { }
 
 		/// <summary>
-		/// Ctor.
+		/// Ctor
 		/// </summary>
 		/// <param name="link"></param>
 		public AtomLink(string link)
@@ -294,7 +368,7 @@ namespace WebFeeds.Feeds.Atom
 		#region Init
 
 		/// <summary>
-		/// Ctor.
+		/// Ctor
 		/// </summary>
 		public AtomPerson() { }
 
@@ -373,12 +447,12 @@ namespace WebFeeds.Feeds.Atom
 		#region Init
 
 		/// <summary>
-		/// Ctor.
+		/// Ctor
 		/// </summary>
 		public AtomText() { }
 
 		/// <summary>
-		/// Ctor.
+		/// Ctor
 		/// </summary>
 		/// <param name="text"></param>
 		public AtomText(string text)
@@ -429,6 +503,15 @@ namespace WebFeeds.Feeds.Atom
 					this.textType = AtomTextType.text;
 				}
 			}
+		}
+
+		System.Xml.XmlNode xhtmlValue = null;
+		[DefaultValue(null)]
+		[XmlElement("div", Namespace="http://www.w3.org/1999/xhtml")]
+		public System.Xml.XmlNode XhtmlValue
+		{
+			get { return this.xhtmlValue; }
+			set { this.xhtmlValue = value; }
 		}
 
 		[XmlText]
