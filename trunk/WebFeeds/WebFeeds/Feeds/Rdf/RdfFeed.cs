@@ -33,6 +33,8 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Xml.Serialization;
 
+using WebFeeds.Feeds.Modules;
+
 namespace WebFeeds.Feeds.Rdf
 {
 	/// <summary>
@@ -182,6 +184,7 @@ namespace WebFeeds.Feeds.Rdf
 				XmlSerializerNamespaces namespaces = new XmlSerializerNamespaces();
 				namespaces.Add("", RdfFeed.NamespaceRss10);
 				namespaces.Add("rdf", RdfFeed.NamespaceRdf);
+				namespaces.Add("dc", DublinCore.Namespace);
 				return namespaces;
 			}
 		}

@@ -37,6 +37,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Feeds\AsyncResult.cs" />
+    <Compile Include="Feeds\Modules\DublinCore.cs" />
     <Compile Include="Feeds\FeedHandler.cs" />
     <Compile Include="Feeds\Atom\AtomBase.cs" />
     <Compile Include="Feeds\Atom\AtomEntry.cs" />

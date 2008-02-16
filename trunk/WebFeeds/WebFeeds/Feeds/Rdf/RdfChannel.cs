@@ -40,7 +40,7 @@ namespace WebFeeds.Feeds.Rdf
 	///		http://web.resource.org/rss/1.0/spec#s5.3
 	/// </summary>
 	[Serializable]
-	public class RdfChannel : RdfItemBase
+	public class RdfChannel : RdfItem
 	{
 		#region Fields
 

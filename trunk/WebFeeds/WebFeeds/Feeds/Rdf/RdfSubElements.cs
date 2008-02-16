@@ -110,7 +110,7 @@ namespace WebFeeds.Feeds.Rdf
 	///		http://web.resource.org/rss/1.0/spec#s5.6
 	/// </summary>
 	[Serializable]
-	public class RdfTextInput : RdfItemBase
+	public class RdfTextInput : RdfItem
 	{
 		#region Fields
 
