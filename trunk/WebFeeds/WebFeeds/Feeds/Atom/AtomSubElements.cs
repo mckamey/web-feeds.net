@@ -46,8 +46,8 @@ namespace WebFeeds.Feeds.Atom
 	{
 		#region Fields
 
-		private string term = null;
 		private string scheme = null;
+		private string term = null;
 		private string label = null;
 		private string value = null;
 
@@ -74,19 +74,19 @@ namespace WebFeeds.Feeds.Atom
 		#region Properties
 
 		[DefaultValue(null)]
-		[XmlAttribute("term")]
-		public string Term
-		{
-			get { return this.term; }
-			set { this.term = value; }
-		}
-
-		[DefaultValue(null)]
 		[XmlAttribute("scheme")]
 		public string Scheme
 		{
 			get { return this.scheme; }
 			set { this.scheme = value; }
+		}
+
+		[DefaultValue(null)]
+		[XmlAttribute("term")]
+		public string Term
+		{
+			get { return this.term; }
+			set { this.term = value; }
 		}
 
 		[DefaultValue(null)]

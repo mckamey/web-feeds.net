@@ -62,19 +62,19 @@ namespace WebFeeds.Feeds.Atom
 		#region Properties
 
 		[DefaultValue(null)]
-		[XmlAttribute("base", Namespace=AtomCommonAttributes.XmlNamespace)]
-		public string XmlBase
-		{
-			get { return this.xmlBase; }
-			set { this.xmlBase = value; }
-		}
-
-		[DefaultValue(null)]
 		[XmlAttribute("lang", Namespace=AtomCommonAttributes.XmlNamespace)]
 		public string XmlLanguage
 		{
 			get { return this.xmlLanguage; }
 			set { this.xmlLanguage = value; }
+		}
+
+		[DefaultValue(null)]
+		[XmlAttribute("base", Namespace=AtomCommonAttributes.XmlNamespace)]
+		public string XmlBase
+		{
+			get { return this.xmlBase; }
+			set { this.xmlBase = value; }
 		}
 
 		#endregion Properties
