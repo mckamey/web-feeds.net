@@ -36,7 +36,52 @@ using System.Xml.Serialization;
 namespace WebFeeds.Feeds.Atom
 {
 	/// <summary>
-	/// Common shared Atom base
+	/// Common shared Atom attributes
+	///		http://tools.ietf.org/html/rfc4287#section-2
+	/// </summary>
+	/// <remarks>
+	/// atomCommonAttributes
+	///		attribute xml:base?
+	///		attribute xml:lang?
+	/// </remarks>
+	public abstract class AtomCommonAttributes
+	{
+		#region Constants
+
+		public const string XmlNamespace = "http://www.w3.org/XML/1998/namespace";
+
+		#endregion Constants
+
+		#region Fields
+
+		private string xmlBase = null;
+		private string xmlLanguage = null;
+
+		#endregion Fields
+
+		#region Properties
+
+		[DefaultValue(null)]
+		[XmlAttribute("base", Namespace=AtomCommonAttributes.XmlNamespace)]
+		public string XmlBase
+		{
+			get { return this.xmlBase; }
+			set { this.xmlBase = value; }
+		}
+
+		[DefaultValue(null)]
+		[XmlAttribute("lang", Namespace=AtomCommonAttributes.XmlNamespace)]
+		public string XmlLanguage
+		{
+			get { return this.xmlLanguage; }
+			set { this.xmlLanguage = value; }
+		}
+
+		#endregion Properties
+	}
+
+	/// <summary>
+	/// Commonly shared Atom base
 	/// </summary>
 	/// <remarks>
 	/// atomBase
@@ -49,7 +94,7 @@ namespace WebFeeds.Feeds.Atom
 	///		atomTitle
 	///		atomUpdated
 	/// </remarks>
-	public abstract class AtomBase
+	public abstract class AtomBase : AtomCommonAttributes
 	{
 		#region Fields
 
@@ -115,6 +160,13 @@ namespace WebFeeds.Feeds.Atom
 			set { this.rights = value; }
 		}
 
+		[XmlIgnore]
+		[Browsable(false)]
+		public virtual bool RightsSpecified
+		{
+			get { return true; }
+		}
+
 		[DefaultValue(null)]
 		[XmlElement("title")]
 		public AtomText Title
@@ -129,6 +181,13 @@ namespace WebFeeds.Feeds.Atom
 		{
 			get { return this.updated; }
 			set { this.updated = value; }
+		}
+
+		[XmlIgnore]
+		[Browsable(false)]
+		public virtual bool UpdatedSpecified
+		{
+			get { return true; }
 		}
 
 		#endregion Properties
@@ -147,7 +206,7 @@ namespace WebFeeds.Feeds.Atom
 	{
 		#region Fields
 
-		private string generator = null;
+		private AtomGenerator generator = null;
 		private string icon = null;
 		private AtomText subtitle = null;
 
@@ -157,7 +216,7 @@ namespace WebFeeds.Feeds.Atom
 
 		[DefaultValue(null)]
 		[XmlElement("generator")]
-		public string Generator
+		public AtomGenerator Generator
 		{
 			get { return this.generator; }
 			set { this.generator = value; }
@@ -177,6 +236,13 @@ namespace WebFeeds.Feeds.Atom
 		{
 			get { return this.subtitle; }
 			set { this.subtitle = value; }
+		}
+
+		[XmlIgnore]
+		[Browsable(false)]
+		public virtual bool SubTitleSpecified
+		{
+			get { return true; }
 		}
 
 		#endregion Properties

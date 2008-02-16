@@ -125,7 +125,8 @@ namespace WebFeeds.Feeds.Atom
 			get
 			{
 				XmlSerializerNamespaces namespaces = new XmlSerializerNamespaces();
-				namespaces.Add("atom", AtomFeed10.Namespace);
+				namespaces.Add("", AtomFeed10.Namespace);
+				namespaces.Add("xml", AtomFeed10.XmlNamespace);
 				return namespaces;
 			}
 		}
@@ -133,6 +134,9 @@ namespace WebFeeds.Feeds.Atom
 		#endregion IWebFeed Members
 	}
 
+	/// <summary>
+	/// Adaptor for Atom 0.3 compatibility
+	/// </summary>
 	[XmlRoot(AtomFeed03.RootElement, Namespace=AtomFeed03.Namespace)]
 	public class AtomFeed03 : AtomFeed, IWebFeed
 	{
@@ -146,10 +150,46 @@ namespace WebFeeds.Feeds.Atom
 		#region Fields
 
 		private List<AtomEntry03> entries = new List<AtomEntry03>();
+		private Version version = new Version(0, 3);
 
 		#endregion Fields
 
+		#region Init
+
+		/// <summary>
+		/// Ctor
+		/// </summary>
+		[Obsolete("Atom 0.3 is for backwards compatibility and should only be used for deserialization", true)]
+		public AtomFeed03()
+		{
+		}
+
+		#endregion Init
+
 		#region Properties
+
+		[XmlAttribute("version")]
+		public string Version
+		{
+			get { return this.version.ToString(); }
+			set { this.version = new Version(value); }
+		}
+
+		[DefaultValue(null)]
+		[XmlElement("tagline")]
+		public AtomText TagLine
+		{
+			get { return base.SubTitle; }
+			set { base.SubTitle = value; }
+		}
+
+		[DefaultValue(null)]
+		[XmlElement("copyright")]
+		public AtomText Copyright
+		{
+			get { return base.Rights; }
+			set { base.Rights = value; }
+		}
 
 		[DefaultValue(null)]
 		[XmlElement("modified")]
@@ -180,6 +220,27 @@ namespace WebFeeds.Feeds.Atom
 			set { this.entries = value; }
 		}
 
+		[XmlIgnore]
+		[Browsable(false)]
+		public override bool SubTitleSpecified
+		{
+			get { return false; }
+		}
+
+		[XmlIgnore]
+		[Browsable(false)]
+		public override bool RightsSpecified
+		{
+			get { return false; }
+		}
+
+		[XmlIgnore]
+		[Browsable(false)]
+		public override bool UpdatedSpecified
+		{
+			get { return false; }
+		}
+
 		#endregion Properties
 
 		#region IWebFeed Members
@@ -196,7 +257,8 @@ namespace WebFeeds.Feeds.Atom
 			get
 			{
 				XmlSerializerNamespaces namespaces = new XmlSerializerNamespaces();
-				namespaces.Add("atom", AtomFeed03.Namespace);
+				namespaces.Add("", AtomFeed03.Namespace);
+				namespaces.Add("xml", AtomFeed10.XmlNamespace);
 				return namespaces;
 			}
 		}

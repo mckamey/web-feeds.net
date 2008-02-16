@@ -142,7 +142,6 @@ namespace WebFeeds.Feeds.Rss
 		public bool AuthorSpecified
 		{
 			get { return (this.author != null && !this.author.IsEmpty()); }
-			set { }
 		}
 
 		[XmlElement("category")]
@@ -200,7 +199,6 @@ namespace WebFeeds.Feeds.Rss
 		public bool EnclosureSpecified
 		{
 			get { return (this.enclosure != null && !this.enclosure.IsEmpty()); }
-			set { }
 		}
 
 		[XmlElement("guid")]
@@ -223,7 +221,6 @@ namespace WebFeeds.Feeds.Rss
 		public bool GuidSpecified
 		{
 			get { return (this.guid != null && !this.guid.IsEmpty()); }
-			set {  }
 		}
 
 		[XmlIgnore]

@@ -36,19 +36,19 @@ using System.Xml.Serialization;
 
 namespace WebFeeds.Feeds.Atom
 {
-	#region AtomContent
+	#region AtomCategory
 
 	/// <summary>
 	/// http://tools.ietf.org/html/rfc4287#section-4.2.2
 	/// </summary>
 	[Serializable]
-	public class AtomCategory
+	public class AtomCategory : AtomCommonAttributes
 	{
 		#region Fields
 
-		private string label = null;
-		private string scheme = null;
 		private string term = null;
+		private string scheme = null;
+		private string label = null;
 		private string value = null;
 
 		#endregion Fields
@@ -74,11 +74,11 @@ namespace WebFeeds.Feeds.Atom
 		#region Properties
 
 		[DefaultValue(null)]
-		[XmlAttribute("label")]
-		public string Label
+		[XmlAttribute("term")]
+		public string Term
 		{
-			get { return this.label; }
-			set { this.label = value; }
+			get { return this.term; }
+			set { this.term = value; }
 		}
 
 		[DefaultValue(null)]
@@ -90,11 +90,11 @@ namespace WebFeeds.Feeds.Atom
 		}
 
 		[DefaultValue(null)]
-		[XmlAttribute("term")]
-		public string Term
+		[XmlAttribute("label")]
+		public string Label
 		{
-			get { return this.term; }
-			set { this.term = value; }
+			get { return this.label; }
+			set { this.label = value; }
 		}
 
 		[XmlText]
@@ -108,7 +108,7 @@ namespace WebFeeds.Feeds.Atom
 		#endregion Properties
 	}
 
-	#endregion AtomContent
+	#endregion AtomCategory
 
 	#region AtomContent
 
@@ -162,7 +162,7 @@ namespace WebFeeds.Feeds.Atom
 	/// http://tools.ietf.org/html/rfc4287#section-3.3
 	/// </summary>
 	[Serializable]
-	public class AtomDate
+	public class AtomDate : AtomCommonAttributes
 	{
 		#region Fields
 
@@ -250,20 +250,96 @@ namespace WebFeeds.Feeds.Atom
 
 	#endregion AtomDate
 
+	#region AtomGenerator
+
+	/// <summary>
+	/// http://tools.ietf.org/html/rfc4287#section-4.2.4
+	/// </summary>
+	[Serializable]
+	public class AtomGenerator : AtomCommonAttributes
+	{
+		#region Fields
+
+		private string uri = null;
+		private string version = null;
+		private string value = null;
+
+		#endregion Fields
+
+		#region Init
+
+		/// <summary>
+		/// Ctor
+		/// </summary>
+		public AtomGenerator()
+		{
+		}
+
+		/// <summary>
+		/// Ctor
+		/// </summary>
+		/// <param name="text"></param>
+		public AtomGenerator(string text)
+		{
+			this.value = text;
+		}
+
+		#endregion Init
+
+		#region Properties
+
+		[XmlAttribute("uri")]
+		[DefaultValue(null)]
+		public string Uri
+		{
+			get { return this.uri; }
+			set { this.uri = value; }
+		}
+
+		[XmlAttribute("version")]
+		[DefaultValue(null)]
+		public string Version
+		{
+			get { return this.version; }
+			set { this.version = value; }
+		}
+
+		[XmlText]
+		[DefaultValue(null)]
+		public string Value
+		{
+			get { return this.value; }
+			set { this.value = value; }
+		}
+
+		#endregion Properties
+
+		#region Object Overrides
+
+		public override string ToString()
+		{
+			return this.Value;
+		}
+
+		#endregion Object Overrides
+	}
+
+	#endregion AtomGenerator
+
 	#region AtomLink
 
 	/// <summary>
 	/// http://tools.ietf.org/html/rfc4287#section-4.2.7
 	/// </summary>
 	[Serializable]
-	public class AtomLink
+	public class AtomLink : AtomCommonAttributes
 	{
 		#region Fields
 
 		private string rel = null;
+		private string type = null;
 		private string href = null;
 		private string hreflang = null;
-		private string type = null;
 		private string title = null;
 		private string length = null;
 
@@ -294,6 +370,14 @@ namespace WebFeeds.Feeds.Atom
 		{
 			get { return this.rel; }
 			set { this.rel = value; }
+		}
+
+		[XmlAttribute("type")]
+		[DefaultValue(null)]
+		public string Type
+		{
+			get { return this.type; }
+			set { this.type = value; }
 		}
 
 		[XmlAttribute("href")]
@@ -328,14 +412,6 @@ namespace WebFeeds.Feeds.Atom
 			set { this.title = value; }
 		}
 
-		[XmlAttribute("type")]
-		[DefaultValue(null)]
-		public string Type
-		{
-			get { return this.type; }
-			set { this.type = value; }
-		}
-
 		#endregion Properties
 
 		#region Object Overrides
@@ -356,7 +432,7 @@ namespace WebFeeds.Feeds.Atom
 	/// http://tools.ietf.org/html/rfc4287#section-3.2
 	/// </summary>
 	[Serializable]
-	public class AtomPerson
+	public class AtomPerson : AtomCommonAttributes
 	{
 		#region Fields
 
@@ -435,7 +511,7 @@ namespace WebFeeds.Feeds.Atom
 	/// http://tools.ietf.org/html/rfc4287#section-3.1
 	/// </summary>
 	[Serializable]
-	public class AtomText
+	public class AtomText : AtomCommonAttributes
 	{
 		#region Fields
 
