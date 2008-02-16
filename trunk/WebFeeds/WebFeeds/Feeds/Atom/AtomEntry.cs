@@ -62,7 +62,9 @@ namespace WebFeeds.Feeds.Atom
 		/// <summary>
 		/// Ctor
 		/// </summary>
-		public AtomEntry() { }
+		public AtomEntry()
+		{
+		}
 
 		#endregion Init
 
@@ -82,6 +84,13 @@ namespace WebFeeds.Feeds.Atom
 		{
 			get { return this.published; }
 			set { this.published = value; }
+		}
+
+		[XmlIgnore]
+		[Browsable(false)]
+		public virtual bool PublishedSpecified
+		{
+			get { return true; }
 		}
 
 		[DefaultValue(null)]
@@ -114,7 +123,10 @@ namespace WebFeeds.Feeds.Atom
 		/// <summary>
 		/// Ctor
 		/// </summary>
-		public AtomEntry03() { }
+		[Obsolete("Atom 0.3 is for backwards compatibility and should only be used for deserialization", true)]
+		public AtomEntry03()
+		{
+		}
 
 		#endregion Init
 
@@ -134,6 +146,20 @@ namespace WebFeeds.Feeds.Atom
 		{
 			get { return base.Published; }
 			set { base.Published = value; }
+		}
+
+		[XmlIgnore]
+		[Browsable(false)]
+		public override bool PublishedSpecified
+		{
+			get { return false; }
+		}
+
+		[XmlIgnore]
+		[Browsable(false)]
+		public override bool UpdatedSpecified
+		{
+			get { return false; }
 		}
 
 		#endregion Properties
