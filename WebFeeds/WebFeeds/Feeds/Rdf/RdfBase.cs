@@ -33,6 +33,8 @@ using System.ComponentModel;
 using System.Collections.Generic;
 using System.Xml.Serialization;
 
+using WebFeeds.Feeds.Modules;
+
 namespace WebFeeds.Feeds.Rdf
 {
 	/// <summary>
@@ -40,7 +42,7 @@ namespace WebFeeds.Feeds.Rdf
 	///		http://web.resource.org/rss/1.0/spec#s5.3
 	/// </summary>
 	[Serializable]
-	public abstract class RdfBase
+	public abstract class RdfBase : DublinCore
 	{
 		#region Fields
 
@@ -81,6 +83,9 @@ namespace WebFeeds.Feeds.Rdf
 		/// Gets and sets the URL to which an HTML rendering of the channel title will link,
 		/// commonly the parent site's home or news page.
 		/// </summary>
+		/// <remarks>
+		/// Suggested maximum length is 500 characters.
+		/// </remarks>
 		[DefaultValue(null)]
 		[XmlElement("link")]
 		public string Link
@@ -115,44 +120,6 @@ namespace WebFeeds.Feeds.Rdf
 		{
 			get { return this.about; }
 			set { this.about = value; }
-		}
-
-		#endregion Properties
-	}
-
-	public abstract class RdfItemBase : RdfBase
-	{
-		#region Fields
-
-		private string description = null;
-
-		#endregion Fields
-
-		#region Init
-
-		/// <summary>
-		/// Ctor
-		/// </summary>
-		public RdfItemBase()
-		{
-		}
-
-		#endregion Init
-
-		#region Properties
-
-		/// <summary>
-		/// Gets and sets a brief description of the channel's content, function, source, etc.
-		/// </summary>
-		/// <remarks>
-		/// Suggested maximum length is 500 characters.
-		/// </remarks>
-		[DefaultValue(null)]
-		[XmlElement("description")]
-		public string Description
-		{
-			get { return this.description; }
-			set { this.description = value; }
 		}
 
 		#endregion Properties
