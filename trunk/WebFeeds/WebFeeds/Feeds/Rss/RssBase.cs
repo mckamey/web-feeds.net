@@ -29,23 +29,13 @@
 #endregion WebFeeds License
 
 using System;
-using System.Xml.Serialization;
 
-namespace WebFeeds.Feeds
+using WebFeeds.Feeds.Modules;
+
+namespace WebFeeds.Feeds.Rss
 {
-	/// <summary>
-	/// Feed interface
-	/// </summary>
-	public interface IWebFeed
+	[Serializable]
+	public abstract class RssBase : FeedExtension
 	{
-		/// <summary>
-		/// Gets the MIME Type designation for the feed
-		/// </summary>
-		string MimeType { get; }
-
-		/// <summary>
-		/// Gets the default namespace URI for the feed
-		/// </summary>
-		void AddNamespaces(XmlSerializerNamespaces namespaces);
 	}
 }

@@ -7,6 +7,7 @@ using System.Xml.Serialization;
 using WebFeeds.Feeds.Atom;
 using WebFeeds.Feeds.Rss;
 using WebFeeds.Feeds.Rdf;
+using WebFeeds.Feeds.Modules;
 
 namespace WebFeeds.Feeds
 {
@@ -63,9 +64,35 @@ namespace WebFeeds.Feeds
 				Type type = FeedSerializer.GetFeedType(reader.NamespaceURI, reader.LocalName);
 
 				XmlSerializer serializer = new XmlSerializer(type);
+				//serializer.UnknownElement += new XmlElementEventHandler(serializer_UnknownElement);
+				//serializer.UnknownAttribute += new XmlAttributeEventHandler(serializer_UnknownAttribute);
 				return serializer.Deserialize(reader) as IWebFeed;
 			}
 		}
+
+		//private static void serializer_UnknownAttribute(object sender, XmlAttributeEventArgs e)
+		//{
+		//    XmlSerializer serializer = sender as XmlSerializer;
+
+		//    if (DublinCore.IsDublinCore(e.Attr))
+		//    {
+		//        return;
+		//    }
+
+		//    return;
+		//}
+
+		//private static void serializer_UnknownElement(object sender, XmlElementEventArgs e)
+		//{
+		//    XmlSerializer serializer = sender as XmlSerializer;
+
+		//    if (DublinCore.IsDublinCore(e.Element))
+		//    {
+		//        return;
+		//    }
+
+		//    return;
+		//}
 
 		public static void SerializeXml(IWebFeed feed, Stream output, string xsltUrl)
 		{
@@ -90,9 +117,13 @@ namespace WebFeeds.Feeds
 					String.Format("type=\"text/xsl\" href=\"{0}\" version=\"1.0\"", xsltUrl));
 			}
 
-			// write out feed
+			// get all namespaces
+			XmlSerializerNamespaces namespaces = new XmlSerializerNamespaces();
+			feed.AddNamespaces(namespaces);
+
+			// serialize feed
 			XmlSerializer serializer = new XmlSerializer(feed.GetType());
-			serializer.Serialize(writer, feed, feed.Namespaces);
+			serializer.Serialize(writer, feed, namespaces);
 		}
 
 		#endregion Serialization Methods

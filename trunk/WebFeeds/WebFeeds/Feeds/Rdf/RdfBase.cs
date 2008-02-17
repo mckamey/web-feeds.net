@@ -31,6 +31,7 @@
 using System;
 using System.ComponentModel;
 using System.Collections.Generic;
+using System.Xml;
 using System.Xml.Serialization;
 
 using WebFeeds.Feeds.Modules;
@@ -42,7 +43,7 @@ namespace WebFeeds.Feeds.Rdf
 	///		http://web.resource.org/rss/1.0/spec#s5.3
 	/// </summary>
 	[Serializable]
-	public abstract class RdfBase : DublinCore
+	public abstract class RdfBase : FeedExtension
 	{
 		#region Fields
 

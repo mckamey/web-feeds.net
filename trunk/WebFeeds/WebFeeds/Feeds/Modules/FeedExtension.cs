@@ -30,76 +30,63 @@
 
 using System;
 using System.ComponentModel;
+using System.Collections.Generic;
+using System.Xml;
 using System.Xml.Serialization;
 
-using WebFeeds.Feeds.Modules;
-
-namespace WebFeeds.Feeds.Rss
+namespace WebFeeds.Feeds.Modules
 {
-	/// <summary>
-	/// Really Simple Syndication (RSS 2.0)
-	///		http://www.rssboard.org/rss-specification
-	///		http://blogs.law.harvard.edu/tech/rss
-	/// </summary>
-	[XmlRoot(RssFeed.RootElement, Namespace=RssFeed.Namespace)]
-	public class RssFeed : RssBase, IWebFeed
+	public class FeedExtension
 	{
-		#region Constants
-
-		public const string SpecificationUrl = "http://blogs.law.harvard.edu/tech/rss";
-		protected internal const string RootElement = "rss";
-		protected internal const string Namespace = "";
-		protected internal const string MimeType = "application/rss+xml";
-
-		#endregion Constants
-
 		#region Fields
 
-		private RssChannel channel = null;
-		private Version version = new Version(2,0);
+		private List<XmlNode> elements = new List<XmlNode>();
+		private List<XmlNode> attributes = new List<XmlNode>();
 
 		#endregion Fields
 
 		#region Properties
 
-		[DefaultValue(null)]
-		[XmlElement("channel")]
-		public RssChannel Channel
+		[XmlAnyAttribute]
+		public List<XmlNode> ExtendedAttributes
 		{
-			get
-			{
-				if (this.channel == null)
-				{
-					this.channel = new RssChannel();
-				}
-
-				return this.channel;
-			}
-			set { this.channel = value; }
+			get { return this.attributes; }
+			set { this.attributes = value; }
 		}
 
-		[XmlAttribute("version")]
-		public string Version
+		[XmlIgnore]
+		[Browsable(false)]
+		public bool ExtendedAttributesSpecified
 		{
-			get { return this.version.ToString(); }
-			set { this.version = new Version(value); }
+			get { return (this.attributes != null && this.attributes.Count > 0); }
+		}
+
+		[XmlAnyElement]
+		public List<XmlNode> ExtendedElements
+		{
+			get { return this.elements; }
+			set { this.elements = value; }
+		}
+
+		[XmlIgnore]
+		[Browsable(false)]
+		public bool ExtendedElementsSpecified
+		{
+			get { return (this.elements != null && this.elements.Count > 0); }
+		}
+
+		public virtual void AddNamespaces(XmlSerializerNamespaces namespaces)
+		{
+			foreach (XmlNode node in this.ExtendedAttributes)
+			{
+				namespaces.Add(node.Prefix, node.NamespaceURI);
+			}
+			foreach (XmlNode node in this.ExtendedElements)
+			{
+				namespaces.Add(node.Prefix, node.NamespaceURI);
+			}
 		}
 
 		#endregion Properties
-
-		#region IWebFeed Members
-
-		[XmlIgnore]
-		string IWebFeed.MimeType
-		{
-			get { return RssFeed.MimeType; }
-		}
-
-		void IWebFeed.AddNamespaces(XmlSerializerNamespaces namespaces)
-		{
-			namespaces.Add("", RssFeed.Namespace);
-		}
-
-		#endregion IWebFeed Members
 	}
 }
