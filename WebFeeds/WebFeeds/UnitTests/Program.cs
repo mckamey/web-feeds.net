@@ -20,10 +20,15 @@ namespace WebFeeds
 		static void Main(string[] args)
 		{
 			string[] unitTests = Directory.GetFiles(UnitTestFolder, "*.xml", SearchOption.AllDirectories);
-			if (!Directory.Exists(OutputFolder))
+			if (Directory.Exists(OutputFolder))
 			{
-				Directory.CreateDirectory(OutputFolder);
+				try
+				{
+					Directory.Delete(OutputFolder, true);
+				}
+				catch { }
 			}
+			Directory.CreateDirectory(OutputFolder);
 
 			foreach (string unitTest in unitTests)
 			{
