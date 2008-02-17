@@ -515,8 +515,8 @@ namespace WebFeeds.Feeds.Atom
 	{
 		#region Fields
 
-		private AtomTextType textType = AtomTextType.text;
-		private string type = null;
+		private AtomTextType type = AtomTextType.Text;
+		private string mediaType = null;
 		private string value = null;
 
 		#endregion Fields
@@ -526,7 +526,9 @@ namespace WebFeeds.Feeds.Atom
 		/// <summary>
 		/// Ctor
 		/// </summary>
-		public AtomText() { }
+		public AtomText()
+		{
+		}
 
 		/// <summary>
 		/// Ctor
@@ -541,43 +543,42 @@ namespace WebFeeds.Feeds.Atom
 
 		#region Properties
 
+		[DefaultValue(AtomTextType.Text)]
 		[XmlIgnore]
-		[DefaultValue(AtomTextType.text)]
-		public AtomTextType TextType
+		public AtomTextType Type
 		{
-			get { return this.textType; }
+			get { return this.type; }
 			set
 			{
-				this.textType = value;
-				this.type = value.ToString();
+				this.type = value;
+				this.mediaType = null;
 			}
 		}
 
 		[DefaultValue(null)]
 		[XmlAttribute("type")]
-		public string Type
+		public string MediaType
 		{
-			get { return this.type; }
-			set
+			get
 			{
-				if (String.IsNullOrEmpty(value))
+				if (this.type == AtomTextType.Text)
 				{
-					this.textType = AtomTextType.text;
-					this.type = null;
-					return;
+					return this.mediaType;
 				}
 
-				this.type = value;
+				return this.type.ToString().ToLowerInvariant();
+			}
+			set
+			{
 				try
 				{
-					this.textType = (AtomTextType)Enum.Parse(
-						typeof(AtomTextType),
-						value.Substring(value.IndexOf("/")+1), // crude MIME parse
-						false);
+					this.type = (AtomTextType)Enum.Parse(typeof(AtomTextType), value, true);
+					this.mediaType = null;
 				}
 				catch
 				{
-					this.textType = AtomTextType.text;
+					this.type = AtomTextType.Text;
+					this.mediaType = value;
 				}
 			}
 		}
@@ -588,7 +589,7 @@ namespace WebFeeds.Feeds.Atom
 		{
 			get
 			{
-				if (this.TextType == AtomTextType.xhtml)
+				if (this.type == AtomTextType.Xhtml)
 				{
 					return null;
 				}
@@ -603,7 +604,7 @@ namespace WebFeeds.Feeds.Atom
 		{
 			get
 			{
-				if (this.TextType != AtomTextType.xhtml)
+				if (this.type != AtomTextType.Xhtml)
 				{
 					return null;
 				}
@@ -613,7 +614,7 @@ namespace WebFeeds.Feeds.Atom
 			}
 			set
 			{
-				this.TextType = AtomTextType.xhtml;
+				this.type = AtomTextType.Xhtml;
 				this.value = value.OuterXml;
 			}
 		}
@@ -636,9 +637,14 @@ namespace WebFeeds.Feeds.Atom
 
 	public enum AtomTextType
 	{
-		text,
-		html,
-		xhtml
+		[XmlEnum("text")]
+		Text,
+
+		[XmlEnum("html")]
+		Html,
+
+		[XmlEnum("xhtml")]
+		Xhtml
 	}
 
 	#endregion AtomTextType

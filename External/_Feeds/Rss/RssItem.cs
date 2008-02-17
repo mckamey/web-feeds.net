@@ -40,7 +40,7 @@ namespace WebFeeds.Feeds.Rss
 	///		http://blogs.law.harvard.edu/tech/rss#hrelementsOfLtitemgt
 	/// </summary>
 	[Serializable]
-	public class RssItem
+	public class RssItem : RssBase
 	{
 		#region Fields
 

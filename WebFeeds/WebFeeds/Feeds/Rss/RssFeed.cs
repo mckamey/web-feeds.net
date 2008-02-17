@@ -32,6 +32,8 @@ using System;
 using System.ComponentModel;
 using System.Xml.Serialization;
 
+using WebFeeds.Feeds.Modules;
+
 namespace WebFeeds.Feeds.Rss
 {
 	/// <summary>
@@ -40,7 +42,7 @@ namespace WebFeeds.Feeds.Rss
 	///		http://blogs.law.harvard.edu/tech/rss
 	/// </summary>
 	[XmlRoot(RssFeed.RootElement, Namespace=RssFeed.Namespace)]
-	public class RssFeed : IWebFeed
+	public class RssFeed : RssBase, IWebFeed
 	{
 		#region Constants
 
@@ -57,17 +59,6 @@ namespace WebFeeds.Feeds.Rss
 		private Version version = new Version(2,0);
 
 		#endregion Fields
-
-		#region Init
-
-		/// <summary>
-		/// Ctor
-		/// </summary>
-		public RssFeed()
-		{
-		}
-
-		#endregion Init
 
 		#region Properties
 
@@ -104,15 +95,9 @@ namespace WebFeeds.Feeds.Rss
 			get { return RssFeed.MimeType; }
 		}
 
-		[XmlIgnore]
-		XmlSerializerNamespaces IWebFeed.Namespaces
+		void IWebFeed.AddNamespaces(XmlSerializerNamespaces namespaces)
 		{
-			get
-			{
-				XmlSerializerNamespaces namespaces = new XmlSerializerNamespaces();
-				namespaces.Add("", RssFeed.Namespace);
-				return namespaces;
-			}
+			namespaces.Add("", RssFeed.Namespace);
 		}
 
 		#endregion IWebFeed Members

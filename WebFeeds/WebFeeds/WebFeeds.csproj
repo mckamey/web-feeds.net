@@ -48,6 +48,7 @@
     <Compile Include="Feeds\Atom\AtomSubElements.cs" />
     <Compile Include="Feeds\FeedSerializer.cs" />
     <Compile Include="Feeds\IWebFeed.cs" />
+    <Compile Include="Feeds\Modules\FeedExtension.cs" />
     <Compile Include="Feeds\Rdf\RdfBase.cs" />
     <Compile Include="Feeds\Rdf\RdfChannel.cs">
       <SubType>Code</SubType>
@@ -61,6 +62,7 @@
     <Compile Include="Feeds\Rdf\RdfSubElements.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Feeds\Rss\RssBase.cs" />
     <Compile Include="Feeds\Rss\RssChannel.cs" />
     <Compile Include="Feeds\Rss\RssFeed.cs" />
     <Compile Include="Feeds\Rss\RssHandler.cs">
