@@ -113,7 +113,7 @@ namespace WebFeeds.Feeds.Atom
 	}
 
 	/// <summary>
-	/// Adaptor for Atom 0.3 compatibility
+	/// Adapter for Atom 0.3 compatibility
 	/// </summary>
 	[Serializable]
 	public class AtomEntry03 : AtomEntry

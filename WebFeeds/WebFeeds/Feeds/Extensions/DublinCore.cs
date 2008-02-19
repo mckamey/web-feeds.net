@@ -40,7 +40,7 @@ namespace WebFeeds.Feeds.Extensions
 	///		http://dublincore.org/documents/dces/
 	///		http://web.resource.org/rss/1.0/modules/dc/
 	/// </summary>
-	public class DublinCore : IExtensionAdaptor
+	public class DublinCore : IExtensionAdapter
 	{
 		#region Constants
 
@@ -114,13 +114,13 @@ namespace WebFeeds.Feeds.Extensions
 
 		#region IExtensionProvider Members
 
-		IEnumerable<XmlAttribute> IExtensionAdaptor.GetAttributeEntensions()
+		IEnumerable<XmlAttribute> IExtensionAdapter.GetAttributeEntensions()
 		{
 			// Dublin Core does not specify attributes
 			return null;
 		}
 
-		IEnumerable<XmlElement> IExtensionAdaptor.GetElementExtensions()
+		IEnumerable<XmlElement> IExtensionAdapter.GetElementExtensions()
 		{
 			if (this.DcTerms.Count < 1)
 			{
@@ -137,12 +137,12 @@ namespace WebFeeds.Feeds.Extensions
 			return extensions;
 		}
 
-		void IExtensionAdaptor.SetAttributeEntensions(IEnumerable<XmlAttribute> attributes)
+		void IExtensionAdapter.SetAttributeEntensions(IEnumerable<XmlAttribute> attributes)
 		{
 			// Dublin Core does not specify attributes
 		}
 
-		void IExtensionAdaptor.SetElementExtensions(IEnumerable<XmlElement> elements)
+		void IExtensionAdapter.SetElementExtensions(IEnumerable<XmlElement> elements)
 		{
 			foreach (XmlElement element in elements)
 			{
