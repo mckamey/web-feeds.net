@@ -94,37 +94,16 @@ namespace WebFeeds.Feeds
 				Type type = FeedSerializer.GetFeedType(reader.NamespaceURI, reader.LocalName);
 
 				XmlSerializer serializer = new XmlSerializer(type);
-				//serializer.UnknownElement += new XmlElementEventHandler(serializer_UnknownElement);
-				//serializer.UnknownAttribute += new XmlAttributeEventHandler(serializer_UnknownAttribute);
 				return serializer.Deserialize(reader) as IWebFeed;
 			}
 		}
 
-		//private static void serializer_UnknownAttribute(object sender, XmlAttributeEventArgs e)
-		//{
-		//    XmlSerializer serializer = sender as XmlSerializer;
-
-		//    if (DublinCore.IsDublinCore(e.Attr))
-		//    {
-		//        return;
-		//    }
-
-		//    return;
-		//}
-
-		//private static void serializer_UnknownElement(object sender, XmlElementEventArgs e)
-		//{
-		//    XmlSerializer serializer = sender as XmlSerializer;
-
-		//    if (DublinCore.IsDublinCore(e.Element))
-		//    {
-		//        return;
-		//    }
-
-		//    return;
-		//}
-
 		public static void SerializeXml(IWebFeed feed, Stream output, string xsltUrl)
+		{
+			FeedSerializer.SerializeXml(feed, output, xsltUrl, true);
+		}
+
+		public static void SerializeXml(IWebFeed feed, Stream output, string xsltUrl, bool prettyPrint)
 		{
 			// setup document formatting, make human readable
 			XmlWriterSettings settings = new XmlWriterSettings();
@@ -132,8 +111,16 @@ namespace WebFeeds.Feeds
 			settings.CloseOutput = true;
 			settings.ConformanceLevel = ConformanceLevel.Document;
 			settings.Encoding = System.Text.Encoding.UTF8;
-			settings.Indent = true;
-			settings.IndentChars = "\t";
+			if (prettyPrint)
+			{
+				settings.Indent = true;
+				settings.IndentChars = "\t";
+			}
+			else
+			{
+				settings.Indent = false;
+				settings.NewLineChars = String.Empty;
+			}
 			settings.NewLineHandling = NewLineHandling.Replace;
 
 			XmlWriter writer = XmlWriter.Create(output, settings);
