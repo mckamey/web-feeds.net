@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Web;
 
 using MediaLib.Web;
+using WebFeeds.Feeds;
 using WebFeeds.Feeds.Rss;
 using MediaLib.Web.Hosting;
 
@@ -22,7 +23,7 @@ namespace MediaLib.Web.Handlers
 
 		#region RssHandler Members
 
-		protected override object GenerateFeed(System.Web.HttpContext context)
+		protected override IWebFeed GenerateFeed(System.Web.HttpContext context)
 		{
 #if DEBUG
 			if (!String.IsNullOrEmpty(context.Request.QueryString["url"]))
