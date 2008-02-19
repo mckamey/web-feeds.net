@@ -94,17 +94,16 @@ namespace WebFeeds.Feeds.Rss
 					return null;
 				}
 
-				return this.link.AbsoluteUri;
+				return this.link.ToString();
 			}
 			set
 			{
-				if (String.IsNullOrEmpty(value))
+				if (String.IsNullOrEmpty(value) ||
+					!Uri.TryCreate(value, UriKind.RelativeOrAbsolute, out this.link))
 				{
 					this.link = null;
 					return;
 				}
-
-				this.link = new Uri(value);
 			}
 		}
 
@@ -165,17 +164,16 @@ namespace WebFeeds.Feeds.Rss
 					return null;
 				}
 
-				return this.comments.AbsoluteUri;
+				return this.comments.ToString();
 			}
 			set
 			{
-				if (String.IsNullOrEmpty(value))
+				if (String.IsNullOrEmpty(value) ||
+					!Uri.TryCreate(value, UriKind.RelativeOrAbsolute, out this.comments))
 				{
 					this.comments = null;
 					return;
 				}
-
-				this.comments = new Uri(value);
 			}
 		}
 
