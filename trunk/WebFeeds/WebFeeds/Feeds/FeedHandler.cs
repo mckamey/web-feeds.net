@@ -72,6 +72,14 @@ namespace WebFeeds.Feeds
 			}
 		}
 
+		/// <summary>
+		/// Gets the if output should be formatted for human readability
+		/// </summary>
+		protected virtual bool PrettyPrint
+		{
+			get { return true; }
+		}
+
 		#endregion Properties
 
 		#region Feed Handler Methods
@@ -152,7 +160,7 @@ namespace WebFeeds.Feeds
 
 				string xsltUrl = this.GetXsltUri(context);
 				Stream output = context.Response.OutputStream;
-				FeedSerializer.SerializeXml(feed, output, xsltUrl);
+				FeedSerializer.SerializeXml(feed, output, xsltUrl, this.PrettyPrint);
 			}
 			catch (Exception ex)
 			{
