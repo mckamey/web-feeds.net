@@ -95,11 +95,13 @@ namespace WebFeeds.Feeds.Rss
 			get { return RssFeed.MimeType; }
 		}
 
-		void INamespaceProvider.AddNamespaces(XmlSerializerNamespaces namespaces)
+		public override void AddNamespaces(XmlSerializerNamespaces namespaces)
 		{
 			namespaces.Add("", RssFeed.Namespace);
 
-			((INamespaceProvider)this.Channel).AddNamespaces(namespaces);
+			this.Channel.AddNamespaces(namespaces);
+
+			base.AddNamespaces(namespaces);
 		}
 
 		#endregion IWebFeed Members

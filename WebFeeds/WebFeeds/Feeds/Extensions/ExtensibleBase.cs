@@ -95,7 +95,7 @@ namespace WebFeeds.Feeds.Extensions
 
 		#region INamespaceProvider Members
 
-		void INamespaceProvider.AddNamespaces(XmlSerializerNamespaces namespaces)
+		public virtual void AddNamespaces(XmlSerializerNamespaces namespaces)
 		{
 			foreach (XmlNode node in this.AttributeExtensions)
 			{

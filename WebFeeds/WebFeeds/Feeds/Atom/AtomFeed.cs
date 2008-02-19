@@ -119,10 +119,17 @@ namespace WebFeeds.Feeds.Atom
 			get { return AtomFeed10.MimeType; }
 		}
 
-		void INamespaceProvider.AddNamespaces(XmlSerializerNamespaces namespaces)
+		public override void AddNamespaces(XmlSerializerNamespaces namespaces)
 		{
 			namespaces.Add("", AtomFeed10.Namespace);
 			namespaces.Add("xml", AtomFeed10.XmlNamespace);
+
+			foreach (AtomEntry entry in this.Entries)
+			{
+				entry.AddNamespaces(namespaces);
+			}
+
+			base.AddNamespaces(namespaces);
 		}
 
 		#endregion IWebFeed Members
@@ -248,10 +255,17 @@ namespace WebFeeds.Feeds.Atom
 			get { return AtomFeed03.MimeType; }
 		}
 
-		void INamespaceProvider.AddNamespaces(XmlSerializerNamespaces namespaces)
+		public override void AddNamespaces(XmlSerializerNamespaces namespaces)
 		{
 			namespaces.Add("", AtomFeed03.Namespace);
 			namespaces.Add("xml", AtomFeed10.XmlNamespace);
+
+			foreach (AtomEntry entry in this.Entries)
+			{
+				entry.AddNamespaces(namespaces);
+			}
+
+			base.AddNamespaces(namespaces);
 		}
 
 		#endregion IWebFeed Members

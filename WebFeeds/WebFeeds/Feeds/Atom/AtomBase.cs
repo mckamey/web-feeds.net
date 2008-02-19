@@ -195,6 +195,30 @@ namespace WebFeeds.Feeds.Atom
 		}
 
 		#endregion Properties
+
+		#region INamespaceProvider members
+
+		public override void AddNamespaces(XmlSerializerNamespaces namespaces)
+		{
+			foreach (AtomLink link in this.Links)
+			{
+				link.AddNamespaces(namespaces);
+			}
+
+			foreach (AtomCategory category in this.Categories)
+			{
+				category.AddNamespaces(namespaces);
+			}
+
+			foreach (AtomPerson person in this.Authors)
+			{
+				person.AddNamespaces(namespaces);
+			}
+
+			base.AddNamespaces(namespaces);
+		}
+
+		#endregion INamespaceProvider members
 	}
 
 	/// <summary>
