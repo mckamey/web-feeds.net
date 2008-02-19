@@ -44,7 +44,7 @@ namespace WebFeeds.Feeds.Rss
 	///		http://blogs.law.harvard.edu/tech/rss#syndic8
 	/// </summary>
 	[Serializable]
-	public class RssCategory
+	public class RssCategory : RssBase
 	{
 		#region Fields
 
@@ -96,7 +96,7 @@ namespace WebFeeds.Feeds.Rss
 	///		http://blogs.law.harvard.edu/tech/soapMeetsRss#rsscloudInterface
 	/// </summary>
 	[Serializable]
-	public class RssCloud
+	public class RssCloud : RssBase
 	{
 		#region Fields
 
@@ -202,7 +202,7 @@ namespace WebFeeds.Feeds.Rss
 	///		http://blogs.law.harvard.edu/tech/rss#ltauthorgtSubelementOfLtitemgt
 	/// </summary>
 	[Serializable]
-	public class RssEmail
+	public class RssEmail : RssBase
 	{
 		#region Constants
 
@@ -298,7 +298,7 @@ namespace WebFeeds.Feeds.Rss
 	///		http://www.reallysimplesyndication.com/discuss/msgReader$221
 	/// </summary>
 	[Serializable]
-	public class RssEnclosure
+	public class RssEnclosure : RssBase
 	{
 		#region Fields
 
@@ -393,7 +393,7 @@ namespace WebFeeds.Feeds.Rss
 	///		http://blogs.law.harvard.edu/tech/rss#ltguidgtSubelementOfLtitemgt
 	/// </summary>
 	[Serializable]
-	public class RssGuid
+	public class RssGuid : RssBase
 	{
 		#region Fields
 
@@ -453,7 +453,7 @@ namespace WebFeeds.Feeds.Rss
 	///		http://blogs.law.harvard.edu/tech/rss#ltimagegtSubelementOfLtchannelgt
 	/// </summary>
 	[Serializable]
-	public class RssImage
+	public class RssImage : RssBase
 	{
 		#region Fields
 
@@ -600,7 +600,7 @@ namespace WebFeeds.Feeds.Rss
 	///		http://blogs.law.harvard.edu/tech/skipHoursDays
 	/// </summary>
 	[Serializable]
-	public class RssSkipDays
+	public class RssSkipDays : RssBase
 	{
 		#region Constants
 
@@ -696,7 +696,7 @@ namespace WebFeeds.Feeds.Rss
 	///		http://blogs.law.harvard.edu/tech/skipHoursDays
 	/// </summary>
 	[Serializable]
-	public class RssSkipHours
+	public class RssSkipHours : RssBase
 	{
 		#region Constants
 
@@ -805,7 +805,7 @@ namespace WebFeeds.Feeds.Rss
 	///		http://blogs.law.harvard.edu/tech/rss#ltsourcegtSubelementOfLtitemgt
 	/// </summary>
 	[Serializable]
-	public class RssSource
+	public class RssSource : RssBase
 	{
 		#region Fields
 
@@ -872,7 +872,7 @@ namespace WebFeeds.Feeds.Rss
 	///		http://blogs.law.harvard.edu/tech/rss#lttextinputgtSubelementOfLtchannelgt
 	/// </summary>
 	[Serializable]
-	public class RssTextInput
+	public class RssTextInput : RssBase
 	{
 		#region Fields
 

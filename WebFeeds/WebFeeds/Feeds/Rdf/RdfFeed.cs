@@ -180,11 +180,15 @@ namespace WebFeeds.Feeds.Rdf
 			namespaces.Add("", RdfFeed.NamespaceRss10);
 			namespaces.Add("rdf", RdfFeed.NamespaceRdf);
 
-			this.AddNamespaces(namespaces);
-			this.Channel.AddNamespaces(namespaces);
+			((INamespaceProvider)this).AddNamespaces(namespaces);
+			((INamespaceProvider)this.Channel).AddNamespaces(namespaces);
 			if (this.ImageSpecified)
 			{
-				this.Image.AddNamespaces(namespaces);
+				((INamespaceProvider)this.Image).AddNamespaces(namespaces);
+			}
+			if (this.TextInputSpecified)
+			{
+				((INamespaceProvider)this.TextInput).AddNamespaces(namespaces);
 			}
 		}
 
