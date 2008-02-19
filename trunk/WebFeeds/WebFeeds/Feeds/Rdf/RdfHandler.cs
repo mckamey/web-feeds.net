@@ -38,8 +38,8 @@ using WebFeeds.Feeds.Extensions;
 namespace WebFeeds.Feeds.Rdf
 {
 	/// <summary>
-	/// Based upon RSS 2.0
-	///		http://blogs.law.harvard.edu/tech/rss
+	/// Based upon RSS 1.0
+	///		http://web.resource.org/rss/1.0/spec
 	/// </summary>
 	public class RdfHandler : FeedHandler
 	{
