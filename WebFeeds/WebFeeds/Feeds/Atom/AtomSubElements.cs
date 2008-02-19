@@ -572,6 +572,7 @@ namespace WebFeeds.Feeds.Atom
 			{
 				try
 				{
+					// Enum.IsDefined doesn't allow case-insensitivity
 					this.type = (AtomTextType)Enum.Parse(typeof(AtomTextType), value, true);
 					this.mediaType = null;
 				}

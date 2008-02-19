@@ -91,6 +91,7 @@ namespace WebFeeds.Feeds.Atom
 		public virtual bool PublishedSpecified
 		{
 			get { return true; }
+			set { }
 		}
 
 		[DefaultValue(null)]
@@ -153,6 +154,7 @@ namespace WebFeeds.Feeds.Atom
 		public override bool PublishedSpecified
 		{
 			get { return false; }
+			set { }
 		}
 
 		[XmlIgnore]
@@ -160,6 +162,7 @@ namespace WebFeeds.Feeds.Atom
 		public override bool UpdatedSpecified
 		{
 			get { return false; }
+			set { }
 		}
 
 		#endregion Properties

@@ -167,6 +167,7 @@ namespace WebFeeds.Feeds.Atom
 		public virtual bool RightsSpecified
 		{
 			get { return true; }
+			set { }
 		}
 
 		[DefaultValue(null)]
@@ -190,6 +191,7 @@ namespace WebFeeds.Feeds.Atom
 		public virtual bool UpdatedSpecified
 		{
 			get { return true; }
+			set { }
 		}
 
 		#endregion Properties
@@ -245,6 +247,7 @@ namespace WebFeeds.Feeds.Atom
 		public virtual bool SubTitleSpecified
 		{
 			get { return true; }
+			set { }
 		}
 
 		#endregion Properties

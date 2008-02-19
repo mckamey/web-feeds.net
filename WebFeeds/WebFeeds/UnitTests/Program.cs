@@ -74,7 +74,7 @@ namespace WebFeeds
 					if (feed is RdfFeed)
 					{
 						DublinCore dc = new DublinCore();
-						((RdfFeed)feed).Channel.LoadExtensions(dc);
+						((RdfFeed)feed).Channel.FillExtensions(dc);
 
 						foreach (DublinCore.TermName term in dc.Terms)
 						{
