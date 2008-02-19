@@ -160,6 +160,7 @@ namespace WebFeeds.Feeds.Rss
 		public bool ManagingEditorSpecified
 		{
 			get { return (this.managingEditor != null && !this.managingEditor.IsEmpty()); }
+			set { }
 		}
 
 		/// <summary>
@@ -185,6 +186,7 @@ namespace WebFeeds.Feeds.Rss
 		public bool WebMasterSpecified
 		{
 			get { return (this.webMaster != null && !this.webMaster.IsEmpty()); }
+			set { }
 		}
 
 		[XmlIgnore]
@@ -307,6 +309,7 @@ namespace WebFeeds.Feeds.Rss
 		public bool CloudSpecified
 		{
 			get { return (this.cloud != null && !this.cloud.IsEmpty()); }
+			set { }
 		}
 
 		[DefaultValue(Int32.MinValue)]
@@ -344,6 +347,7 @@ namespace WebFeeds.Feeds.Rss
 		public bool ImageSpecified
 		{
 			get { return (this.image != null && !this.image.IsEmpty()); }
+			set { }
 		}
 
 		[DefaultValue(null)]
@@ -374,6 +378,7 @@ namespace WebFeeds.Feeds.Rss
 		public bool TextInputSpecified
 		{
 			get { return (this.textInput != null && !this.textInput.IsEmpty()); }
+			set { }
 		}
 
 		[DefaultValue(null)]
@@ -397,6 +402,7 @@ namespace WebFeeds.Feeds.Rss
 		public bool SkipHoursSpecified
 		{
 			get { return (this.skipHours != null && !this.skipHours.IsEmpty()); }
+			set { }
 		}
 
 		[DefaultValue(null)]
@@ -420,6 +426,7 @@ namespace WebFeeds.Feeds.Rss
 		public bool SkipDaysSpecified
 		{
 			get { return (this.skipDays != null && !this.skipDays.IsEmpty()); }
+			set { }
 		}
 
 		[XmlElement("item")]

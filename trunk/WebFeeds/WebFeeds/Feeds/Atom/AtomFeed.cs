@@ -219,6 +219,7 @@ namespace WebFeeds.Feeds.Atom
 		public override bool SubTitleSpecified
 		{
 			get { return false; }
+			set { }
 		}
 
 		[XmlIgnore]
@@ -226,6 +227,7 @@ namespace WebFeeds.Feeds.Atom
 		public override bool RightsSpecified
 		{
 			get { return false; }
+			set { }
 		}
 
 		[XmlIgnore]
@@ -233,6 +235,7 @@ namespace WebFeeds.Feeds.Atom
 		public override bool UpdatedSpecified
 		{
 			get { return false; }
+			set { }
 		}
 
 		#endregion Properties

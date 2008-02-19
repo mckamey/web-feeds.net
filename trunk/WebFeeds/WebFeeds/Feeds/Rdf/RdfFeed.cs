@@ -123,6 +123,7 @@ namespace WebFeeds.Feeds.Rdf
 		public bool ImageSpecified
 		{
 			get { return (this.image != null && !this.image.IsEmpty()); }
+			set { }
 		}
 
 		[XmlElement("item", Namespace=RdfFeed.NamespaceRss10)]
@@ -163,6 +164,7 @@ namespace WebFeeds.Feeds.Rdf
 		public bool TextInputSpecified
 		{
 			get { return (this.textInput != null && !this.textInput.IsEmpty()); }
+			set { }
 		}
 
 		#endregion Properties
@@ -180,7 +182,6 @@ namespace WebFeeds.Feeds.Rdf
 			namespaces.Add("", RdfFeed.NamespaceRss10);
 			namespaces.Add("rdf", RdfFeed.NamespaceRdf);
 
-			((INamespaceProvider)this).AddNamespaces(namespaces);
 			((INamespaceProvider)this.Channel).AddNamespaces(namespaces);
 			if (this.ImageSpecified)
 			{
