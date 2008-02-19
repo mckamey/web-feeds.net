@@ -129,7 +129,7 @@ namespace WebFeeds.Feeds.Atom
 	}
 
 	/// <summary>
-	/// Adaptor for Atom 0.3 compatibility
+	/// Adapter for Atom 0.3 compatibility
 	/// </summary>
 	[XmlRoot(AtomFeed03.RootElement, Namespace=AtomFeed03.Namespace)]
 	public class AtomFeed03 : AtomFeed, IWebFeed
