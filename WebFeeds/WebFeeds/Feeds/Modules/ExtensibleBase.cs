@@ -53,23 +53,23 @@ namespace WebFeeds.Feeds.Extensions
 		#region Methods
 
 		/// <summary>
-		/// Applies the extensions in adaptor to ExtensibleBase
+		/// Applies the extensions in adapter to ExtensibleBase
 		/// </summary>
-		/// <param name="adaptor"></param>
-		public void ApplyExtensions(IExtensionAdaptor adaptor)
+		/// <param name="adapter"></param>
+		public void ApplyExtensions(IExtensionAdapter adapter)
 		{
-			if (adaptor == null)
+			if (adapter == null)
 			{
 				return;
 			}
 
-			IEnumerable<XmlAttribute> attributes = adaptor.GetAttributeEntensions();
+			IEnumerable<XmlAttribute> attributes = adapter.GetAttributeEntensions();
 			if (attributes != null)
 			{
 				this.AttributeExtensions.AddRange(attributes);
 			}
 
-			IEnumerable<XmlElement> elements = adaptor.GetElementExtensions();
+			IEnumerable<XmlElement> elements = adapter.GetElementExtensions();
 			if (elements != null)
 			{
 				this.ElementExtensions.AddRange(elements);
@@ -77,18 +77,18 @@ namespace WebFeeds.Feeds.Extensions
 		}
 
 		/// <summary>
-		/// Extracts the extensions in this ExtensibleBase into adaptor
+		/// Extracts the extensions in this ExtensibleBase into adapter
 		/// </summary>
-		/// <param name="adaptor"></param>
-		public void LoadExtensions(IExtensionAdaptor adaptor)
+		/// <param name="adapter"></param>
+		public void LoadExtensions(IExtensionAdapter adapter)
 		{
-			if (adaptor == null)
+			if (adapter == null)
 			{
 				return;
 			}
 
-			adaptor.SetAttributeEntensions(this.AttributeExtensions);
-			adaptor.SetElementExtensions(this.ElementExtensions);
+			adapter.SetAttributeEntensions(this.AttributeExtensions);
+			adapter.SetElementExtensions(this.ElementExtensions);
 		}
 
 		#endregion Methods
@@ -111,9 +111,9 @@ namespace WebFeeds.Feeds.Extensions
 	}
 
 	/// <summary>
-	/// Interface that adaptors implement to apply / extract additional elements and attributes
+	/// Interface that adapters implement to apply / extract additional elements and attributes
 	/// </summary>
-	public interface IExtensionAdaptor
+	public interface IExtensionAdapter
 	{
 		IEnumerable<XmlAttribute> GetAttributeEntensions();
 		IEnumerable<XmlElement> GetElementExtensions();
