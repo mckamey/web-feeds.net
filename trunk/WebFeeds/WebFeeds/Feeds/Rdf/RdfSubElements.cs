@@ -63,17 +63,16 @@ namespace WebFeeds.Feeds.Rdf
 					return null;
 				}
 
-				return this.url.AbsoluteUri;
+				return this.url.ToString();
 			}
 			set
 			{
-				if (String.IsNullOrEmpty(value))
+				if (String.IsNullOrEmpty(value) ||
+					!Uri.TryCreate(value, UriKind.RelativeOrAbsolute, out this.url))
 				{
 					this.url = null;
 					return;
 				}
-
-				this.url = new Uri(value);
 			}
 		}
 

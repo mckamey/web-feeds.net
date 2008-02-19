@@ -130,7 +130,11 @@ namespace WebFeeds.Feeds
 			string feedXslt = ConfigurationManager.AppSettings[this.AppSettingsKey];
 			if (baseUri != null && !String.IsNullOrEmpty(feedXslt))
 			{
-				return new Uri(baseUri, feedXslt).AbsoluteUri;
+				Uri absUri;
+				if (Uri.TryCreate(baseUri, feedXslt, out absUri))
+				{
+					return absUri.AbsoluteUri;
+				}
 			}
 
 			return feedXslt;
