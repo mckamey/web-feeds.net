@@ -56,7 +56,7 @@ namespace WebFeeds.Feeds.Extensions
 		/// Applies the extensions in adapter to ExtensibleBase
 		/// </summary>
 		/// <param name="adapter"></param>
-		public void ApplyExtensions(IExtensionAdapter adapter)
+		public void AddExtensions(IExtensionAdapter adapter)
 		{
 			if (adapter == null)
 			{
@@ -80,7 +80,7 @@ namespace WebFeeds.Feeds.Extensions
 		/// Extracts the extensions in this ExtensibleBase into adapter
 		/// </summary>
 		/// <param name="adapter"></param>
-		public void LoadExtensions(IExtensionAdapter adapter)
+		public void FillExtensions(IExtensionAdapter adapter)
 		{
 			if (adapter == null)
 			{
