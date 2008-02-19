@@ -40,7 +40,7 @@ namespace WebFeeds.Feeds.Rss
 	///		http://blogs.law.harvard.edu/tech/rss
 	/// </summary>
 	[Serializable]
-	public class RssChannel
+	public class RssChannel : RssBase
 	{
 		#region Fields
 

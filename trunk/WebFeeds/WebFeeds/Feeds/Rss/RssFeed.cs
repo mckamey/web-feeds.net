@@ -98,6 +98,8 @@ namespace WebFeeds.Feeds.Rss
 		void INamespaceProvider.AddNamespaces(XmlSerializerNamespaces namespaces)
 		{
 			namespaces.Add("", RssFeed.Namespace);
+
+			((INamespaceProvider)this.Channel).AddNamespaces(namespaces);
 		}
 
 		#endregion IWebFeed Members
