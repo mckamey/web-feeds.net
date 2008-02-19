@@ -177,20 +177,27 @@ namespace WebFeeds.Feeds.Rdf
 			get { return RdfFeed.MimeType; }
 		}
 
-		void INamespaceProvider.AddNamespaces(XmlSerializerNamespaces namespaces)
+		public override void AddNamespaces(XmlSerializerNamespaces namespaces)
 		{
 			namespaces.Add("", RdfFeed.NamespaceRss10);
 			namespaces.Add("rdf", RdfFeed.NamespaceRdf);
 
-			((INamespaceProvider)this.Channel).AddNamespaces(namespaces);
+			this.Channel.AddNamespaces(namespaces);
 			if (this.ImageSpecified)
 			{
-				((INamespaceProvider)this.Image).AddNamespaces(namespaces);
+				this.Image.AddNamespaces(namespaces);
 			}
 			if (this.TextInputSpecified)
 			{
-				((INamespaceProvider)this.TextInput).AddNamespaces(namespaces);
+				this.TextInput.AddNamespaces(namespaces);
 			}
+
+			foreach (RdfItem item in this.Items)
+			{
+				item.AddNamespaces(namespaces);
+			}
+
+			base.AddNamespaces(namespaces);
 		}
 
 		#endregion IWebFeed Members
