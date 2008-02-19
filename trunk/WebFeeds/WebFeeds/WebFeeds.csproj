@@ -37,7 +37,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Feeds\AsyncResult.cs" />
-    <Compile Include="Feeds\Modules\DublinCore.cs" />
+    <Compile Include="Feeds\Extensions\DublinCore.cs" />
     <Compile Include="Feeds\FeedHandler.cs" />
     <Compile Include="Feeds\Atom\AtomBase.cs" />
     <Compile Include="Feeds\Atom\AtomEntry.cs" />
@@ -48,7 +48,7 @@
     <Compile Include="Feeds\Atom\AtomSubElements.cs" />
     <Compile Include="Feeds\FeedSerializer.cs" />
     <Compile Include="Feeds\IWebFeed.cs" />
-    <Compile Include="Feeds\Modules\FeedExtension.cs" />
+    <Compile Include="Feeds\Extensions\ExtensibleBase.cs" />
     <Compile Include="Feeds\Rdf\RdfBase.cs" />
     <Compile Include="Feeds\Rdf\RdfChannel.cs">
       <SubType>Code</SubType>
