@@ -51,12 +51,10 @@ namespace WebFeeds.Feeds.Rss
 
 		//optional
 		private RssEmail author = null;
-		private List<RssCategory> categories = new List<RssCategory>();
 		private Uri comments = null;
 		private RssEnclosure enclosure = null;
 		private RssGuid guid = null;
-		private DateTime? pubDate = null;
-		private string pubDate_Rfc822 = null;
+		private RssDate pubDate;
 		private RssSource source = null;
 
 		#endregion Fields
@@ -137,7 +135,7 @@ namespace WebFeeds.Feeds.Rss
 		}
 
 		[XmlIgnore]
-		[Browsable(false)]
+		[EditorBrowsable(EditorBrowsableState.Never)]
 		public bool AuthorSpecified
 		{
 			get { return (this.author != null && !this.author.IsEmpty()); }
@@ -145,10 +143,14 @@ namespace WebFeeds.Feeds.Rss
 		}
 
 		[XmlElement("category")]
-		public List<RssCategory> Categories
+		public readonly List<RssCategory> Categories = new List<RssCategory>();
+
+		[XmlIgnore]
+		[EditorBrowsable(EditorBrowsableState.Never)]
+		public bool CategoriesSpecified
 		{
-			get { return this.categories; }
-			set { this.categories = value; }
+			get { return (this.Categories.Count > 0); }
+			set { }
 		}
 
 		/// <summary>
@@ -194,7 +196,7 @@ namespace WebFeeds.Feeds.Rss
 		}
 
 		[XmlIgnore]
-		[Browsable(false)]
+		[EditorBrowsable(EditorBrowsableState.Never)]
 		public bool EnclosureSpecified
 		{
 			get { return (this.enclosure != null && !this.enclosure.IsEmpty()); }
@@ -217,49 +219,27 @@ namespace WebFeeds.Feeds.Rss
 		}
 
 		[XmlIgnore]
-		[Browsable(false)]
+		[EditorBrowsable(EditorBrowsableState.Never)]
 		public bool GuidSpecified
 		{
 			get { return (this.guid != null && !this.guid.IsEmpty()); }
 			set { }
 		}
 
-		[XmlIgnore]
-		public DateTime PubDate
+		[DefaultValue(null)]
+		[XmlElement("pubDate")]
+		public RssDate PubDate
 		{
-			get { return this.pubDate.Value; }
+			get { return this.pubDate; }
 			set { this.pubDate = value; }
 		}
 
-		/// <summary>
-		/// Gets and sets the pubDate using RFC-822 date format.  For serialization purposes only, use the PubDate property instead.
-		/// </summary>
-		[DefaultValue(null)]
-		[XmlElement("pubDate")]
-		public string PubDate_Rfc822
+		[XmlIgnore]
+		[EditorBrowsable(EditorBrowsableState.Never)]
+		public bool PubDateSpecified
 		{
-			get
-			{
-				if (!this.pubDate.HasValue)
-				{
-					return this.pubDate_Rfc822;
-				}
-
-				return this.pubDate.Value.ToString("R");
-			}
-			set
-			{
-				DateTime dateTime;
-				if (!DateTime.TryParse(value, out dateTime))
-				{
-					this.pubDate = null;
-					this.pubDate_Rfc822 = null;
-					return;
-				}
-
-				this.pubDate = dateTime;
-				this.pubDate_Rfc822 = value;
-			}
+			get { return this.pubDate.HasValue; }
+			set { }
 		}
 
 		[DefaultValue(null)]

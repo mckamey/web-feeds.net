@@ -195,6 +195,146 @@ namespace WebFeeds.Feeds.Rss
 
 	#endregion RssCloud
 
+	#region RssDate
+
+	[Serializable]
+	public struct RssDate
+	{
+		#region Fields
+
+		private DateTime? value;
+
+		#endregion Fields
+
+		#region Init
+
+		/// <summary>
+		/// Ctor
+		/// </summary>
+		/// <param name="date"></param>
+		public RssDate(DateTime date)
+		{
+			this.value = date;
+		}
+
+		#endregion Init
+
+		#region Properties
+
+		[XmlIgnore]
+		public DateTime Value
+		{
+			get
+			{
+				if (!this.value.HasValue)
+				{
+					throw new InvalidOperationException("RssDate object must have a value.");
+				}
+				return this.value.Value;
+			}
+			set { this.value = value; }
+		}
+
+		[XmlIgnore]
+		public bool HasValue
+		{
+			get { return this.value.HasValue; }
+		}
+
+		/// <summary>
+		/// Gets and sets the DateTime using RFC-822 date format.
+		/// For serialization purposes only, use the PubDate property instead.
+		/// </summary>
+		[XmlText]
+		[DefaultValue(null)]
+		[EditorBrowsable(EditorBrowsableState.Never)]
+		[Obsolete("For serialization purposes only, use the PubDate property instead.", true)]
+		public string Value_Rfc822
+		{
+			get
+			{
+				if (!this.value.HasValue)
+				{
+					return null;
+				}
+
+				return this.value.Value.ToString("R");
+			}
+			set
+			{
+				DateTime dateTime;
+				if (!DateTime.TryParse(value, out dateTime))
+				{
+					this.value = null;
+					return;
+				}
+
+				this.value = dateTime;
+			}
+		}
+
+		#endregion Properties
+
+		#region Methods
+
+		public DateTime GetValueOrDefault(DateTime defaultValue)
+		{
+			if (!this.value.HasValue)
+			{
+				return defaultValue;
+			}
+			return this.value.Value;
+		}
+
+		#endregion Methods
+
+		#region Object Overrides
+
+		public override string ToString()
+		{
+			return this.Value.ToString();
+		}
+
+		public override bool Equals(object obj)
+		{
+			if (obj is RssDate)
+			{
+				return this.value.Equals(((RssDate)obj).value);
+			}
+			else
+			{
+				return base.Equals(obj);
+			}
+		}
+
+		public override int GetHashCode()
+		{
+			if (!this.value.HasValue)
+			{
+				return 0;
+			}
+			return this.value.GetHashCode();
+		}
+
+		#endregion Object Overrides
+
+		#region Operators
+
+		public static implicit operator RssDate(DateTime value)
+		{
+			return new RssDate(value);
+		}
+
+		public static explicit operator DateTime(RssDate value)
+		{
+			return value.Value;
+		}
+
+		#endregion Operators
+	}
+
+	#endregion RssDate
+
 	#region RssEmail
 
 	/// <summary>

@@ -98,9 +98,24 @@ namespace WebFeeds.Feeds
 			}
 		}
 
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="feed"></param>
+		/// <param name="output"></param>
+		/// <param name="xsltUrl"></param>
+		/// <remarks>
+		/// PrettyPrint defaults to true for Debug builds, false for Release builds
+		/// </remarks>
 		public static void SerializeXml(IWebFeed feed, Stream output, string xsltUrl)
 		{
-			FeedSerializer.SerializeXml(feed, output, xsltUrl, true);
+			bool prettyPrint =
+#if DEBUG
+				true;
+#else
+				false;
+#endif
+			FeedSerializer.SerializeXml(feed, output, xsltUrl, prettyPrint);
 		}
 
 		public static void SerializeXml(IWebFeed feed, Stream output, string xsltUrl, bool prettyPrint)

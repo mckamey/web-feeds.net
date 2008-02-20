@@ -248,6 +248,19 @@ namespace WebFeeds.Feeds.Rdf
 			set { }
 		}
 
+		[XmlIgnore]
+		[EditorBrowsable(EditorBrowsableState.Never)]
+		public bool ItemsSpecified
+		{
+			get
+			{
+				List<RdfResource> items = this.Items;
+
+				return (items != null) && (items.Count > 0);
+			}
+			set { }
+		}
+
 		#endregion Properties
 	}
 

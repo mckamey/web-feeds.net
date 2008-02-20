@@ -45,7 +45,6 @@ namespace WebFeeds.Feeds.Rdf
 		#region Fields
 
 		private RdfFeed parent = null;
-		private List<RdfItem> items = new List<RdfItem>();
 
 		#endregion Fields
 

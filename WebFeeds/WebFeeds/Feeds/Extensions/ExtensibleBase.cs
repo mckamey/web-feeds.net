@@ -29,6 +29,7 @@
 #endregion WebFeeds License
 
 using System;
+using System.ComponentModel;
 using System.Collections.Generic;
 using System.Xml;
 using System.Xml.Serialization;
@@ -45,8 +46,24 @@ namespace WebFeeds.Feeds.Extensions
 		[XmlAnyElement]
 		public readonly List<XmlElement> ElementExtensions = new List<XmlElement>();
 
+		[XmlIgnore]
+		[EditorBrowsable(EditorBrowsableState.Never)]
+		public bool ElementExtensionsSpecified
+		{
+			get { return this.ElementExtensions.Count > 0; }
+			set { }
+		}
+
 		[XmlAnyAttribute]
 		public readonly List<XmlAttribute> AttributeExtensions = new List<XmlAttribute>();
+
+		[XmlIgnore]
+		[EditorBrowsable(EditorBrowsableState.Never)]
+		public bool AttributeExtensionsSpecified
+		{
+			get { return this.AttributeExtensions.Count > 0; }
+			set { }
+		}
 
 		#endregion Fields
 
@@ -56,6 +73,7 @@ namespace WebFeeds.Feeds.Extensions
 		/// Applies the extensions in adapter to ExtensibleBase
 		/// </summary>
 		/// <param name="adapter"></param>
+		[EditorBrowsable(EditorBrowsableState.Advanced)]
 		public void AddExtensions(IExtensionAdapter adapter)
 		{
 			if (adapter == null)
@@ -80,6 +98,7 @@ namespace WebFeeds.Feeds.Extensions
 		/// Extracts the extensions in this ExtensibleBase into adapter
 		/// </summary>
 		/// <param name="adapter"></param>
+		[EditorBrowsable(EditorBrowsableState.Advanced)]
 		public void FillExtensions(IExtensionAdapter adapter)
 		{
 			if (adapter == null)
@@ -95,6 +114,7 @@ namespace WebFeeds.Feeds.Extensions
 
 		#region INamespaceProvider Members
 
+		[EditorBrowsable(EditorBrowsableState.Advanced)]
 		public virtual void AddNamespaces(XmlSerializerNamespaces namespaces)
 		{
 			foreach (XmlNode node in this.AttributeExtensions)
