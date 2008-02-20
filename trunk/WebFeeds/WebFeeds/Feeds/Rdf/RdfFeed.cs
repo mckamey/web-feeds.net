@@ -59,7 +59,6 @@ namespace WebFeeds.Feeds.Rdf
 		#region Fields
 
 		private RdfChannel channel = null;
-		private List<RdfItem> items = new List<RdfItem>();
 		private RdfImage image = null;
 		private RdfTextInput textInput = null;
 
@@ -119,7 +118,7 @@ namespace WebFeeds.Feeds.Rdf
 		}
 
 		[XmlIgnore]
-		[Browsable(false)]
+		[EditorBrowsable(EditorBrowsableState.Never)]
 		public bool ImageSpecified
 		{
 			get { return (this.image != null && !this.image.IsEmpty()); }
@@ -127,17 +126,21 @@ namespace WebFeeds.Feeds.Rdf
 		}
 
 		[XmlElement("item", Namespace=RdfFeed.NamespaceRss10)]
-		public List<RdfItem> Items
+		public readonly List<RdfItem> Items = new List<RdfItem>();
+
+		[XmlIgnore]
+		[EditorBrowsable(EditorBrowsableState.Never)]
+		public bool ItemsSpecified
 		{
-			get { return this.items; }
-			set { this.items = value; }
+			get { return (this.Items.Count > 0); }
+			set { }
 		}
 
 		[XmlIgnore]
 		public RdfItem this[int index]
 		{
-			get { return this.items[index]; }
-			set { this.items[index] = value; }
+			get { return this.Items[index]; }
+			set { this.Items[index] = value; }
 		}
 
 		/// <summary>
@@ -160,7 +163,7 @@ namespace WebFeeds.Feeds.Rdf
 		}
 
 		[XmlIgnore]
-		[Browsable(false)]
+		[EditorBrowsable(EditorBrowsableState.Never)]
 		public bool TextInputSpecified
 		{
 			get { return (this.textInput != null && !this.textInput.IsEmpty()); }

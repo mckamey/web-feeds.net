@@ -162,20 +162,15 @@ namespace WebFeeds.Feeds.Atom
 	/// http://tools.ietf.org/html/rfc4287#section-3.3
 	/// </summary>
 	[Serializable]
-	public class AtomDate : AtomCommonAttributes
+	public struct AtomDate
 	{
 		#region Fields
 
-		private DateTime? value = null;
+		private DateTime? value;
 
 		#endregion Fields
 
 		#region Init
-
-		/// <summary>
-		/// Ctor
-		/// </summary>
-		public AtomDate() { }
 
 		/// <summary>
 		/// Ctor
@@ -193,12 +188,31 @@ namespace WebFeeds.Feeds.Atom
 		[XmlIgnore]
 		public DateTime Value
 		{
-			get { return this.value.Value; }
+			get
+			{
+				if (!this.value.HasValue)
+				{
+					throw new InvalidOperationException("AtomDate object must have a value.");
+				}
+				return this.value.Value;
+			}
 			set { this.value = value; }
 		}
 
+		[XmlIgnore]
+		public bool HasValue
+		{
+			get { return this.value.HasValue; }
+		}
+
+		/// <summary>
+		/// Gets and sets the DateTime using ISO-8601 date format.
+		/// For serialization purposes only, use the PubDate property instead.
+		/// </summary>
 		[XmlText]
 		[DefaultValue(null)]
+		[EditorBrowsable(EditorBrowsableState.Never)]
+		[Obsolete("For serialization purposes only, use the PubDate property instead.", true)]
 		public string Value_Iso8601
 		{
 			get
@@ -224,11 +238,45 @@ namespace WebFeeds.Feeds.Atom
 
 		#endregion Properties
 
+		#region Methods
+
+		public DateTime GetValueOrDefault(DateTime defaultValue)
+		{
+			if (!this.value.HasValue)
+			{
+				return defaultValue;
+			}
+			return this.value.Value;
+		}
+
+		#endregion Methods
+
 		#region Object Overrides
 
 		public override string ToString()
 		{
 			return this.Value.ToString();
+		}
+
+		public override bool Equals(object obj)
+		{
+			if (obj is AtomDate)
+			{
+				return this.value.Equals(((AtomDate)obj).value);
+			}
+			else
+			{
+				return base.Equals(obj);
+			}
+		}
+
+		public override int GetHashCode()
+		{
+			if (!this.value.HasValue)
+			{
+				return 0;
+			}
+			return this.value.GetHashCode();
 		}
 
 		#endregion Object Overrides
@@ -599,8 +647,14 @@ namespace WebFeeds.Feeds.Atom
 			set { this.value = value; }
 		}
 
+		/// <summary>
+		/// Gets and sets the Value using XmlNodes.
+		/// For serialization purposes only, use the Value property instead.
+		/// </summary>
 		[DefaultValue(null)]
 		[XmlAnyElement(Namespace="http://www.w3.org/1999/xhtml")]
+		[EditorBrowsable(EditorBrowsableState.Never)]
+		[Obsolete("For serialization purposes only, use the Value property instead.")]
 		public XmlNode XhtmlValue
 		{
 			get

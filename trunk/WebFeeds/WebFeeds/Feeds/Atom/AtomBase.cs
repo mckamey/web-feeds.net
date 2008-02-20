@@ -64,6 +64,7 @@ namespace WebFeeds.Feeds.Atom
 		#region Properties
 
 		[DefaultValue(null)]
+		[EditorBrowsable(EditorBrowsableState.Advanced)]
 		[XmlAttribute("lang", Namespace=AtomCommonAttributes.XmlNamespace)]
 		public string XmlLanguage
 		{
@@ -72,6 +73,7 @@ namespace WebFeeds.Feeds.Atom
 		}
 
 		[DefaultValue(null)]
+		[EditorBrowsable(EditorBrowsableState.Advanced)]
 		[XmlAttribute("base", Namespace=AtomCommonAttributes.XmlNamespace)]
 		public string XmlBase
 		{
@@ -103,40 +105,11 @@ namespace WebFeeds.Feeds.Atom
 		private string id = null;
 		private AtomText rights = null;
 		private AtomText title = null;
-		private AtomDate updated = null;
-
-		private List<AtomPerson> authors = new List<AtomPerson>();
-		private List<AtomCategory> categories = new List<AtomCategory>();
-		private List<AtomPerson> contributors = new List<AtomPerson>();
-		private List<AtomLink> links = new List<AtomLink>();
+		private AtomDate updated;
 
 		#endregion Fields
 
 		#region Properties
-
-		[DefaultValue(null)]
-		[XmlElement("author")]
-		public List<AtomPerson> Authors
-		{
-			get { return this.authors; }
-			set { this.authors = value; }
-		}
-
-		[DefaultValue(null)]
-		[XmlElement("category")]
-		public List<AtomCategory> Categories
-		{
-			get { return this.categories; }
-			set { this.categories = value; }
-		}
-
-		[DefaultValue(null)]
-		[XmlElement("contributor")]
-		public List<AtomPerson> Contributors
-		{
-			get { return this.contributors; }
-			set { this.contributors = value; }
-		}
 
 		[DefaultValue(null)]
 		[XmlElement("id")]
@@ -147,11 +120,55 @@ namespace WebFeeds.Feeds.Atom
 		}
 
 		[DefaultValue(null)]
-		[XmlElement("link")]
-		public List<AtomLink> Links
+		[XmlElement("title")]
+		public AtomText Title
 		{
-			get { return this.links; }
-			set { this.links = value; }
+			get { return this.title; }
+			set { this.title = value; }
+		}
+
+		[XmlElement("author")]
+		public readonly List<AtomPerson> Authors = new List<AtomPerson>();
+
+		[XmlIgnore]
+		[EditorBrowsable(EditorBrowsableState.Never)]
+		public bool AuthorsSpecified
+		{
+			get { return (this.Authors.Count > 0); }
+			set { }
+		}
+
+		[XmlElement("category")]
+		public readonly List<AtomCategory> Categories = new List<AtomCategory>();
+
+		[XmlIgnore]
+		[EditorBrowsable(EditorBrowsableState.Never)]
+		public bool CategoriesSpecified
+		{
+			get { return (this.Categories.Count > 0); }
+			set { }
+		}
+
+		[XmlElement("contributor")]
+		public readonly List<AtomPerson> Contributors = new List<AtomPerson>();
+
+		[XmlIgnore]
+		[EditorBrowsable(EditorBrowsableState.Never)]
+		public bool ContributorsSpecified
+		{
+			get { return (this.Contributors.Count > 0); }
+			set { }
+		}
+
+		[XmlElement("link")]
+		public readonly List<AtomLink> Links = new List<AtomLink>();
+
+		[XmlIgnore]
+		[EditorBrowsable(EditorBrowsableState.Never)]
+		public bool LinksSpecified
+		{
+			get { return (this.Links.Count > 0); }
+			set { }
 		}
 
 		[DefaultValue(null)]
@@ -163,7 +180,7 @@ namespace WebFeeds.Feeds.Atom
 		}
 
 		[XmlIgnore]
-		[Browsable(false)]
+		[EditorBrowsable(EditorBrowsableState.Never)]
 		public virtual bool RightsSpecified
 		{
 			get { return true; }
@@ -171,26 +188,18 @@ namespace WebFeeds.Feeds.Atom
 		}
 
 		[DefaultValue(null)]
-		[XmlElement("title")]
-		public AtomText Title
-		{
-			get { return this.title; }
-			set { this.title = value; }
-		}
-
-		[DefaultValue(null)]
 		[XmlElement("updated")]
-		public AtomDate Updated
+		public virtual AtomDate Updated
 		{
 			get { return this.updated; }
 			set { this.updated = value; }
 		}
 
 		[XmlIgnore]
-		[Browsable(false)]
+		[EditorBrowsable(EditorBrowsableState.Never)]
 		public virtual bool UpdatedSpecified
 		{
-			get { return true; }
+			get { return this.updated.HasValue; }
 			set { }
 		}
 
@@ -267,7 +276,7 @@ namespace WebFeeds.Feeds.Atom
 		}
 
 		[XmlIgnore]
-		[Browsable(false)]
+		[EditorBrowsable(EditorBrowsableState.Never)]
 		public virtual bool SubTitleSpecified
 		{
 			get { return true; }

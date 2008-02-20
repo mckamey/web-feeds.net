@@ -32,6 +32,7 @@ using System;
 using System.ComponentModel;
 using System.Collections.Generic;
 using System.Xml.Serialization;
+using System.Globalization;
 
 namespace WebFeeds.Feeds.Rss
 {
@@ -44,23 +45,18 @@ namespace WebFeeds.Feeds.Rss
 	{
 		#region Fields
 
-		private List<RssItem> items = new List<RssItem>();
-
 		// required
 		private string title = null;
 		private Uri link = null;
 		private string description = null;
 
 		// optional
-		private System.Globalization.CultureInfo language = System.Globalization.CultureInfo.InvariantCulture;
+		private CultureInfo language = CultureInfo.InvariantCulture;
 		private string copyright = null;
 		private RssEmail managingEditor = null;
 		private RssEmail webMaster = null;
-		private DateTime? pubDate = null;
-		private string pubDate_Rfc822 = null;
-		private DateTime? lastBuildDate = null;
-		private string lastBuildDate_Rfc822 = null;
-		private List<RssCategory> categories = new List<RssCategory>();
+		private RssDate pubDate;
+		private RssDate lastBuildDate;
 		private string generator = null;
 		private string docs = null;
 		private RssCloud cloud = null;
@@ -126,7 +122,7 @@ namespace WebFeeds.Feeds.Rss
 		public string Language
 		{
 			get { return this.language.Name; }
-			set { this.language = System.Globalization.CultureInfo.GetCultureInfo(value); }
+			set { this.language = CultureInfo.GetCultureInfo(value); }
 		}
 
 		[DefaultValue(null)]
@@ -156,7 +152,7 @@ namespace WebFeeds.Feeds.Rss
 		}
 
 		[XmlIgnore]
-		[Browsable(false)]
+		[EditorBrowsable(EditorBrowsableState.Never)]
 		public bool ManagingEditorSpecified
 		{
 			get { return (this.managingEditor != null && !this.managingEditor.IsEmpty()); }
@@ -182,94 +178,53 @@ namespace WebFeeds.Feeds.Rss
 		}
 
 		[XmlIgnore]
-		[Browsable(false)]
+		[EditorBrowsable(EditorBrowsableState.Never)]
 		public bool WebMasterSpecified
 		{
 			get { return (this.webMaster != null && !this.webMaster.IsEmpty()); }
 			set { }
 		}
 
-		[XmlIgnore]
-		public DateTime PubDate
+		[DefaultValue(null)]
+		[XmlElement("pubDate")]
+		public RssDate PubDate
 		{
-			get { return this.pubDate.Value; }
+			get { return this.pubDate; }
 			set { this.pubDate = value; }
 		}
 
-		/// <summary>
-		/// Gets and sets the pubDate using RFC-822 date format.  For serialization purposes only, use the PubDate property instead.
-		/// </summary>
-		[DefaultValue(null)]
-		[XmlElement("pubDate")]
-		public string PubDate_Rfc822
+		[XmlIgnore]
+		[EditorBrowsable(EditorBrowsableState.Never)]
+		public bool PubDateSpecified
 		{
-			get
-			{
-				if (!this.pubDate.HasValue)
-				{
-					return this.pubDate_Rfc822;
-				}
-
-				return this.pubDate.Value.ToString("R");
-			}
-			set
-			{
-				DateTime dateTime;
-				if (!DateTime.TryParse(value, out dateTime))
-				{
-					this.pubDate = null;
-					this.pubDate_Rfc822 = null;
-					return;
-				}
-
-				this.pubDate = dateTime;
-				this.pubDate_Rfc822 = value;
-			}
+			get { return this.pubDate.HasValue; }
+			set { }
 		}
 
 		[XmlIgnore]
-		public DateTime LastBuildDate
+		public RssDate LastBuildDate
 		{
-			get { return this.lastBuildDate.Value; }
+			get { return this.lastBuildDate; }
 			set { this.lastBuildDate = value; }
 		}
 
-		/// <summary>
-		/// Gets and sets the lastBuildDate using RFC-822 date format.  For serialization purposes only, use the LastBuildDate property instead.
-		/// </summary>
-		[DefaultValue(null)]
-		[XmlElement("lastBuildDate")]
-		public string LastBuildDate_Rfc822
+		[XmlIgnore]
+		[EditorBrowsable(EditorBrowsableState.Never)]
+		public bool LastBuildDateSpecified
 		{
-			get
-			{
-				if (!this.lastBuildDate.HasValue)
-				{
-					return this.lastBuildDate_Rfc822;
-				}
-
-				return this.lastBuildDate.Value.ToString("R");
-			}
-			set
-			{
-				DateTime dateTime;
-				if (!DateTime.TryParse(value, out dateTime))
-				{
-					this.lastBuildDate = null;
-					this.lastBuildDate_Rfc822 = null;
-					return;
-				}
-
-				this.lastBuildDate = dateTime;
-				this.lastBuildDate_Rfc822 = value;
-			}
+			get { return this.lastBuildDate.HasValue; }
+			set { }
 		}
 
 		[XmlElement("category")]
-		public List<RssCategory> Categories
+		public readonly List<RssCategory> Categories = new List<RssCategory>();
+
+		[XmlIgnore]
+		[EditorBrowsable(EditorBrowsableState.Never)]
+		public bool CategoriesSpecified
 		{
-			get { return this.categories; }
-			set { this.categories = value; }
+			get { return (this.Categories.Count > 0); }
+			set { }
 		}
 
 		[DefaultValue(null)]
@@ -305,7 +260,7 @@ namespace WebFeeds.Feeds.Rss
 		}
 
 		[XmlIgnore]
-		[Browsable(false)]
+		[EditorBrowsable(EditorBrowsableState.Never)]
 		public bool CloudSpecified
 		{
 			get { return (this.cloud != null && !this.cloud.IsEmpty()); }
@@ -343,7 +298,7 @@ namespace WebFeeds.Feeds.Rss
 		}
 
 		[XmlIgnore]
-		[Browsable(false)]
+		[EditorBrowsable(EditorBrowsableState.Never)]
 		public bool ImageSpecified
 		{
 			get { return (this.image != null && !this.image.IsEmpty()); }
@@ -374,7 +329,7 @@ namespace WebFeeds.Feeds.Rss
 		}
 
 		[XmlIgnore]
-		[Browsable(false)]
+		[EditorBrowsable(EditorBrowsableState.Never)]
 		public bool TextInputSpecified
 		{
 			get { return (this.textInput != null && !this.textInput.IsEmpty()); }
@@ -398,7 +353,7 @@ namespace WebFeeds.Feeds.Rss
 		}
 
 		[XmlIgnore]
-		[Browsable(false)]
+		[EditorBrowsable(EditorBrowsableState.Never)]
 		public bool SkipHoursSpecified
 		{
 			get { return (this.skipHours != null && !this.skipHours.IsEmpty()); }
@@ -422,7 +377,7 @@ namespace WebFeeds.Feeds.Rss
 		}
 
 		[XmlIgnore]
-		[Browsable(false)]
+		[EditorBrowsable(EditorBrowsableState.Never)]
 		public bool SkipDaysSpecified
 		{
 			get { return (this.skipDays != null && !this.skipDays.IsEmpty()); }
@@ -430,17 +385,14 @@ namespace WebFeeds.Feeds.Rss
 		}
 
 		[XmlElement("item")]
-		public List<RssItem> Items
-		{
-			get { return this.items; }
-			set { this.items = value; }
-		}
+		public readonly List<RssItem> Items = new List<RssItem>();
 
 		[XmlIgnore]
-		public RssItem this[int index]
+		[EditorBrowsable(EditorBrowsableState.Never)]
+		public bool ItemsSpecified
 		{
-			get { return this.items[index]; }
-			set { this.items[index] = value; }
+			get { return (this.Items.Count > 0); }
+			set { }
 		}
 
 		#endregion Properties

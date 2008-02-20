@@ -68,9 +68,20 @@ namespace WebFeeds.Feeds
 		/// <summary>
 		/// Gets the if output should be formatted for human readability
 		/// </summary>
+		/// <remarks>
+		/// PrettyPrint defaults to true for Debug builds, false for Release builds
+		/// </remarks>
 		protected virtual bool PrettyPrint
 		{
-			get { return true; }
+			get
+			{
+				return
+#if DEBUG
+					true;
+#else
+					false;
+#endif
+			}
 		}
 
 		#endregion Properties

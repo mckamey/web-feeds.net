@@ -94,19 +94,17 @@ namespace WebFeeds.Feeds.Atom
 
 		#endregion Constants
 
-		#region Fields
-
-		private List<AtomEntry> entries = new List<AtomEntry>();
-
-		#endregion Fields
-
 		#region Properties
 
 		[XmlElement("entry")]
-		public List<AtomEntry> Entries
+		public readonly List<AtomEntry> Entries = new List<AtomEntry>();
+
+		[XmlIgnore]
+		[EditorBrowsable(EditorBrowsableState.Never)]
+		public bool EntriesSpecified
 		{
-			get { return this.entries; }
-			set { this.entries = value; }
+			get { return (this.Entries.Count > 0); }
+			set { }
 		}
 
 		#endregion Properties
@@ -150,7 +148,6 @@ namespace WebFeeds.Feeds.Atom
 
 		#region Fields
 
-		private List<AtomEntry03> entries = new List<AtomEntry03>();
 		private Version version = new Version(0, 3);
 
 		#endregion Fields
@@ -215,14 +212,18 @@ namespace WebFeeds.Feeds.Atom
 		}
 
 		[XmlElement("entry")]
-		public List<AtomEntry03> Entries
+		public readonly List<AtomEntry03> Entries = new List<AtomEntry03>();
+
+		[XmlIgnore]
+		[EditorBrowsable(EditorBrowsableState.Never)]
+		public bool EntriesSpecified
 		{
-			get { return this.entries; }
-			set { this.entries = value; }
+			get { return (this.Entries.Count > 0); }
+			set { }
 		}
 
 		[XmlIgnore]
-		[Browsable(false)]
+		[EditorBrowsable(EditorBrowsableState.Never)]
 		public override bool SubTitleSpecified
 		{
 			get { return false; }
@@ -230,7 +231,7 @@ namespace WebFeeds.Feeds.Atom
 		}
 
 		[XmlIgnore]
-		[Browsable(false)]
+		[EditorBrowsable(EditorBrowsableState.Never)]
 		public override bool RightsSpecified
 		{
 			get { return false; }
@@ -238,7 +239,7 @@ namespace WebFeeds.Feeds.Atom
 		}
 
 		[XmlIgnore]
-		[Browsable(false)]
+		[EditorBrowsable(EditorBrowsableState.Never)]
 		public override bool UpdatedSpecified
 		{
 			get { return false; }

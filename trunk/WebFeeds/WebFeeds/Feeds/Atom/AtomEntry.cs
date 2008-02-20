@@ -51,7 +51,7 @@ namespace WebFeeds.Feeds.Atom
 		#region Fields
 
 		private AtomContent content = null;
-		private AtomDate published = null;
+		private AtomDate published;
 		private AtomSource source = null;
 		private AtomText summary = null;
 
@@ -80,17 +80,17 @@ namespace WebFeeds.Feeds.Atom
 
 		[DefaultValue(null)]
 		[XmlElement("published")]
-		public AtomDate Published
+		public virtual AtomDate Published
 		{
 			get { return this.published; }
 			set { this.published = value; }
 		}
 
 		[XmlIgnore]
-		[Browsable(false)]
+		[EditorBrowsable(EditorBrowsableState.Never)]
 		public virtual bool PublishedSpecified
 		{
-			get { return true; }
+			get { return this.published.HasValue; }
 			set { }
 		}
 
@@ -141,6 +141,14 @@ namespace WebFeeds.Feeds.Atom
 			set { base.Updated = value; }
 		}
 
+		[XmlIgnore]
+		[EditorBrowsable(EditorBrowsableState.Never)]
+		public bool ModifiedSpecified
+		{
+			get { return base.UpdatedSpecified; }
+			set { }
+		}
+
 		[DefaultValue(null)]
 		[XmlElement("issued")]
 		public AtomDate Issued
@@ -150,19 +158,27 @@ namespace WebFeeds.Feeds.Atom
 		}
 
 		[XmlIgnore]
-		[Browsable(false)]
-		public override bool PublishedSpecified
+		[EditorBrowsable(EditorBrowsableState.Never)]
+		public bool IssuedSpecified
 		{
-			get { return false; }
+			get { return base.PublishedSpecified; }
 			set { }
 		}
 
 		[XmlIgnore]
-		[Browsable(false)]
-		public override bool UpdatedSpecified
+		[EditorBrowsable(EditorBrowsableState.Never)]
+		public override AtomDate Published
 		{
-			get { return false; }
-			set { }
+			get { return base.Published; }
+			set { base.Published = value; }
+		}
+
+		[XmlIgnore]
+		[EditorBrowsable(EditorBrowsableState.Never)]
+		public override AtomDate Updated
+		{
+			get { return base.Updated; }
+			set { base.Updated = value; }
 		}
 
 		#endregion Properties
