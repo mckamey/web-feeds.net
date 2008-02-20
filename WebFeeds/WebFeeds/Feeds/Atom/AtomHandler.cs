@@ -41,59 +41,5 @@ namespace WebFeeds.Feeds.Atom
 	/// </summary>
 	public class AtomHandler : FeedHandler
 	{
-		#region Properties
-
-		public override string AppSettingsKey
-		{
-			get { return "WebFeeds.AtomXslt"; }
-		}
-
-		#endregion Properties
-
-		#region Methods
-
-		/// <summary>
-		/// Implementations should override this method to handle errors during Atom generation.
-		/// </summary>
-		/// <param name="context"></param>
-		/// <param name="exception"></param>
-		/// <returns>AtomFeed10</returns>
-		/// <remarks>
-		/// The default implementation handles any exceptions during the Atom generation by
-		/// producing the exception stack trace as a valid Atom document.
-		/// </remarks>
-		protected override IWebFeed HandleError(HttpContext context, Exception exception)
-		{
-			AtomFeed10 feed = new AtomFeed10();
-			feed.Updated = new AtomDate(DateTime.UtcNow);
-			feed.Title = new AtomText("Server Error");
-			feed.SubTitle = new AtomText("An error occurred while generating this feed. See feed items for details.");
-
-			//AtomCategory atomCategory = new AtomCategory("error");
-			//feed.Categories.Add(atomCategory);
-
-			while (exception != null)
-			{
-				AtomEntry entry = new AtomEntry();
-				entry.Title = new AtomText(exception.GetType().Name);
-
-#if DEBUG
-				entry.Summary = new AtomText("<pre>"+exception+"</pre>");
-				entry.Summary.Type = AtomTextType.Html;
-#else
-				entry.Summary = new AtomText(exception.Message);
-#endif
-				AtomLink link = new AtomLink(exception.HelpLink);
-				entry.Links.Add(link);
-				entry.Published = feed.Updated;
-				feed.Entries.Add(entry);
-
-				exception = exception.InnerException;
-			}
-
-			return feed;
-		}
-
-		#endregion Methods
 	}
 }

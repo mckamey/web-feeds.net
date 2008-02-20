@@ -36,6 +36,8 @@ using System.Text;
 using System.Threading;
 using System.Configuration;
 
+using WebFeeds.Feeds.Atom;
+
 namespace WebFeeds.Feeds
 {
 	/// <summary>
@@ -53,22 +55,13 @@ namespace WebFeeds.Feeds
 		#region Properties
 
 		/// <summary>
-		/// Gets the AppSettings Key which designates where to point the XSLT.
-		/// </summary>
-		public abstract string AppSettingsKey
-		{
-			get;
-		}
-
-		/// <summary>
 		/// Gets the timeout in milliseconds
 		/// </summary>
 		protected virtual int Timeout
 		{
 			get
 			{
-				// 5 seconds
-				return 5000;
+				return 5000; // 5 seconds
 			}
 		}
 
@@ -108,12 +101,46 @@ namespace WebFeeds.Feeds
 		}
 
 		/// <summary>
-		/// Implementations should override this method to handle errors during Feed generation.
+		/// Implementations should override this method to handle errors during Atom generation.
 		/// </summary>
 		/// <param name="context"></param>
 		/// <param name="exception"></param>
-		/// <returns>Feed</returns>
-		protected abstract IWebFeed HandleError(HttpContext context, Exception exception);
+		/// <returns>AtomFeed10</returns>
+		/// <remarks>
+		/// The default implementation handles any exceptions during the Feed generation by
+		/// producing the exception stack trace as a valid Atom Feed.
+		/// </remarks>
+		protected virtual IWebFeed HandleError(HttpContext context, Exception exception)
+		{
+			AtomFeed10 feed = new AtomFeed10();
+			feed.Updated = new AtomDate(DateTime.UtcNow);
+			feed.Title = new AtomText("Server Error");
+			feed.SubTitle = new AtomText("An error occurred while generating this feed. See feed items for details.");
+
+			//AtomCategory atomCategory = new AtomCategory("error");
+			//feed.Categories.Add(atomCategory);
+
+			while (exception != null)
+			{
+				AtomEntry entry = new AtomEntry();
+				entry.Title = new AtomText(exception.GetType().Name);
+
+#if DEBUG
+				entry.Summary = new AtomText("<pre>"+exception+"</pre>");
+				entry.Summary.Type = AtomTextType.Html;
+#else
+				entry.Summary = new AtomText(exception.Message);
+#endif
+				AtomLink link = new AtomLink(exception.HelpLink);
+				entry.Links.Add(link);
+				entry.Published = feed.Updated;
+				feed.Entries.Add(entry);
+
+				exception = exception.InnerException;
+			}
+
+			return feed;
+		}
 
 		#endregion Feed Handler Methods
 
@@ -124,10 +151,9 @@ namespace WebFeeds.Feeds
 		/// </summary>
 		/// <param name="baseUri"></param>
 		/// <returns></returns>
-		private string GetXsltUri(HttpContext context)
+		protected virtual string GetXsltUri(Uri baseUri)
 		{
-			Uri baseUri = context.Request.Url;
-			string feedXslt = ConfigurationManager.AppSettings[this.AppSettingsKey];
+			string feedXslt = ConfigurationManager.AppSettings["WebFeeds.XsltUrl"];
 			if (baseUri != null && !String.IsNullOrEmpty(feedXslt))
 			{
 				Uri absUri;
@@ -145,7 +171,7 @@ namespace WebFeeds.Feeds
 		/// </summary>
 		/// <param name="context"></param>
 		/// <param name="feed"></param>
-		private void RenderFeed(HttpContext context, IWebFeed feed)
+		protected virtual void RenderFeed(HttpContext context, IWebFeed feed)
 		{
 			context.Response.Clear();
 			context.Response.ClearContent();
@@ -162,7 +188,7 @@ namespace WebFeeds.Feeds
 				}
 				context.Response.ContentType = feed.MimeType;
 
-				string xsltUrl = this.GetXsltUri(context);
+				string xsltUrl = this.GetXsltUri(context.Request.Url);
 				Stream output = context.Response.OutputStream;
 				FeedSerializer.SerializeXml(feed, output, xsltUrl, this.PrettyPrint);
 			}
@@ -173,15 +199,6 @@ namespace WebFeeds.Feeds
 #else
 				context.Response.Write(ex.Message);
 #endif
-			}
-			finally
-			{
-				if (context.ApplicationInstance != null)
-				{
-					// prevents "Transfer-Encoding: Chunked" header which chokes IE6 (unlike Response.Flush/Close)
-					// and prevents ending response too early (unlike Response.End)
-					context.ApplicationInstance.CompleteRequest();
-				}
 			}
 		}
 
@@ -256,9 +273,22 @@ namespace WebFeeds.Feeds
 				catch { }
 			}
 
-			this.RenderFeed(
-				worker[Key_Context] as HttpContext,
-				worker[Key_Feed] as IWebFeed);
+			HttpContext context = worker[Key_Context] as HttpContext;
+			try
+			{
+				this.RenderFeed(
+					context,
+					worker[Key_Feed] as IWebFeed);
+			}
+			finally
+			{
+				if (context != null && context.ApplicationInstance != null)
+				{
+					// prevents "Transfer-Encoding: Chunked" header which chokes IE6 (unlike Response.Flush/Close)
+					// and prevents ending response too early (unlike Response.End)
+					context.ApplicationInstance.CompleteRequest();
+				}
+			}
 		}
 
 		#endregion IHttpAsyncHandler Members
