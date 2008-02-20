@@ -212,7 +212,6 @@ namespace WebFeeds.Feeds.Atom
 		[XmlText]
 		[DefaultValue(null)]
 		[EditorBrowsable(EditorBrowsableState.Never)]
-		[Obsolete("For serialization purposes only, use the PubDate property instead.", true)]
 		public string Value_Iso8601
 		{
 			get
@@ -654,7 +653,6 @@ namespace WebFeeds.Feeds.Atom
 		[DefaultValue(null)]
 		[XmlAnyElement(Namespace="http://www.w3.org/1999/xhtml")]
 		[EditorBrowsable(EditorBrowsableState.Never)]
-		[Obsolete("For serialization purposes only, use the Value property instead.")]
 		public XmlNode XhtmlValue
 		{
 			get

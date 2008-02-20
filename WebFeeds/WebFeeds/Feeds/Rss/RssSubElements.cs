@@ -248,7 +248,6 @@ namespace WebFeeds.Feeds.Rss
 		[XmlText]
 		[DefaultValue(null)]
 		[EditorBrowsable(EditorBrowsableState.Never)]
-		[Obsolete("For serialization purposes only, use the PubDate property instead.", true)]
 		public string Value_Rfc822
 		{
 			get
