@@ -183,7 +183,7 @@ namespace WebFeeds.Feeds
 			{
 				if (feed == null)
 				{
-					context.Response.Write("Feed was null");
+					context.Response.Write("Feed is empty");
 					return;
 				}
 				context.Response.ContentType = feed.MimeType;
