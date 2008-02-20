@@ -41,15 +41,6 @@ namespace WebFeeds.Feeds.Rss
 	/// </summary>
 	public class RssHandler : FeedHandler
 	{
-		#region Properties
-
-		public override string AppSettingsKey
-		{
-			get { return "WebFeeds.RssXslt"; }
-		}
-
-		#endregion Properties
-
 		#region Methods
 
 		/// <summary>

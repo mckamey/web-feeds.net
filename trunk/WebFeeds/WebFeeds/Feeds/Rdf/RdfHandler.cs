@@ -43,15 +43,6 @@ namespace WebFeeds.Feeds.Rdf
 	/// </summary>
 	public class RdfHandler : FeedHandler
 	{
-		#region Properties
-
-		public override string AppSettingsKey
-		{
-			get { return "WebFeeds.RdfXslt"; }
-		}
-
-		#endregion Properties
-
 		#region Methods
 
 		/// <summary>
