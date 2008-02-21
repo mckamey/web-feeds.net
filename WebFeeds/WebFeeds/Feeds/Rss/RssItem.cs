@@ -59,12 +59,6 @@ namespace WebFeeds.Feeds.Rss
 
 		#endregion Fields
 
-		#region Init
-
-		public RssItem() { }
-
-		#endregion Init
-
 		#region Properties
 
 		/// <summary>

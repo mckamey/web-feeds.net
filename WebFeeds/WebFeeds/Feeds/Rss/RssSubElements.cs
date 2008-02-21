@@ -55,7 +55,17 @@ namespace WebFeeds.Feeds.Rss
 
 		#region Init
 
-		public RssCategory() { }
+		/// <summary>
+		/// Ctor
+		/// </summary>
+		public RssCategory()
+		{
+		}
+
+		public RssCategory(string value)
+		{
+			this.value = value;
+		}
 
 		#endregion Init
 
@@ -84,6 +94,20 @@ namespace WebFeeds.Feeds.Rss
 		}
 
 		#endregion Properties
+
+		#region Operators
+
+		public static implicit operator RssCategory(string value)
+		{
+			return new RssCategory(value);
+		}
+
+		public static explicit operator string(RssCategory value)
+		{
+			return value.Value;
+		}
+
+		#endregion Operators
 	}
 
 	#endregion RssCategory
@@ -107,12 +131,6 @@ namespace WebFeeds.Feeds.Rss
 		private string protocol = null;
 
 		#endregion Fields
-
-		#region Init
-
-		public RssCloud() { }
-
-		#endregion Init
 
 		#region Properties
 
@@ -356,12 +374,6 @@ namespace WebFeeds.Feeds.Rss
 
 		#endregion Fields
 
-		#region Init
-
-		public RssEmail() { }
-
-		#endregion Init
-
 		#region Properties
 
 		[XmlIgnore]
@@ -446,12 +458,6 @@ namespace WebFeeds.Feeds.Rss
 		private string type = null;
 
 		#endregion Fields
-
-		#region Init
-
-		public RssEnclosure() { }
-
-		#endregion Init
 
 		#region Properties
 
@@ -543,7 +549,21 @@ namespace WebFeeds.Feeds.Rss
 
 		#region Init
 
-		public RssGuid() { }
+		/// <summary>
+		/// Ctor
+		/// </summary>
+		public RssGuid()
+		{
+		}
+
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="value"></param>
+		public RssGuid(string value)
+		{
+			this.value = value;
+		}
 
 		#endregion Init
 
@@ -581,6 +601,20 @@ namespace WebFeeds.Feeds.Rss
 		}
 
 		#endregion Methods
+
+		#region Operators
+
+		public static implicit operator RssGuid(string value)
+		{
+			return new RssGuid(value);
+		}
+
+		public static explicit operator string(RssGuid value)
+		{
+			return value.Value;
+		}
+
+		#endregion Operators
 	}
 
 	#endregion RssGuid
@@ -606,12 +640,6 @@ namespace WebFeeds.Feeds.Rss
 		private int height = Int32.MinValue;
 
 		#endregion Fields
-
-		#region Init
-
-		public RssImage() { }
-
-		#endregion Init
 
 		#region Properties
 
@@ -864,8 +892,6 @@ namespace WebFeeds.Feeds.Rss
 			}
 		}
 
-		public RssSkipHours() { }
-
 		#endregion Init
 
 		#region Properties
@@ -953,12 +979,6 @@ namespace WebFeeds.Feeds.Rss
 
 		#endregion Fields
 
-		#region Init
-
-		public RssSource() { }
-
-		#endregion Init
-
 		#region Properties
 
 		/// <summary>
@@ -1021,12 +1041,6 @@ namespace WebFeeds.Feeds.Rss
 		private Uri link = null;
 
 		#endregion Fields
-
-		#region Init
-
-		public RssTextInput() { }
-
-		#endregion Init
 
 		#region Properties
 
