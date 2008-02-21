@@ -69,12 +69,6 @@ namespace WebFeeds.Feeds.Rss
 
 		#endregion Fields
 
-		#region Init
-
-		public RssChannel() { }
-
-		#endregion Init
-
 		#region Properties
 
 		[DefaultValue(null)]

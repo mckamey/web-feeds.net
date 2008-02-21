@@ -58,7 +58,9 @@ namespace WebFeeds.Feeds.Atom
 		/// <summary>
 		/// Ctor
 		/// </summary>
-		public AtomCategory() { }
+		public AtomCategory()
+		{
+		}
 
 		/// <summary>
 		/// Ctor
@@ -106,6 +108,20 @@ namespace WebFeeds.Feeds.Atom
 		}
 
 		#endregion Properties
+
+		#region Operators
+
+		public static implicit operator AtomCategory(string value)
+		{
+			return new AtomCategory(value);
+		}
+
+		public static explicit operator string(AtomCategory value)
+		{
+			return value.Value;
+		}
+
+		#endregion Operators
 	}
 
 	#endregion AtomCategory
@@ -135,7 +151,17 @@ namespace WebFeeds.Feeds.Atom
 		/// Ctor
 		/// </summary>
 		/// <param name="text"></param>
-		public AtomContent(string text) : base(text)
+		public AtomContent(string text)
+			: base(text)
+		{
+		}
+
+		/// <summary>
+		/// Ctor
+		/// </summary>
+		/// <param name="xhtml"></param>
+		public AtomContent(XmlNode xhtml)
+			: base(xhtml)
 		{
 		}
 
@@ -152,6 +178,30 @@ namespace WebFeeds.Feeds.Atom
 		}
 
 		#endregion Properties
+
+		#region Operators
+
+		public static implicit operator AtomContent(string value)
+		{
+			return new AtomContent(value);
+		}
+
+		public static implicit operator AtomContent(XmlNode value)
+		{
+			return new AtomContent(value);
+		}
+
+		public static explicit operator string(AtomContent value)
+		{
+			return value.Value;
+		}
+
+		public static explicit operator XmlNode(AtomContent value)
+		{
+			return value.XhtmlValue;
+		}
+
+		#endregion Operators
 	}
 
 	#endregion AtomContent
@@ -369,6 +419,20 @@ namespace WebFeeds.Feeds.Atom
 		}
 
 		#endregion Object Overrides
+
+		#region Operators
+
+		public static implicit operator AtomGenerator(string value)
+		{
+			return new AtomGenerator(value);
+		}
+
+		public static explicit operator string(AtomGenerator value)
+		{
+			return value.Value;
+		}
+
+		#endregion Operators
 	}
 
 	#endregion AtomGenerator
@@ -397,7 +461,9 @@ namespace WebFeeds.Feeds.Atom
 		/// <summary>
 		/// Ctor
 		/// </summary>
-		public AtomLink() { }
+		public AtomLink()
+		{
+		}
 
 		/// <summary>
 		/// Ctor
@@ -469,6 +535,20 @@ namespace WebFeeds.Feeds.Atom
 		}
 
 		#endregion Object Overrides
+
+		#region Operators
+
+		public static implicit operator AtomLink(string value)
+		{
+			return new AtomLink(value);
+		}
+
+		public static explicit operator string(AtomLink value)
+		{
+			return value.Href;
+		}
+
+		#endregion Operators
 	}
 
 	#endregion AtomLink
@@ -488,15 +568,6 @@ namespace WebFeeds.Feeds.Atom
 		private string email = null;
 
 		#endregion Fields
-
-		#region Init
-
-		/// <summary>
-		/// Ctor
-		/// </summary>
-		public AtomPerson() { }
-
-		#endregion Init
 
 		#region Properties
 
@@ -584,6 +655,15 @@ namespace WebFeeds.Feeds.Atom
 		public AtomText(string text)
 		{
 			this.value = text;
+		}
+
+		/// <summary>
+		/// Ctor
+		/// </summary>
+		/// <param name="xhtml"></param>
+		public AtomText(XmlNode xhtml)
+		{
+			this.XhtmlValue = xhtml;
 		}
 
 		#endregion Init
@@ -682,6 +762,30 @@ namespace WebFeeds.Feeds.Atom
 		}
 
 		#endregion Object Overrides
+
+		#region Operators
+
+		public static implicit operator AtomText(string value)
+		{
+			return new AtomText(value);
+		}
+
+		public static implicit operator AtomText(XmlNode value)
+		{
+			return new AtomText(value);
+		}
+
+		public static explicit operator string(AtomText value)
+		{
+			return value.Value;
+		}
+
+		public static explicit operator XmlNode(AtomText value)
+		{
+			return value.XhtmlValue;
+		}
+
+		#endregion Operators
 	}
 
 	#endregion AtomText

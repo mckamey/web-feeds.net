@@ -62,15 +62,6 @@ namespace WebFeeds.Feeds.Atom
 
 		#endregion Fields
 
-		#region Init
-
-		/// <summary>
-		/// Ctor
-		/// </summary>
-		protected AtomFeed() { }
-
-		#endregion Init
-
 		#region Properties
 
 		[DefaultValue(null)]

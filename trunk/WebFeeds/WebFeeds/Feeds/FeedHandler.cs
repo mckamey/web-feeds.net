@@ -124,26 +124,24 @@ namespace WebFeeds.Feeds
 		protected virtual IWebFeed HandleError(HttpContext context, Exception exception)
 		{
 			AtomFeed10 feed = new AtomFeed10();
-			feed.Updated = new AtomDate(DateTime.UtcNow);
-			feed.Title = new AtomText("Server Error");
-			feed.SubTitle = new AtomText("An error occurred while generating this feed. See feed items for details.");
+			feed.Updated = DateTime.UtcNow;
+			feed.Title = "Server Error";
+			feed.SubTitle = "An error occurred while generating this feed. See feed items for details.";
 
-			//AtomCategory atomCategory = new AtomCategory("error");
-			//feed.Categories.Add(atomCategory);
+			feed.Categories.Add("error");
 
 			while (exception != null)
 			{
 				AtomEntry entry = new AtomEntry();
-				entry.Title = new AtomText(exception.GetType().Name);
+				entry.Title = exception.GetType().Name;
 
 #if DEBUG
-				entry.Summary = new AtomText("<pre>"+exception+"</pre>");
+				entry.Summary = "<pre>"+exception+"</pre>";
 				entry.Summary.Type = AtomTextType.Html;
 #else
-				entry.Summary = new AtomText(exception.Message);
+				entry.Summary = exception.Message;
 #endif
-				AtomLink link = new AtomLink(exception.HelpLink);
-				entry.Links.Add(link);
+				entry.Links.Add(exception.HelpLink);
 				entry.Published = feed.Updated;
 				feed.Entries.Add(entry);
 

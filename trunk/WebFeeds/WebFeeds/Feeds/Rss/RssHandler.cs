@@ -60,9 +60,7 @@ namespace WebFeeds.Feeds.Rss
 			feed.Channel.Title = "Server Error";
 			feed.Channel.Description = "An error occurred while generating this feed. See feed items for details.";
 
-			RssCategory rssCategory = new RssCategory();
-			rssCategory.Value = "error";
-			feed.Channel.Categories.Add(rssCategory);
+			feed.Channel.Categories.Add("error");
 
 			while (exception != null)
 			{

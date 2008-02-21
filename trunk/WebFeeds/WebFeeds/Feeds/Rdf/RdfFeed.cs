@@ -64,17 +64,6 @@ namespace WebFeeds.Feeds.Rdf
 
 		#endregion Fields
 
-		#region Init
-
-		/// <summary>
-		/// Ctor
-		/// </summary>
-		public RdfFeed()
-		{
-		}
-
-		#endregion Init
-
 		#region Properties
 
 		[DefaultValue(null)]

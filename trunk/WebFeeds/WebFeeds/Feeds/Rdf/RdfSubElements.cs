@@ -189,6 +189,20 @@ namespace WebFeeds.Feeds.Rdf
 		}
 
 		#endregion Properties
+
+		#region Operators
+
+		public static implicit operator RdfResource(RdfBase value)
+		{
+			return new RdfResource(value);
+		}
+
+		public static explicit operator RdfBase(RdfResource value)
+		{
+			return value.target;
+		}
+
+		#endregion Operators
 	}
 
 	#endregion RdfResource
