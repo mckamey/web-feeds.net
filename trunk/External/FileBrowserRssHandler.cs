@@ -3,6 +3,7 @@ using System.IO;
 using System.Configuration;
 using System.Collections.Generic;
 using System.Web;
+using System.Globalization;
 
 using MediaLib.Web;
 using WebFeeds.Feeds;
@@ -23,7 +24,7 @@ namespace MediaLib.Web.Handlers
 
 		#region RssHandler Members
 
-		protected override IWebFeed GenerateFeed(System.Web.HttpContext context)
+		protected override IWebFeed GenerateFeed(HttpContext context)
 		{
 #if DEBUG
 			if (!String.IsNullOrEmpty(context.Request.QueryString["url"]))
@@ -36,11 +37,31 @@ namespace MediaLib.Web.Handlers
 			return this.GenerateDirectoryListFeed(context, folderPath);
 		}
 
+		/// <summary>
+		/// Creates the absolute url for the Feed XSLT.
+		/// </summary>
+		/// <param name="baseUri"></param>
+		/// <returns></returns>
+		protected override string GetXsltUri(Uri baseUri)
+		{
+			string feedXslt = ConfigurationManager.AppSettings["RssXslt"];
+			if (baseUri != null && !String.IsNullOrEmpty(feedXslt))
+			{
+				Uri absUri;
+				if (Uri.TryCreate(baseUri, feedXslt, out absUri))
+				{
+					return absUri.AbsoluteUri;
+				}
+			}
+
+			return feedXslt;
+		}
+
 		#endregion RssHandler Members
 
 		#region FileBrowser Methods
 
-		protected RssFeed GenerateDirectoryListFeed(System.Web.HttpContext context, string folderPath)
+		protected RssFeed GenerateDirectoryListFeed(HttpContext context, string folderPath)
 		{
 			string requestUrl = FilePathMapper.GetDirectory(context.Request.Url.AbsoluteUri);
 			DirectoryInfo directoryInfo = new DirectoryInfo(folderPath);
@@ -53,7 +74,7 @@ namespace MediaLib.Web.Handlers
 			feed.Channel.Generator = feed.Channel.Title+" RSS Generator";
 			feed.Channel.Ttl = 86400;
 			feed.Channel.Link = requestUrl;
-			feed.Channel.Language = System.Globalization.CultureInfo.CurrentCulture.Name;
+			feed.Channel.Language = CultureInfo.CurrentCulture.Name;
 
 			if (!folderPath.Equals(FilePathMapper.MediaPhysicalRoot, StringComparison.InvariantCultureIgnoreCase))
 			{
