@@ -46,7 +46,7 @@ namespace WebFeeds.Feeds.Atom
 	///		atomSummary?
 	/// </remarks>
 	[Serializable]
-	public class AtomEntry : AtomSource
+	public class AtomEntry : AtomBase
 	{
 		#region Fields
 
