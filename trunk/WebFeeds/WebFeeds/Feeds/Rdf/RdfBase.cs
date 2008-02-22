@@ -106,7 +106,14 @@ namespace WebFeeds.Feeds.Rdf
 		[XmlAttribute("about", Namespace=RdfFeed.NamespaceRdf)]
 		public virtual string About
 		{
-			get { return this.about; }
+			get
+			{
+				if (String.IsNullOrEmpty(this.about))
+				{
+					return this.Link;
+				}
+				return this.about;
+			}
 			set { this.about = value; }
 		}
 
