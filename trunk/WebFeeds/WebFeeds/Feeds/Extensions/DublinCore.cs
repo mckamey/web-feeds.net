@@ -165,6 +165,20 @@ namespace WebFeeds.Feeds.Extensions
 
 		#endregion IExtensionProvider Members
 
+		#region Utility Methods
+
+		public static string ConvertToString(DateTime date)
+		{
+			return XmlConvert.ToString(date, XmlDateTimeSerializationMode.Utc);
+		}
+
+		public static DateTime ConvertToDateTime(string date)
+		{
+			return XmlConvert.ToDateTime(date, XmlDateTimeSerializationMode.Utc);
+		}
+
+		#endregion Utility Methods
+
 		#region TermName enum
 
 		public enum TermName
