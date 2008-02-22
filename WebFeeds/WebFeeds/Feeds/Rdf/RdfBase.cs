@@ -101,9 +101,8 @@ namespace WebFeeds.Feeds.Rdf
 		}
 
 		/// <summary>
-		/// Gets and sets 
+		/// Gets and sets a URL link to the described resource
 		/// </summary>
-		[DefaultValue(null)]
 		[XmlAttribute("about", Namespace=RdfFeed.NamespaceRdf)]
 		public virtual string About
 		{
