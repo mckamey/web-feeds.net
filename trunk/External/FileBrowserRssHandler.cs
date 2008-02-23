@@ -5,9 +5,10 @@ using System.Collections.Generic;
 using System.Web;
 using System.Globalization;
 
-using MediaLib.Web;
 using WebFeeds.Feeds;
 using WebFeeds.Feeds.Rss;
+using WebFeeds.Feeds.Extensions;
+using MediaLib.Web;
 using MediaLib.Web.Hosting;
 
 namespace MediaLib.Web.Handlers
@@ -81,7 +82,8 @@ namespace MediaLib.Web.Handlers
 				RssItem item = new RssItem();
 				item.Title = "Parent Directory";
 				item.Link = FilePathMapper.Combine(context.Request.Url.AbsoluteUri, "../");
-				item.Guid.Value = HttpUtility.UrlDecode(item.Link);
+				item.Guid.Value = item.Link;
+				item.Description = HttpUtility.UrlDecode(item.Guid.Value);
 
 				feed.Channel.Items.Add(item);
 			}
@@ -90,9 +92,11 @@ namespace MediaLib.Web.Handlers
 			{
 				RssItem item = new RssItem();
 				item.Title = info.Name;
+				item.Description = HttpUtility.UrlDecode(item.Guid.Value);
 				item.PubDate = info.LastWriteTimeUtc;
 				item.Guid.Value = FilePathMapper.Combine(context.Request.Url.AbsoluteUri, FilePathMapper.UrlEncode(info.Name));
 
+				DublinCore dcTerms = new DublinCore();
 				if ((info.Attributes&FileAttributes.Directory) != 0)
 				{
 					item.Link = item.Guid.Value;
@@ -102,7 +106,9 @@ namespace MediaLib.Web.Handlers
 					{
 						int dirCount = dirInfo.GetDirectories("*", SearchOption.TopDirectoryOnly).Length;
 						FileInfo[] files = dirInfo.GetFiles("*.*", SearchOption.TopDirectoryOnly);
-						item.Description = "Directory ("+dirCount+" directories, "+files.Length+" files)";
+						dcTerms.Add(
+							DublinCore.TermName.Description,
+							"Directory ("+dirCount+" directories, "+files.Length+" files)");
 
 						foreach (FileInfo file in files)
 						{
@@ -143,13 +149,16 @@ namespace MediaLib.Web.Handlers
 							}
 							item.Description = mime.Name+" "+mime.Category+" ";
 						}
-						item.Description += "File ("+fileInfo.Length+" bytes)";
+						dcTerms.Add(
+							DublinCore.TermName.Description,
+							"File ("+fileInfo.Length+" bytes)");
 
 						item.Enclosure.Url = item.Guid.Value;
 						string enclosurePath = item.Link;
 						item.Enclosure.Length = fileInfo.Length;
 					}
 				}
+				item.AddExtensions(dcTerms);
 
 				feed.Channel.Items.Add(item);
 			}
