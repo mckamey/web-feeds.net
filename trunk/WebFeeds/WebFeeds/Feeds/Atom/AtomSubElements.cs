@@ -535,20 +535,6 @@ namespace WebFeeds.Feeds.Atom
 		}
 
 		#endregion Object Overrides
-
-		#region Operators
-
-		public static implicit operator AtomLink(string value)
-		{
-			return new AtomLink(value);
-		}
-
-		public static explicit operator string(AtomLink value)
-		{
-			return value.Href;
-		}
-
-		#endregion Operators
 	}
 
 	#endregion AtomLink

@@ -141,7 +141,10 @@ namespace WebFeeds.Feeds
 #else
 				entry.Summary = exception.Message;
 #endif
-				entry.Links.Add(exception.HelpLink);
+				if (!String.IsNullOrEmpty(exception.HelpLink))
+				{
+					entry.Links.Add(new AtomLink(exception.HelpLink));
+				}
 				entry.Published = feed.Updated;
 				feed.Entries.Add(entry);
 
