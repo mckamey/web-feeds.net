@@ -33,6 +33,8 @@ using System.ComponentModel;
 using System.Collections.Generic;
 using System.Xml.Serialization;
 
+using WebFeeds.Feeds.Extensions;
+
 namespace WebFeeds.Feeds.Rss
 {
 	/// <summary>
@@ -79,24 +81,8 @@ namespace WebFeeds.Feeds.Rss
 		[XmlElement("link")]
 		public string Link
 		{
-			get
-			{
-				if (this.link == null)
-				{
-					return null;
-				}
-
-				return this.link.ToString();
-			}
-			set
-			{
-				if (String.IsNullOrEmpty(value) ||
-					!Uri.TryCreate(value, UriKind.RelativeOrAbsolute, out this.link))
-				{
-					this.link = null;
-					return;
-				}
-			}
+			get { return ExtensibleBase.ConvertToString(this.link); }
+			set { this.link = ExtensibleBase.ConvertToUri(value); }
 		}
 
 		/// <summary>
@@ -148,30 +134,14 @@ namespace WebFeeds.Feeds.Rss
 		}
 
 		/// <summary>
-		/// Gets and sets comments about the item.
+		/// Gets and sets a URL to the comments about the item.
 		/// </summary>
 		[DefaultValue(null)]
 		[XmlElement("comments")]
 		public string Comments
 		{
-			get
-			{
-				if (this.comments == null)
-				{
-					return null;
-				}
-
-				return this.comments.ToString();
-			}
-			set
-			{
-				if (String.IsNullOrEmpty(value) ||
-					!Uri.TryCreate(value, UriKind.RelativeOrAbsolute, out this.comments))
-				{
-					this.comments = null;
-					return;
-				}
-			}
+			get { return ExtensibleBase.ConvertToString(this.comments); }
+			set { this.comments = ExtensibleBase.ConvertToUri(value); }
 		}
 
 		[XmlElement("enclosure")]
@@ -183,7 +153,6 @@ namespace WebFeeds.Feeds.Rss
 				{
 					this.enclosure = new RssEnclosure();
 				}
-
 				return this.enclosure;
 			}
 			set { this.enclosure = value; }
@@ -193,7 +162,7 @@ namespace WebFeeds.Feeds.Rss
 		[EditorBrowsable(EditorBrowsableState.Never)]
 		public bool EnclosureSpecified
 		{
-			get { return (this.enclosure != null && !this.enclosure.IsEmpty()); }
+			get { return (this.enclosure != null) && this.enclosure.HasValue; }
 			set { }
 		}
 
@@ -206,7 +175,6 @@ namespace WebFeeds.Feeds.Rss
 				{
 					this.guid = new RssGuid();
 				}
-
 				return this.guid;
 			}
 			set { this.guid = value; }
@@ -216,7 +184,7 @@ namespace WebFeeds.Feeds.Rss
 		[EditorBrowsable(EditorBrowsableState.Never)]
 		public bool GuidSpecified
 		{
-			get { return (this.guid != null && !this.guid.IsEmpty()); }
+			get { return (this.guid != null) && this.guid.HasValue; }
 			set { }
 		}
 

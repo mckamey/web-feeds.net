@@ -34,6 +34,8 @@ using System.Collections.Generic;
 using System.Xml.Serialization;
 using System.Globalization;
 
+using WebFeeds.Feeds.Extensions;
+
 namespace WebFeeds.Feeds.Rss
 {
 	/// <summary>
@@ -83,24 +85,8 @@ namespace WebFeeds.Feeds.Rss
 		[XmlElement("link")]
 		public string Link
 		{
-			get
-			{
-				if (this.link == null)
-				{
-					return null;
-				}
-
-				return this.link.ToString();
-			}
-			set
-			{
-				if (String.IsNullOrEmpty(value) ||
-					!Uri.TryCreate(value, UriKind.RelativeOrAbsolute, out this.link))
-				{
-					this.link = null;
-					return;
-				}
-			}
+			get { return ExtensibleBase.ConvertToString(this.link); }
+			set { this.link = ExtensibleBase.ConvertToUri(value); }
 		}
 
 		[DefaultValue(null)]
