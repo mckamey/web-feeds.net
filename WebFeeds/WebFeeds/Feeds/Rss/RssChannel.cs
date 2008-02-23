@@ -41,7 +41,7 @@ namespace WebFeeds.Feeds.Rss
 	///		http://blogs.law.harvard.edu/tech/rss
 	/// </summary>
 	[Serializable]
-	public class RssChannel : RssBase
+	public abstract class RssChannelBase : RssBase
 	{
 		#region Fields
 
@@ -377,6 +377,23 @@ namespace WebFeeds.Feeds.Rss
 			get { return (this.skipDays != null && !this.skipDays.IsEmpty()); }
 			set { }
 		}
+
+		#endregion Properties
+	}
+
+	/// <summary>
+	/// RSS 2.0 Channel
+	///		http://blogs.law.harvard.edu/tech/rss
+	/// </summary>
+	/// <remarks>
+	/// XmlSerializer serializes public fields before public properties
+	/// and serializes base class members before derriving class members.
+	/// Since RssChannel uses a readonly field for Items it must be placed
+	/// in a derriving class in order to make sure items serialize last.
+	/// </remarks>
+	public class RssChannel : RssChannelBase
+	{
+		#region Properties
 
 		[XmlElement("item")]
 		public readonly List<RssItem> Items = new List<RssItem>();
