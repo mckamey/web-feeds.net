@@ -286,7 +286,7 @@ namespace WebFeeds.Feeds.Rss
 					return;
 				}
 
-				this.value = dateTime;
+				this.value = dateTime.ToUniversalTime();
 			}
 		}
 

@@ -195,7 +195,8 @@ namespace WebFeeds.Feeds.Rss
 			set { }
 		}
 
-		[XmlIgnore]
+		[DefaultValue(null)]
+		[XmlElement("lastBuildDate")]
 		public RssDate LastBuildDate
 		{
 			get { return this.lastBuildDate; }
