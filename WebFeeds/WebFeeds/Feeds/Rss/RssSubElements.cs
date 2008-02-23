@@ -570,13 +570,18 @@ namespace WebFeeds.Feeds.Rss
 		#region Properties
 
 		/// <summary>
-		/// Gets and sets if the url is permanent.
+		/// Gets and sets if the identifier is a permanent URL.
 		/// </summary>
-		[DefaultValue(false)]
+		[DefaultValue(true)]
 		[XmlAttribute("isPermaLink")]
 		public bool IsPermaLink
 		{
-			get { return this.isPermaLink; }
+			get
+			{
+				return this.isPermaLink &&
+					(this.value != null) &&
+					this.value.StartsWith(Uri.UriSchemeHttp);
+			}
 			set { this.isPermaLink = value; }
 		}
 
