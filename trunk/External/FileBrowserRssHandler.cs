@@ -82,7 +82,6 @@ namespace MediaLib.Web.Handlers
 				item.Title = "Parent Directory";
 				item.Link = FilePathMapper.Combine(context.Request.Url.AbsoluteUri, "../");
 				item.Guid.Value = HttpUtility.UrlDecode(item.Link);
-				item.Guid.IsPermaLink = false;
 
 				feed.Channel.Items.Add(item);
 			}
@@ -93,7 +92,6 @@ namespace MediaLib.Web.Handlers
 				item.Title = info.Name;
 				item.PubDate = info.LastWriteTimeUtc;
 				item.Guid.Value = FilePathMapper.Combine(context.Request.Url.AbsoluteUri, FilePathMapper.UrlEncode(info.Name));
-				item.Guid.IsPermaLink = false;
 
 				if ((info.Attributes&FileAttributes.Directory) != 0)
 				{
@@ -140,7 +138,9 @@ namespace MediaLib.Web.Handlers
 						if (mime != null)
 						{
 							if (mime.ContentTypes != null && mime.ContentTypes.Length > 0)
+							{
 								item.Enclosure.Type = mime.ContentTypes[0];
+							}
 							item.Description = mime.Name+" "+mime.Category+" ";
 						}
 						item.Description += "File ("+fileInfo.Length+" bytes)";
@@ -150,7 +150,6 @@ namespace MediaLib.Web.Handlers
 						item.Enclosure.Length = fileInfo.Length;
 					}
 				}
-				item.Guid.Value = HttpUtility.UrlDecode(item.Guid.Value);
 
 				feed.Channel.Items.Add(item);
 			}
