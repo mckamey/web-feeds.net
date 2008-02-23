@@ -100,8 +100,8 @@ namespace WebFeeds.Feeds.Extensions
 				try
 				{
 					// ensure date is in correct format
-					DateTime date = DublinCore.ConvertToDateTime(value);
-					value = DublinCore.ConvertToString(date);
+					DateTime date = ExtensibleBase.ConvertToDateTime(value);
+					value = ExtensibleBase.ConvertToString(date);
 				}
 				catch {}
 			}
@@ -175,25 +175,6 @@ namespace WebFeeds.Feeds.Extensions
 		}
 
 		#endregion IExtensionProvider Members
-
-		#region Utility Methods
-
-		public static string ConvertToString(DateTime date)
-		{
-			return XmlConvert.ToString(date, XmlDateTimeSerializationMode.Utc);
-		}
-
-		public static DateTime ConvertToDateTime(string date)
-		{
-			DateTime dateTime;
-			if (!DateTime.TryParse(date, out dateTime))
-			{
-				return DateTime.MinValue;
-			}
-			return dateTime;
-		}
-
-		#endregion Utility Methods
 
 		#region TermName enum
 

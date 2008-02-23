@@ -80,24 +80,8 @@ namespace WebFeeds.Feeds.Rdf
 		[XmlElement("link")]
 		public string Link
 		{
-			get
-			{
-				if (this.link == null)
-				{
-					return null;
-				}
-
-				return this.link.ToString();
-			}
-			set
-			{
-				if (String.IsNullOrEmpty(value) ||
-					!Uri.TryCreate(value, UriKind.RelativeOrAbsolute, out this.link))
-				{
-					this.link = null;
-					return;
-				}
-			}
+			get { return ExtensibleBase.ConvertToString(this.link); }
+			set { this.link = ExtensibleBase.ConvertToUri(value); }
 		}
 
 		/// <summary>

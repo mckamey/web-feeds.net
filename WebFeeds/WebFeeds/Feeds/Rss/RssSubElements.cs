@@ -29,10 +29,13 @@
 #endregion WebFeeds License
 
 using System;
+using System.Web;
 using System.ComponentModel;
 using System.Collections.Specialized;
 using System.Collections.Generic;
 using System.Xml.Serialization;
+
+using WebFeeds.Feeds.Extensions;
 
 namespace WebFeeds.Feeds.Rss
 {
@@ -468,24 +471,8 @@ namespace WebFeeds.Feeds.Rss
 		[XmlAttribute("url")]
 		public string Url
 		{
-			get
-			{
-				if (this.url == null)
-				{
-					return null;
-				}
-
-				return this.url.ToString();
-			}
-			set
-			{
-				if (String.IsNullOrEmpty(value) ||
-					!Uri.TryCreate(value, UriKind.RelativeOrAbsolute, out this.url))
-				{
-					this.url = null;
-					return;
-				}
-			}
+			get { return ExtensibleBase.ConvertToString(this.url); }
+			set { this.url = ExtensibleBase.ConvertToUri(value); }
 		}
 
 		/// <summary>
@@ -515,18 +502,18 @@ namespace WebFeeds.Feeds.Rss
 			set { this.type = value; }
 		}
 
-		#endregion Properties
-
-		#region Methods
-
-		public bool IsEmpty()
+		[XmlIgnore]
+		public bool HasValue
 		{
-			return (this.Length <= 0) &&
-				String.IsNullOrEmpty(this.Url) &&
-				String.IsNullOrEmpty(this.Type);
+			get
+			{
+				return (this.Length > 0) ||
+					!String.IsNullOrEmpty(this.Url) &&
+					!String.IsNullOrEmpty(this.Type);
+			}
 		}
 
-		#endregion Methods
+		#endregion Properties
 	}
 
 	#endregion RssEnclosure
@@ -542,30 +529,10 @@ namespace WebFeeds.Feeds.Rss
 	{
 		#region Fields
 
-		private bool isPermaLink = false;
-		private string value = null;
+		private bool isPermaLink = true;
+		private Uri value = null;
 
 		#endregion Fields
-
-		#region Init
-
-		/// <summary>
-		/// Ctor
-		/// </summary>
-		public RssGuid()
-		{
-		}
-
-		/// <summary>
-		/// 
-		/// </summary>
-		/// <param name="value"></param>
-		public RssGuid(string value)
-		{
-			this.value = value;
-		}
-
-		#endregion Init
 
 		#region Properties
 
@@ -578,9 +545,11 @@ namespace WebFeeds.Feeds.Rss
 		{
 			get
 			{
+				string link = this.Value;
+
 				return this.isPermaLink &&
-					(this.value != null) &&
-					this.value.StartsWith(Uri.UriSchemeHttp);
+					(link != null) &&
+					link.StartsWith(Uri.UriSchemeHttp);
 			}
 			set { this.isPermaLink = value; }
 		}
@@ -592,34 +561,20 @@ namespace WebFeeds.Feeds.Rss
 		[XmlText]
 		public string Value
 		{
-			get { return this.value; }
-			set { this.value = value; }
+			get { return ExtensibleBase.ConvertToString(this.value); }
+			set { this.value = ExtensibleBase.ConvertToUri(value); }
+		}
+
+		[XmlIgnore]
+		public bool HasValue
+		{
+			get
+			{
+				return !String.IsNullOrEmpty(this.Value);
+			}
 		}
 
 		#endregion Properties
-
-		#region Methods
-
-		public bool IsEmpty()
-		{
-			return String.IsNullOrEmpty(this.Value);
-		}
-
-		#endregion Methods
-
-		#region Operators
-
-		public static implicit operator RssGuid(string value)
-		{
-			return new RssGuid(value);
-		}
-
-		public static explicit operator string(RssGuid value)
-		{
-			return value.Value;
-		}
-
-		#endregion Operators
 	}
 
 	#endregion RssGuid
@@ -655,24 +610,8 @@ namespace WebFeeds.Feeds.Rss
 		[XmlElement("url")]
 		public string Url
 		{
-			get
-			{
-				if (this.url == null)
-				{
-					return null;
-				}
-
-				return this.url.ToString();
-			}
-			set
-			{
-				if (String.IsNullOrEmpty(value) ||
-					!Uri.TryCreate(value, UriKind.RelativeOrAbsolute, out this.url))
-				{
-					this.url = null;
-					return;
-				}
-			}
+			get { return ExtensibleBase.ConvertToString(this.url); }
+			set { this.url = ExtensibleBase.ConvertToUri(value); }
 		}
 
 		/// <summary>
@@ -693,24 +632,8 @@ namespace WebFeeds.Feeds.Rss
 		[XmlElement("link")]
 		public string Link
 		{
-			get
-			{
-				if (this.link == null)
-				{
-					return null;
-				}
-
-				return this.link.ToString();
-			}
-			set
-			{
-				if (String.IsNullOrEmpty(value) ||
-					!Uri.TryCreate(value, UriKind.RelativeOrAbsolute, out this.link))
-				{
-					this.link = null;
-					return;
-				}
-			}
+			get { return ExtensibleBase.ConvertToString(this.link); }
+			set { this.link = ExtensibleBase.ConvertToUri(value); }
 		}
 
 		/// <summary>
@@ -993,24 +916,8 @@ namespace WebFeeds.Feeds.Rss
 		[XmlAttribute("url")]
 		public string Url
 		{
-			get
-			{
-				if (this.url == null)
-				{
-					return null;
-				}
-
-				return this.url.ToString();
-			}
-			set
-			{
-				if (String.IsNullOrEmpty(value) ||
-					!Uri.TryCreate(value, UriKind.RelativeOrAbsolute, out this.url))
-				{
-					this.url = null;
-					return;
-				}
-			}
+			get { return ExtensibleBase.ConvertToString(this.url); }
+			set { this.url = ExtensibleBase.ConvertToUri(value); }
 		}
 
 		/// <summary>
@@ -1086,24 +993,8 @@ namespace WebFeeds.Feeds.Rss
 		[XmlElement("link")]
 		public string Link
 		{
-			get
-			{
-				if (this.link == null)
-				{
-					return null;
-				}
-
-				return this.link.ToString();
-			}
-			set
-			{
-				if (String.IsNullOrEmpty(value) ||
-					!Uri.TryCreate(value, UriKind.RelativeOrAbsolute, out this.link))
-				{
-					this.link = null;
-					return;
-				}
-			}
+			get { return ExtensibleBase.ConvertToString(this.link); }
+			set { this.link = ExtensibleBase.ConvertToUri(value); }
 		}
 
 		#endregion Properties

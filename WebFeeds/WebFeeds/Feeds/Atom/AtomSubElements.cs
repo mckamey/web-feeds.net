@@ -34,6 +34,8 @@ using System.Collections.Generic;
 using System.Xml;
 using System.Xml.Serialization;
 
+using WebFeeds.Feeds.Extensions;
+
 namespace WebFeeds.Feeds.Atom
 {
 	#region AtomCategory
@@ -357,7 +359,7 @@ namespace WebFeeds.Feeds.Atom
 	{
 		#region Fields
 
-		private string uri = null;
+		private Uri uri = null;
 		private string version = null;
 		private string value = null;
 
@@ -389,8 +391,8 @@ namespace WebFeeds.Feeds.Atom
 		[DefaultValue(null)]
 		public string Uri
 		{
-			get { return this.uri; }
-			set { this.uri = value; }
+			get { return ExtensibleBase.ConvertToString(this.uri); }
+			set { this.uri = ExtensibleBase.ConvertToUri(value); }
 		}
 
 		[XmlAttribute("version")]

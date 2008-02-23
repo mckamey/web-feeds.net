@@ -29,6 +29,7 @@
 #endregion WebFeeds License
 
 using System;
+using System.Web;
 using System.ComponentModel;
 using System.Collections.Generic;
 using System.Xml;
@@ -128,6 +129,47 @@ namespace WebFeeds.Feeds.Extensions
 		}
 
 		#endregion INamespaceProvider Members
+
+		#region Utility Methods
+
+		public static string ConvertToString(DateTime dateTime)
+		{
+			return XmlConvert.ToString(dateTime, XmlDateTimeSerializationMode.Utc);
+		}
+
+		public static DateTime ConvertToDateTime(string value)
+		{
+			DateTime dateTime;
+			if (!DateTime.TryParse(value, out dateTime))
+			{
+				return DateTime.MinValue;
+			}
+			return dateTime;
+		}
+
+		public static string ConvertToString(Uri uri)
+		{
+			if (uri == null)
+			{
+				return null;
+			}
+
+			return HttpUtility.UrlPathEncode(uri.ToString());
+		}
+
+		public static Uri ConvertToUri(string value)
+		{
+			Uri uri;
+			if (String.IsNullOrEmpty(value) ||
+				!Uri.TryCreate(value, UriKind.RelativeOrAbsolute, out uri))
+			{
+				return null;
+			}
+
+			return uri;
+		}
+
+		#endregion Utility Methods
 	}
 
 	/// <summary>

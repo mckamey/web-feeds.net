@@ -33,6 +33,8 @@ using System.ComponentModel;
 using System.Collections.Generic;
 using System.Xml.Serialization;
 
+using WebFeeds.Feeds.Extensions;
+
 namespace WebFeeds.Feeds.Rdf
 {
 	#region RdfImage
@@ -56,24 +58,8 @@ namespace WebFeeds.Feeds.Rdf
 		[XmlElement("url", Namespace=RdfFeed.NamespaceRss10)]
 		public string Url
 		{
-			get
-			{
-				if (this.url == null)
-				{
-					return null;
-				}
-
-				return this.url.ToString();
-			}
-			set
-			{
-				if (String.IsNullOrEmpty(value) ||
-					!Uri.TryCreate(value, UriKind.RelativeOrAbsolute, out this.url))
-				{
-					this.url = null;
-					return;
-				}
-			}
+			get { return ExtensibleBase.ConvertToString(this.url); }
+			set { this.url = ExtensibleBase.ConvertToUri(value); }
 		}
 
 		/// <summary>
