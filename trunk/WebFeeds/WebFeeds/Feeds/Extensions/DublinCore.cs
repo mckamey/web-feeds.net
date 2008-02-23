@@ -95,6 +95,17 @@ namespace WebFeeds.Feeds.Extensions
 				return;
 			}
 
+			if (term == TermName.Date)
+			{
+				try
+				{
+					// ensure date is in correct format
+					DateTime date = DublinCore.ConvertToDateTime(value);
+					value = DublinCore.ConvertToString(date);
+				}
+				catch {}
+			}
+
 			XmlElement node = DublinCore.NodeCreator.CreateElement(
 				DublinCore.Prefix,
 				term.ToString().ToLowerInvariant(), //TODO: use the XmlEnumAttribute to convert the term name
@@ -174,7 +185,12 @@ namespace WebFeeds.Feeds.Extensions
 
 		public static DateTime ConvertToDateTime(string date)
 		{
-			return XmlConvert.ToDateTime(date, XmlDateTimeSerializationMode.Utc);
+			DateTime dateTime;
+			if (!DateTime.TryParse(date, out dateTime))
+			{
+				return DateTime.MinValue;
+			}
+			return dateTime;
 		}
 
 		#endregion Utility Methods
