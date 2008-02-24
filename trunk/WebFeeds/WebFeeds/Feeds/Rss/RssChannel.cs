@@ -48,9 +48,9 @@ namespace WebFeeds.Feeds.Rss
 		#region Fields
 
 		// required
-		private string title = null;
+		private string title = String.Empty;
 		private Uri link = null;
-		private string description = null;
+		private string description = String.Empty;
 
 		// optional
 		private CultureInfo language = CultureInfo.InvariantCulture;
@@ -73,28 +73,38 @@ namespace WebFeeds.Feeds.Rss
 
 		#region Properties
 
-		[DefaultValue(null)]
+		/// <remarks>
+		/// Required even if empty.
+		/// </remarks>
 		[XmlElement("title")]
 		public string Title
 		{
 			get { return this.title; }
-			set { this.title = String.IsNullOrEmpty(value) ? null : value; }
+			set { this.title = String.IsNullOrEmpty(value) ? String.Empty : value; }
 		}
 
-		[DefaultValue(null)]
+		/// <remarks>
+		/// Required even if empty.
+		/// </remarks>
 		[XmlElement("link")]
 		public string Link
 		{
-			get { return ExtensibleBase.ConvertToString(this.link); }
+			get
+			{
+				string value = ExtensibleBase.ConvertToString(this.link);
+				return String.IsNullOrEmpty(value) ? String.Empty : value;
+			}
 			set { this.link = ExtensibleBase.ConvertToUri(value); }
 		}
 
-		[DefaultValue(null)]
+		/// <remarks>
+		/// Required even if empty.
+		/// </remarks>
 		[XmlElement("description")]
 		public string Description
 		{
 			get { return this.description; }
-			set { this.description = String.IsNullOrEmpty(value) ? null : value; }
+			set { this.description = String.IsNullOrEmpty(value) ? String.Empty : value; }
 		}
 
 		[DefaultValue("")]

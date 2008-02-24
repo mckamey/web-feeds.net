@@ -540,7 +540,9 @@ namespace WebFeeds.Feeds.Rss
 		/// <summary>
 		/// Gets and sets the url to which the image is linked.
 		/// </summary>
-		[DefaultValue(null)]
+		/// <remarks>
+		/// Required even if empty.
+		/// </remarks>
 		[XmlElement("link")]
 		public string Link
 		{
@@ -996,7 +998,9 @@ namespace WebFeeds.Feeds.Rss
 		/// <summary>
 		/// Gets and sets the text input request url.
 		/// </summary>
-		[DefaultValue(null)]
+		/// <remarks>
+		/// Required even if empty.
+		/// </remarks>
 		[XmlElement("link")]
 		public string Link
 		{
