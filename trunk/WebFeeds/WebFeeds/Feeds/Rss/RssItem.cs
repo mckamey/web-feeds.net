@@ -71,7 +71,7 @@ namespace WebFeeds.Feeds.Rss
 		public string Title
 		{
 			get { return this.title; }
-			set { this.title = value; }
+			set { this.title = String.IsNullOrEmpty(value) ? null : value; }
 		}
 
 		/// <summary>
@@ -93,7 +93,7 @@ namespace WebFeeds.Feeds.Rss
 		public string Description
 		{
 			get { return this.description; }
-			set { this.description = value; }
+			set { this.description = String.IsNullOrEmpty(value) ? null : value; }
 		}
 
 		/// <summary>

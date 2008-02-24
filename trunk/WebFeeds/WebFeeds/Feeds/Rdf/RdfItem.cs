@@ -60,7 +60,7 @@ namespace WebFeeds.Feeds.Rdf
 		public string Description
 		{
 			get { return this.description; }
-			set { this.description = value; }
+			set { this.description = String.IsNullOrEmpty(value) ? null : value; }
 		}
 
 		#endregion Properties

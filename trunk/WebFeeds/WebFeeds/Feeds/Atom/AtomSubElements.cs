@@ -48,7 +48,7 @@ namespace WebFeeds.Feeds.Atom
 	{
 		#region Fields
 
-		private string scheme = null;
+		private Uri scheme = null;
 		private string term = null;
 		private string label = null;
 		private string value = null;
@@ -81,8 +81,8 @@ namespace WebFeeds.Feeds.Atom
 		[XmlAttribute("scheme")]
 		public string Scheme
 		{
-			get { return this.scheme; }
-			set { this.scheme = value; }
+			get { return ExtensibleBase.ConvertToString(this.scheme); }
+			set { this.scheme = ExtensibleBase.ConvertToUri(value); }
 		}
 
 		[DefaultValue(null)]
@@ -90,7 +90,7 @@ namespace WebFeeds.Feeds.Atom
 		public string Term
 		{
 			get { return this.term; }
-			set { this.term = value; }
+			set { this.term = String.IsNullOrEmpty(value) ? null : value; }
 		}
 
 		[DefaultValue(null)]
@@ -98,7 +98,7 @@ namespace WebFeeds.Feeds.Atom
 		public string Label
 		{
 			get { return this.label; }
-			set { this.label = value; }
+			set { this.label = String.IsNullOrEmpty(value) ? null : value; }
 		}
 
 		[XmlText]
@@ -106,7 +106,7 @@ namespace WebFeeds.Feeds.Atom
 		public string Value
 		{
 			get { return this.value; }
-			set { this.value = value; }
+			set { this.value = String.IsNullOrEmpty(value) ? null : value; }
 		}
 
 		#endregion Properties
@@ -138,7 +138,7 @@ namespace WebFeeds.Feeds.Atom
 	{
 		#region Fields
 
-		private string src = null;
+		private Uri src = null;
 
 		#endregion Fields
 
@@ -175,8 +175,23 @@ namespace WebFeeds.Feeds.Atom
 		[XmlAttribute("src")]
 		public string Src
 		{
-			get { return this.src; }
-			set { this.src = value; }
+			get { return ExtensibleBase.ConvertToString(this.src); }
+			set { this.src = ExtensibleBase.ConvertToUri(value); }
+		}
+
+		[XmlText]
+		[DefaultValue(null)]
+		public override string Value
+		{
+			get
+			{
+				if (this.src != null)
+				{
+					return null;
+				}
+				return base.Value;
+			}
+			set { base.Value = value; }
 		}
 
 		#endregion Properties
@@ -400,7 +415,7 @@ namespace WebFeeds.Feeds.Atom
 		public string Version
 		{
 			get { return this.version; }
-			set { this.version = value; }
+			set { this.version = String.IsNullOrEmpty(value) ? null : value; }
 		}
 
 		[XmlText]
@@ -408,7 +423,7 @@ namespace WebFeeds.Feeds.Atom
 		public string Value
 		{
 			get { return this.value; }
-			set { this.value = value; }
+			set { this.value = String.IsNullOrEmpty(value) ? null : value; }
 		}
 
 		#endregion Properties
@@ -451,7 +466,7 @@ namespace WebFeeds.Feeds.Atom
 
 		private string rel = null;
 		private string type = null;
-		private string href = null;
+		private Uri href = null;
 		private string hreflang = null;
 		private string title = null;
 		private string length = null;
@@ -473,7 +488,7 @@ namespace WebFeeds.Feeds.Atom
 		/// <param name="link"></param>
 		public AtomLink(string link)
 		{
-			this.href = link;
+			this.Href = link;
 		}
 
 		#endregion Init
@@ -481,10 +496,11 @@ namespace WebFeeds.Feeds.Atom
 		#region Properties
 
 		[XmlAttribute("rel")]
+		[DefaultValue(null)]
 		public string Rel
 		{
 			get { return this.rel; }
-			set { this.rel = value; }
+			set { this.rel = String.IsNullOrEmpty(value) ? null : value; }
 		}
 
 		[XmlAttribute("type")]
@@ -492,15 +508,15 @@ namespace WebFeeds.Feeds.Atom
 		public string Type
 		{
 			get { return this.type; }
-			set { this.type = value; }
+			set { this.type = String.IsNullOrEmpty(value) ? null : value; }
 		}
 
 		[XmlAttribute("href")]
 		[DefaultValue(null)]
 		public string Href
 		{
-			get { return this.href; }
-			set { this.href = value; }
+			get { return ExtensibleBase.ConvertToString(this.href); }
+			set { this.href = ExtensibleBase.ConvertToUri(value); }
 		}
 
 		[XmlAttribute("hreflang")]
@@ -508,7 +524,7 @@ namespace WebFeeds.Feeds.Atom
 		public string HrefLang
 		{
 			get { return this.hreflang; }
-			set { this.hreflang = value; }
+			set { this.hreflang = String.IsNullOrEmpty(value) ? null : value; }
 		}
 
 		[XmlAttribute("length")]
@@ -516,7 +532,7 @@ namespace WebFeeds.Feeds.Atom
 		public string Length
 		{
 			get { return this.length; }
-			set { this.length = value; }
+			set { this.length = String.IsNullOrEmpty(value) ? null : value; }
 		}
 
 		[XmlAttribute("title")]
@@ -524,7 +540,7 @@ namespace WebFeeds.Feeds.Atom
 		public string Title
 		{
 			get { return this.title; }
-			set { this.title = value; }
+			set { this.title = String.IsNullOrEmpty(value) ? null : value; }
 		}
 
 		#endregion Properties
@@ -552,7 +568,7 @@ namespace WebFeeds.Feeds.Atom
 		#region Fields
 
 		private string name = null;
-		private string uri = null;
+		private Uri uri = null;
 		private string email = null;
 
 		#endregion Fields
@@ -560,25 +576,19 @@ namespace WebFeeds.Feeds.Atom
 		#region Properties
 
 		[XmlElement("name")]
+		[DefaultValue(null)]
 		public string Name
 		{
-			get
-			{
-				if (this.name == null)
-				{
-					return String.Empty;
-				}
-				return this.name;
-			}
-			set { this.name = value; }
+			get { return this.name; }
+			set { this.name = String.IsNullOrEmpty(value) ? null : value; }
 		}
 
 		[XmlElement("uri")]
 		[DefaultValue(null)]
 		public string Uri
 		{
-			get { return this.uri; }
-			set { this.uri = value; }
+			get { return ExtensibleBase.ConvertToString(this.uri); }
+			set { this.uri = ExtensibleBase.ConvertToUri(value); }
 		}
 
 		[XmlElement("email")]
@@ -586,7 +596,7 @@ namespace WebFeeds.Feeds.Atom
 		public string Email
 		{
 			get { return this.email; }
-			set { this.email = value; }
+			set { this.email = String.IsNullOrEmpty(value) ? null : value; }
 		}
 
 		#endregion Properties
@@ -701,7 +711,7 @@ namespace WebFeeds.Feeds.Atom
 
 		[XmlText]
 		[DefaultValue(null)]
-		public string Value
+		public virtual string Value
 		{
 			get
 			{

@@ -66,7 +66,7 @@ namespace WebFeeds.Feeds.Rdf
 		public string Title
 		{
 			get { return this.title; }
-			set { this.title = value; }
+			set { this.title = String.IsNullOrEmpty(value) ? null : value; }
 		}
 
 		/// <summary>
@@ -98,7 +98,17 @@ namespace WebFeeds.Feeds.Rdf
 				}
 				return this.about;
 			}
-			set { this.about = value; }
+			set
+			{
+				if (String.IsNullOrEmpty(value))
+				{
+					this.about = null;
+				}
+				else
+				{
+					this.about = value;
+				}
+			}
 		}
 
 		#endregion Properties

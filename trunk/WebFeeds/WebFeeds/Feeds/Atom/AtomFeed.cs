@@ -33,6 +33,8 @@ using System.ComponentModel;
 using System.Collections.Generic;
 using System.Xml.Serialization;
 
+using WebFeeds.Feeds.Extensions;
+
 namespace WebFeeds.Feeds.Atom
 {
 	/// <summary>
@@ -58,7 +60,7 @@ namespace WebFeeds.Feeds.Atom
 
 		#region Fields
 
-		private string logo = null;
+		private Uri logo = null;
 
 		#endregion Fields
 
@@ -68,8 +70,8 @@ namespace WebFeeds.Feeds.Atom
 		[XmlElement("logo")]
 		public string Logo
 		{
-			get { return this.logo; }
-			set { this.logo = value; }
+			get { return ExtensibleBase.ConvertToString(this.logo); }
+			set { this.logo = ExtensibleBase.ConvertToUri(value); }
 		}
 
 		#endregion Properties
@@ -157,11 +159,12 @@ namespace WebFeeds.Feeds.Atom
 
 		#region Properties
 
+		[DefaultValue(null)]
 		[XmlAttribute("version")]
 		public string Version
 		{
-			get { return this.version.ToString(); }
-			set { this.version = new Version(value); }
+			get { return (this.version == null) ? null : this.version.ToString(); }
+			set { this.version = String.IsNullOrEmpty(value) ? null : new Version(value); }
 		}
 
 		[DefaultValue(null)]

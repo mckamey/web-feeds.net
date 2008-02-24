@@ -81,8 +81,8 @@ namespace WebFeeds.Feeds.Rss
 		[XmlAttribute("version")]
 		public string Version
 		{
-			get { return this.version.ToString(); }
-			set { this.version = new Version(value); }
+			get { return (this.version == null) ? null : this.version.ToString(); }
+			set { this.version = String.IsNullOrEmpty(value) ? null : new Version(value); }
 		}
 
 		#endregion Properties

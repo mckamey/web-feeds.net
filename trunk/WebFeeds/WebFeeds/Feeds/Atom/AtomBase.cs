@@ -30,6 +30,7 @@
 
 using System;
 using System.ComponentModel;
+using System.Globalization;
 using System.Collections.Generic;
 using System.Xml.Serialization;
 
@@ -56,20 +57,20 @@ namespace WebFeeds.Feeds.Atom
 
 		#region Fields
 
-		private string xmlBase = null;
-		private string xmlLanguage = null;
+		private Uri xmlBase = null;
+		private CultureInfo xmlLanguage = CultureInfo.InvariantCulture;
 
 		#endregion Fields
 
 		#region Properties
 
-		[DefaultValue(null)]
+		[DefaultValue("")]
 		[EditorBrowsable(EditorBrowsableState.Advanced)]
 		[XmlAttribute("lang", Namespace=AtomCommonAttributes.XmlNamespace)]
 		public string XmlLanguage
 		{
-			get { return this.xmlLanguage; }
-			set { this.xmlLanguage = value; }
+			get { return this.xmlLanguage.Name; }
+			set { this.xmlLanguage = CultureInfo.GetCultureInfo(value); }
 		}
 
 		[DefaultValue(null)]
@@ -77,8 +78,8 @@ namespace WebFeeds.Feeds.Atom
 		[XmlAttribute("base", Namespace=AtomCommonAttributes.XmlNamespace)]
 		public string XmlBase
 		{
-			get { return this.xmlBase; }
-			set { this.xmlBase = value; }
+			get { return ExtensibleBase.ConvertToString(this.xmlBase); }
+			set { this.xmlBase = ExtensibleBase.ConvertToUri(value); }
 		}
 
 		#endregion Properties
@@ -102,7 +103,7 @@ namespace WebFeeds.Feeds.Atom
 	{
 		#region Fields
 
-		private string id = null;
+		private Uri id = null;
 		private AtomText rights = null;
 		private AtomText title = null;
 		private AtomDate updated;
@@ -115,8 +116,8 @@ namespace WebFeeds.Feeds.Atom
 		[XmlElement("id")]
 		public string ID
 		{
-			get { return this.id; }
-			set { this.id = value; }
+			get { return ExtensibleBase.ConvertToString(this.id); }
+			set { this.id = ExtensibleBase.ConvertToUri(value); }
 		}
 
 		[DefaultValue(null)]
@@ -244,7 +245,7 @@ namespace WebFeeds.Feeds.Atom
 		#region Fields
 
 		private AtomGenerator generator = null;
-		private string icon = null;
+		private Uri icon = null;
 		private AtomText subtitle = null;
 
 		#endregion Fields
@@ -263,8 +264,8 @@ namespace WebFeeds.Feeds.Atom
 		[XmlElement("icon")]
 		public string Icon
 		{
-			get { return this.icon; }
-			set { this.icon = value; }
+			get { return ExtensibleBase.ConvertToString(this.icon); }
+			set { this.icon = ExtensibleBase.ConvertToUri(value); }
 		}
 
 		[DefaultValue(null)]

@@ -110,7 +110,7 @@ namespace WebFeeds.Feeds.Rdf
 		public string Name
 		{
 			get { return this.name; }
-			set { this.name = value; }
+			set { this.name = String.IsNullOrEmpty(value) ? null : value; }
 		}
 
 		#endregion Properties

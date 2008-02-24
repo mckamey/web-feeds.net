@@ -82,7 +82,7 @@ namespace WebFeeds.Feeds.Rss
 		public string Domain
 		{
 			get { return this.domain; }
-			set { this.domain = value; }
+			set { this.domain = String.IsNullOrEmpty(value) ? null : value; }
 		}
 
 		/// <summary>
@@ -93,7 +93,7 @@ namespace WebFeeds.Feeds.Rss
 		public string Value
 		{
 			get { return this.value; }
-			set { this.value = value; }
+			set { this.value = String.IsNullOrEmpty(value) ? null : value; }
 		}
 
 		#endregion Properties
@@ -145,7 +145,7 @@ namespace WebFeeds.Feeds.Rss
 		public string Domain
 		{
 			get { return this.domain; }
-			set { this.domain = value; }
+			set { this.domain = String.IsNullOrEmpty(value) ? null : value; }
 		}
 
 		/// <summary>
@@ -173,7 +173,7 @@ namespace WebFeeds.Feeds.Rss
 		public string Path
 		{
 			get { return this.path; }
-			set { this.path = value; }
+			set { this.path = String.IsNullOrEmpty(value) ? null : value; }
 		}
 
 		/// <summary>
@@ -184,7 +184,7 @@ namespace WebFeeds.Feeds.Rss
 		public string RegisterProcedure
 		{
 			get { return this.registerProcedure; }
-			set { this.registerProcedure = value; }
+			set { this.registerProcedure = String.IsNullOrEmpty(value) ? null : value; }
 		}
 
 		/// <summary>
@@ -195,7 +195,7 @@ namespace WebFeeds.Feeds.Rss
 		public string Protocol
 		{
 			get { return this.protocol; }
-			set { this.protocol = value; }
+			set { this.protocol = String.IsNullOrEmpty(value) ? null : value; }
 		}
 
 		#endregion Properties
@@ -399,10 +399,14 @@ namespace WebFeeds.Feeds.Rss
 			get
 			{
 				if (String.IsNullOrEmpty(this.name))
+				{
 					return this.email;
+				}
 
 				if (String.IsNullOrEmpty(this.email))
+				{
 					return this.name;
+				}
 
 				return String.Format(RssEmail.EmailFormat, this.email.Trim(), this.name.Trim());
 			}
@@ -499,7 +503,7 @@ namespace WebFeeds.Feeds.Rss
 		public string Type
 		{
 			get { return this.type; }
-			set { this.type = value; }
+			set { this.type = String.IsNullOrEmpty(value) ? null : value; }
 		}
 
 		[XmlIgnore]
@@ -622,7 +626,7 @@ namespace WebFeeds.Feeds.Rss
 		public string Title
 		{
 			get { return this.title; }
-			set { this.title = value; }
+			set { this.title = String.IsNullOrEmpty(value) ? null : value; }
 		}
 
 		/// <summary>
@@ -928,7 +932,7 @@ namespace WebFeeds.Feeds.Rss
 		public string Value
 		{
 			get { return this.value; }
-			set { this.value = value; }
+			set { this.value = String.IsNullOrEmpty(value) ? null : value; }
 		}
 
 		#endregion Properties
@@ -959,31 +963,34 @@ namespace WebFeeds.Feeds.Rss
 		/// <summary>
 		/// Gets and sets the title of the submit button.
 		/// </summary>
+		[DefaultValue(null)]
 		[XmlElement("title")]
 		public string Title
 		{
 			get { return this.title; }
-			set { this.title = value; }
+			set { this.title = String.IsNullOrEmpty(value) ? null : value; }
 		}
 
 		/// <summary>
 		/// Gets and sets the description of the text input area.
 		/// </summary>
+		[DefaultValue(null)]
 		[XmlElement("description")]
 		public string Description
 		{
 			get { return this.description; }
-			set { this.description = value; }
+			set { this.description = String.IsNullOrEmpty(value) ? null : value; }
 		}
 
 		/// <summary>
 		/// Gets and sets the name of the text input field.
 		/// </summary>
+		[DefaultValue(null)]
 		[XmlElement("name")]
 		public string Name
 		{
 			get { return this.name; }
-			set { this.name = value; }
+			set { this.name = String.IsNullOrEmpty(value) ? null : value; }
 		}
 
 		/// <summary>
