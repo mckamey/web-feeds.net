@@ -95,6 +95,6 @@
   -->
   <PropertyGroup>
     <PreBuildEvent>IF EXIST "$(SolutionDir)AutoVersioning\$(OutDir)AutoVersioning.exe" "$(SolutionDir)AutoVersioning\$(OutDir)AutoVersioning.exe" "$(ProjectDir)Properties\AssemblyVersion.cs"</PreBuildEvent>
-    <PostBuildEvent>IF EXIST "$(DevEnvDir)..\..\SDK\v2.0\Bin\sgen" "$(DevEnvDir)..\..\SDK\v2.0\Bin\sgen" /force /nologo /verbose /assembly:"$(TargetPath)"</PostBuildEvent>
+    <PostBuildEvent>IF EXIST "$(DevEnvDir)..\..\SDK\v2.0\Bin\sgen.exe" "$(DevEnvDir)..\..\SDK\v2.0\Bin\sgen.exe" /force /nologo /verbose /assembly:"$(TargetPath)"</PostBuildEvent>
   </PropertyGroup>
 </Project>
