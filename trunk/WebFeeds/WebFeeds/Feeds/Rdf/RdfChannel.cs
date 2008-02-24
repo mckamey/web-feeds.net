@@ -76,21 +76,13 @@ namespace WebFeeds.Feeds.Rdf
 		/// Gets and sets an RDF table of contents, associating the document's items
 		/// with this particular RSS channel.
 		/// </summary>
-		[DefaultValue(null)]
+		/// <remarks>
+		/// Required even if empty.
+		/// </remarks>
 		[XmlElement("items", Namespace=RdfFeed.NamespaceRss10)]
 		public RdfSequence Items
 		{
-			get
-			{
-				if (this.parent == null ||
-					this.parent.Items == null ||
-					this.parent.Items.Count == 0)
-				{
-					return null;
-				}
-
-				return new RdfSequence(this.parent);
-			}
+			get { return new RdfSequence(this.parent); }
 			set {  }
 		}
 
