@@ -44,6 +44,7 @@ namespace WebFeeds.Feeds.Rdf
 	///		http://web.resource.org/rss/1.0/spec#s5.4
 	/// </summary>
 	[Serializable]
+	[XmlType("image", Namespace=RdfFeed.NamespaceRss10)]
 	public class RdfImage : RdfBase
 	{
 		#region Fields
@@ -95,6 +96,7 @@ namespace WebFeeds.Feeds.Rdf
 	///		http://web.resource.org/rss/1.0/spec#s5.6
 	/// </summary>
 	[Serializable]
+	[XmlType("input", Namespace=RdfFeed.NamespaceRss10)]
 	public class RdfTextInput : RdfItem
 	{
 		#region Fields

@@ -42,8 +42,7 @@ namespace WebFeeds.Feeds.Rdf
 	/// RDF 1.0 Root
 	///		http://web.resource.org/rss/1.0/spec#s5.2
 	/// </summary>
-	[XmlRoot(RdfFeed.RootElement, Namespace=RdfFeed.NamespaceRdf)]
-	public class RdfFeed : ExtensibleBase, IWebFeed
+	public abstract class RdfFeedBase : ExtensibleBase
 	{
 		#region Constants
 
@@ -75,7 +74,7 @@ namespace WebFeeds.Feeds.Rdf
 				if (this.channel == null)
 				{
 					this.channel = new RdfChannel();
-					this.channel.SetParent(this);
+					this.channel.SetParent((RdfFeed)this);
 				}
 
 				return this.channel;
@@ -83,7 +82,7 @@ namespace WebFeeds.Feeds.Rdf
 			set
 			{
 				this.channel = value;
-				this.channel.SetParent(this);
+				this.channel.SetParent((RdfFeed)this);
 			}
 		}
 
@@ -114,24 +113,6 @@ namespace WebFeeds.Feeds.Rdf
 			set { }
 		}
 
-		[XmlElement("item", Namespace=RdfFeed.NamespaceRss10)]
-		public readonly List<RdfItem> Items = new List<RdfItem>();
-
-		[XmlIgnore]
-		[EditorBrowsable(EditorBrowsableState.Never)]
-		public bool ItemsSpecified
-		{
-			get { return (this.Items.Count > 0); }
-			set { }
-		}
-
-		[XmlIgnore]
-		public RdfItem this[int index]
-		{
-			get { return this.Items[index]; }
-			set { this.Items[index] = value; }
-		}
-
 		/// <summary>
 		/// Gets and sets an RDF association between the optional textinput element and this particular RSS channel.
 		/// </summary>
@@ -157,6 +138,46 @@ namespace WebFeeds.Feeds.Rdf
 		{
 			get { return (this.textInput != null && !this.textInput.IsEmpty()); }
 			set { }
+		}
+
+		#endregion Properties
+	}
+
+	/// <summary>
+	/// RDF 1.0 Root
+	///		http://web.resource.org/rss/1.0/spec#s5.2
+	/// </summary>
+	/// <remarks>
+	/// XmlSerializer serializes public fields before public properties
+	/// and serializes base class members before derriving class members.
+	/// Since RssChannel uses a readonly field for Items it must be placed
+	/// in a derriving class in order to make sure items serialize last.
+	/// </remarks>
+	[XmlRoot(RdfFeed.RootElement, Namespace=RdfFeed.NamespaceRdf)]
+	public class RdfFeed : RdfFeedBase, IWebFeed
+	{
+		#region Fields
+
+		[XmlElement("item", Namespace=RdfFeed.NamespaceRss10)]
+		public readonly List<RdfItem> Items = new List<RdfItem>();
+
+		#endregion Fields
+
+		#region Properties
+
+		[XmlIgnore]
+		[EditorBrowsable(EditorBrowsableState.Never)]
+		public bool ItemsSpecified
+		{
+			get { return (this.Items.Count > 0); }
+			set { }
+		}
+
+		[XmlIgnore]
+		public RdfItem this[int index]
+		{
+			get { return this.Items[index]; }
+			set { this.Items[index] = value; }
 		}
 
 		#endregion Properties
