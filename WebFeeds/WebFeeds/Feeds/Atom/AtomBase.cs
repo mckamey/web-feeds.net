@@ -105,27 +105,35 @@ namespace WebFeeds.Feeds.Atom
 
 		private Uri id = null;
 		private AtomText rights = null;
-		private AtomText title = null;
-		private AtomDate updated;
+		private AtomText title = new AtomText();
+		private AtomDate updated = new AtomDate();
 
 		#endregion Fields
 
 		#region Properties
 
-		[DefaultValue(null)]
+		/// <remarks>
+		/// Required even if empty.
+		/// </remarks>
 		[XmlElement("id")]
 		public string ID
 		{
-			get { return ExtensibleBase.ConvertToString(this.id); }
+			get
+			{
+				string value = ExtensibleBase.ConvertToString(this.id);
+				return String.IsNullOrEmpty(value) ? String.Empty : value;
+			}
 			set { this.id = ExtensibleBase.ConvertToUri(value); }
 		}
 
-		[DefaultValue(null)]
+		/// <remarks>
+		/// Required even if empty.
+		/// </remarks>
 		[XmlElement("title")]
 		public AtomText Title
 		{
 			get { return this.title; }
-			set { this.title = value; }
+			set { this.title = (value == null) ? new AtomText() : value; }
 		}
 
 		[XmlElement("author")]
@@ -188,7 +196,9 @@ namespace WebFeeds.Feeds.Atom
 			set { }
 		}
 
-		[DefaultValue(null)]
+		/// <remarks>
+		/// Required even if empty.
+		/// </remarks>
 		[XmlElement("updated")]
 		public virtual AtomDate Updated
 		{
@@ -200,7 +210,7 @@ namespace WebFeeds.Feeds.Atom
 		[EditorBrowsable(EditorBrowsableState.Never)]
 		public virtual bool UpdatedSpecified
 		{
-			get { return this.updated.HasValue; }
+			get { return true; }
 			set { }
 		}
 
