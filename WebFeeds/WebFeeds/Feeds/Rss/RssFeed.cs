@@ -62,7 +62,6 @@ namespace WebFeeds.Feeds.Rss
 
 		#region Properties
 
-		[DefaultValue(null)]
 		[XmlElement("channel")]
 		public RssChannel Channel
 		{
