@@ -43,7 +43,7 @@ namespace WebFeeds.Feeds.Rdf
 	{
 		#region Fields
 
-		private string description = null;
+		private string description = String.Empty;
 
 		#endregion Fields
 
@@ -54,13 +54,13 @@ namespace WebFeeds.Feeds.Rdf
 		/// </summary>
 		/// <remarks>
 		/// Suggested maximum length is 500 characters.
+		/// Required even if empty.
 		/// </remarks>
-		[DefaultValue(null)]
 		[XmlElement("description")]
 		public string Description
 		{
 			get { return this.description; }
-			set { this.description = String.IsNullOrEmpty(value) ? null : value; }
+			set { this.description = String.IsNullOrEmpty(value) ? String.Empty : value; }
 		}
 
 		#endregion Properties

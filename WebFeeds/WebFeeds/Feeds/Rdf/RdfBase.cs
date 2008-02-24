@@ -47,7 +47,7 @@ namespace WebFeeds.Feeds.Rdf
 	{
 		#region Fields
 
-		private string title = null;
+		private string title = String.Empty;
 		private Uri link = null;
 		private string about = null;
 
@@ -60,13 +60,13 @@ namespace WebFeeds.Feeds.Rdf
 		/// </summary>
 		/// <remarks>
 		/// Suggested maximum length is 40 characters.
+		/// Required even if empty.
 		/// </remarks>
-		[DefaultValue(null)]
 		[XmlElement("title")]
 		public string Title
 		{
 			get { return this.title; }
-			set { this.title = String.IsNullOrEmpty(value) ? null : value; }
+			set { this.title = String.IsNullOrEmpty(value) ? String.Empty : value; }
 		}
 
 		/// <summary>
@@ -80,7 +80,11 @@ namespace WebFeeds.Feeds.Rdf
 		[XmlElement("link")]
 		public string Link
 		{
-			get { return ExtensibleBase.ConvertToString(this.link); }
+			get
+			{
+				string value = ExtensibleBase.ConvertToString(this.link);
+				return String.IsNullOrEmpty(value) ? String.Empty : value;
+			}
 			set { this.link = ExtensibleBase.ConvertToUri(value); }
 		}
 
@@ -98,17 +102,7 @@ namespace WebFeeds.Feeds.Rdf
 				}
 				return this.about;
 			}
-			set
-			{
-				if (String.IsNullOrEmpty(value))
-				{
-					this.about = null;
-				}
-				else
-				{
-					this.about = value;
-				}
-			}
+			set { this.about = String.IsNullOrEmpty(value) ? String.Empty : value; }
 		}
 
 		#endregion Properties
