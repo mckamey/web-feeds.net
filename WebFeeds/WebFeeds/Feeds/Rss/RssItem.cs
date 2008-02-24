@@ -52,7 +52,7 @@ namespace WebFeeds.Feeds.Rss
 		private string description = null;
 
 		//optional
-		private RssEmail author = null;
+		private RssPerson author = null;
 		private Uri comments = null;
 		private RssEnclosure enclosure = null;
 		private RssGuid guid = null;
@@ -100,13 +100,13 @@ namespace WebFeeds.Feeds.Rss
 		/// Gets and sets the author of the item.
 		/// </summary>
 		[XmlElement("author")]
-		public RssEmail Author
+		public RssPerson Author
 		{
 			get
 			{
 				if (this.author == null)
 				{
-					this.author = new RssEmail();
+					this.author = new RssPerson();
 				}
 
 				return this.author;

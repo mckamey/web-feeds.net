@@ -355,98 +355,6 @@ namespace WebFeeds.Feeds.Rss
 
 	#endregion RssDate
 
-	#region RssEmail
-
-	/// <summary>
-	/// RSS 2.0 Email
-	///		http://blogs.law.harvard.edu/tech/rss#ltauthorgtSubelementOfLtitemgt
-	/// </summary>
-	[Serializable]
-	public class RssEmail : RssBase
-	{
-		#region Constants
-
-		private const string EmailFormat = "{0} ({1})";
-
-		#endregion Constants
-
-		#region Fields
-
-		private string name = null;
-		private string email = null;
-
-		#endregion Fields
-
-		#region Properties
-
-		[XmlIgnore]
-		public string Email
-		{
-			get { return this.email; }
-			set { this.email = value; }
-		}
-
-		[XmlIgnore]
-		public string Name
-		{
-			get { return this.name; }
-			set { this.name = value; }
-		}
-
-		[XmlText]
-		public string Value
-		{
-			get
-			{
-				if (String.IsNullOrEmpty(this.name))
-				{
-					return this.email;
-				}
-
-				if (String.IsNullOrEmpty(this.email))
-				{
-					return this.name;
-				}
-
-				return String.Format(RssEmail.EmailFormat, this.email.Trim(), this.name.Trim());
-			}
-			set
-			{
-				if (String.IsNullOrEmpty(value))
-				{
-					this.name = this.email = null;
-					return;
-				}
-
-				int start = value.IndexOf("(");
-				int end = value.LastIndexOf(")");
-				if (end <= start || start < 0 || end < 0)
-				{
-					this.name = value;
-					this.email = null;
-					return;
-				}
-
-				this.name = value.Substring(start+1, end-start-1);
-				this.email = value.Substring(0, start);
-			}
-		}
-
-		#endregion Properties
-
-		#region Methods
-
-		public bool IsEmpty()
-		{
-			return String.IsNullOrEmpty(this.Email) &&
-				String.IsNullOrEmpty(this.Name);
-		}
-
-		#endregion Methods
-	}
-
-	#endregion RssEmail
-
 	#region RssEnclosure
 
 	/// <summary>
@@ -691,6 +599,98 @@ namespace WebFeeds.Feeds.Rss
 	}
 
 	#endregion RssImage
+
+	#region RssPerson
+
+	/// <summary>
+	/// RSS 2.0 Email
+	///		http://blogs.law.harvard.edu/tech/rss#ltauthorgtSubelementOfLtitemgt
+	/// </summary>
+	[Serializable]
+	public class RssPerson : RssBase
+	{
+		#region Constants
+
+		private const string EmailFormat = "{0} ({1})";
+
+		#endregion Constants
+
+		#region Fields
+
+		private string name = null;
+		private string email = null;
+
+		#endregion Fields
+
+		#region Properties
+
+		[XmlIgnore]
+		public string Email
+		{
+			get { return this.email; }
+			set { this.email = value; }
+		}
+
+		[XmlIgnore]
+		public string Name
+		{
+			get { return this.name; }
+			set { this.name = value; }
+		}
+
+		[XmlText]
+		public string Value
+		{
+			get
+			{
+				if (String.IsNullOrEmpty(this.name))
+				{
+					return this.email;
+				}
+
+				if (String.IsNullOrEmpty(this.email))
+				{
+					return this.name;
+				}
+
+				return String.Format(RssPerson.EmailFormat, this.email.Trim(), this.name.Trim());
+			}
+			set
+			{
+				if (String.IsNullOrEmpty(value))
+				{
+					this.name = this.email = null;
+					return;
+				}
+
+				int start = value.IndexOf("(");
+				int end = value.LastIndexOf(")");
+				if (end <= start || start < 0 || end < 0)
+				{
+					this.name = value;
+					this.email = null;
+					return;
+				}
+
+				this.name = value.Substring(start+1, end-start-1);
+				this.email = value.Substring(0, start);
+			}
+		}
+
+		#endregion Properties
+
+		#region Methods
+
+		public bool IsEmpty()
+		{
+			return String.IsNullOrEmpty(this.Email) &&
+				String.IsNullOrEmpty(this.Name);
+		}
+
+		#endregion Methods
+	}
+
+	#endregion RssPerson
 
 	#region RssSkipDays
 
