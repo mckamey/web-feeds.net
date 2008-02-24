@@ -78,7 +78,7 @@ namespace WebFeeds.Feeds.Rss
 		public string Title
 		{
 			get { return this.title; }
-			set { this.title = value; }
+			set { this.title = String.IsNullOrEmpty(value) ? null : value; }
 		}
 
 		[DefaultValue(null)]
@@ -94,7 +94,7 @@ namespace WebFeeds.Feeds.Rss
 		public string Description
 		{
 			get { return this.description; }
-			set { this.description = value; }
+			set { this.description = String.IsNullOrEmpty(value) ? null : value; }
 		}
 
 		[DefaultValue("")]
@@ -110,7 +110,7 @@ namespace WebFeeds.Feeds.Rss
 		public string Copyright
 		{
 			get { return this.copyright; }
-			set { this.copyright = value; }
+			set { this.copyright = String.IsNullOrEmpty(value) ? null : value; }
 		}
 
 		/// <summary>
@@ -213,7 +213,7 @@ namespace WebFeeds.Feeds.Rss
 		public string Generator
 		{
 			get { return this.generator; }
-			set { this.generator = value; }
+			set { this.generator = String.IsNullOrEmpty(value) ? null : value; }
 		}
 
 		[DefaultValue(null)]
@@ -221,7 +221,7 @@ namespace WebFeeds.Feeds.Rss
 		public string Docs
 		{
 			get { return this.docs; }
-			set { this.docs = value; }
+			set { this.docs = String.IsNullOrEmpty(value) ? null : value; }
 		}
 
 		[DefaultValue(null)]
@@ -291,7 +291,7 @@ namespace WebFeeds.Feeds.Rss
 		public string Rating
 		{
 			get { return this.rating; }
-			set { this.rating = value; }
+			set { this.rating = String.IsNullOrEmpty(value) ? null : value; }
 		}
 
 		[XmlElement("textInput")]
