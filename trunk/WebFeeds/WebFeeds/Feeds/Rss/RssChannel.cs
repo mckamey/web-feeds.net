@@ -55,8 +55,8 @@ namespace WebFeeds.Feeds.Rss
 		// optional
 		private CultureInfo language = CultureInfo.InvariantCulture;
 		private string copyright = null;
-		private RssEmail managingEditor = null;
-		private RssEmail webMaster = null;
+		private RssPerson managingEditor = null;
+		private RssPerson webMaster = null;
 		private RssDate pubDate;
 		private RssDate lastBuildDate;
 		private string generator = null;
@@ -117,13 +117,13 @@ namespace WebFeeds.Feeds.Rss
 		/// Gets and sets the managing editor of the channel.
 		/// </summary>
 		[XmlElement("managingEditor")]
-		public RssEmail ManagingEditor
+		public RssPerson ManagingEditor
 		{
 			get
 			{
 				if (this.managingEditor == null)
 				{
-					this.managingEditor = new RssEmail();
+					this.managingEditor = new RssPerson();
 				}
 
 				return this.managingEditor;
@@ -143,13 +143,13 @@ namespace WebFeeds.Feeds.Rss
 		/// Gets and sets the webMaster of the channel.
 		/// </summary>
 		[XmlElement("webMaster")]
-		public RssEmail WebMaster
+		public RssPerson WebMaster
 		{
 			get
 			{
 				if (this.webMaster == null)
 				{
-					this.webMaster = new RssEmail();
+					this.webMaster = new RssPerson();
 				}
 
 				return this.webMaster;
