@@ -166,17 +166,17 @@ namespace WebFeeds.Feeds
 		{
 			switch (rootElement)
 			{
-				case AtomFeed10.RootElement:
+				case AtomFeed.RootElement:
 				{
 					switch (namespaceUri)
 					{
-						case AtomFeed03.Namespace:
+						case AtomFeed.Namespace:
 						{
-							return typeof(AtomFeed03);
+							return typeof(AtomFeed);
 						}
-						case AtomFeed10.Namespace:
+						case AtomFeedOld.Namespace:
 						{
-							return typeof(AtomFeed10);
+							return typeof(AtomFeedOld);
 						}
 					}
 					break;
@@ -191,7 +191,7 @@ namespace WebFeeds.Feeds
 				}
 			}
 
-			return typeof(Object);
+			return typeof(IWebFeed);
 		}
 
 		#endregion Utility Methods

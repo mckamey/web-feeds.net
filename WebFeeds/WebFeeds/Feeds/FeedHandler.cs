@@ -123,7 +123,7 @@ namespace WebFeeds.Feeds
 		/// </remarks>
 		protected virtual IWebFeed HandleError(HttpContext context, Exception exception)
 		{
-			AtomFeed10 feed = new AtomFeed10();
+			AtomFeed feed = new AtomFeed();
 			feed.Updated = DateTime.UtcNow;
 			feed.Title = "Server Error";
 			feed.SubTitle = "An error occurred while generating this feed. See feed items for details.";

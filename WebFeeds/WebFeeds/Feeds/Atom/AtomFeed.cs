@@ -47,8 +47,8 @@ namespace WebFeeds.Feeds.Atom
 	///		atomEntry*
 	/// </remarks>
 	[Serializable]
-	[XmlRoot(AtomFeed10.RootElement, Namespace=AtomFeed10.Namespace)]
-	public class AtomFeed10 : AtomSource, IWebFeed
+	[XmlRoot(AtomFeed.RootElement, Namespace=AtomFeed.Namespace)]
+	public class AtomFeed : AtomSource, IWebFeed
 	{
 		#region Constants
 
@@ -78,7 +78,7 @@ namespace WebFeeds.Feeds.Atom
 
 		string IWebFeed.MimeType
 		{
-			get { return AtomFeed10.MimeType; }
+			get { return AtomFeed.MimeType; }
 		}
 
 		string IWebFeed.Copyright
@@ -226,8 +226,8 @@ namespace WebFeeds.Feeds.Atom
 
 		public override void AddNamespaces(XmlSerializerNamespaces namespaces)
 		{
-			namespaces.Add("", AtomFeed10.Namespace);
-			namespaces.Add("xml", AtomFeed10.XmlNamespace);
+			namespaces.Add("", AtomFeed.Namespace);
+			namespaces.Add("xml", AtomFeed.XmlNamespace);
 
 			foreach (AtomEntry entry in this.Entries)
 			{
@@ -244,8 +244,8 @@ namespace WebFeeds.Feeds.Atom
 	/// Adapter for Atom 0.3 compatibility
 	/// </summary>
 	[Serializable]
-	[XmlRoot(AtomFeed03.RootElement, Namespace=AtomFeed03.Namespace)]
-	public class AtomFeed03 : AtomSource, IWebFeed
+	[XmlRoot(AtomFeedOld.RootElement, Namespace=AtomFeedOld.Namespace)]
+	public class AtomFeedOld : AtomSource, IWebFeed
 	{
 		#region Constants
 
@@ -268,7 +268,7 @@ namespace WebFeeds.Feeds.Atom
 		/// Ctor
 		/// </summary>
 		[Obsolete("Atom 0.3 is for backwards compatibility and should only be used for deserialization", true)]
-		public AtomFeed03()
+		public AtomFeedOld()
 		{
 		}
 
@@ -323,7 +323,7 @@ namespace WebFeeds.Feeds.Atom
 		}
 
 		[XmlElement("entry")]
-		public readonly List<AtomEntry03> Entries = new List<AtomEntry03>();
+		public readonly List<AtomEntryOld> Entries = new List<AtomEntryOld>();
 
 		[XmlIgnore]
 		[EditorBrowsable(EditorBrowsableState.Never)]
@@ -363,7 +363,7 @@ namespace WebFeeds.Feeds.Atom
 
 		string IWebFeed.MimeType
 		{
-			get { return AtomFeed03.MimeType; }
+			get { return AtomFeedOld.MimeType; }
 		}
 
 		string IWebFeed.Copyright
@@ -510,8 +510,8 @@ namespace WebFeeds.Feeds.Atom
 
 		public override void AddNamespaces(XmlSerializerNamespaces namespaces)
 		{
-			namespaces.Add("", AtomFeed03.Namespace);
-			namespaces.Add("xml", AtomFeed10.XmlNamespace);
+			namespaces.Add("", AtomFeedOld.Namespace);
+			namespaces.Add("xml", AtomFeed.XmlNamespace);
 
 			foreach (AtomEntry entry in this.Entries)
 			{
