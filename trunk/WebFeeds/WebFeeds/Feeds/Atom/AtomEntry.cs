@@ -232,7 +232,7 @@ namespace WebFeeds.Feeds.Atom
 	/// Adapter for Atom 0.3 compatibility
 	/// </summary>
 	[Serializable]
-	public class AtomEntry03 : AtomEntry
+	public class AtomEntryOld : AtomEntry
 	{
 		#region Init
 
@@ -240,7 +240,7 @@ namespace WebFeeds.Feeds.Atom
 		/// Ctor
 		/// </summary>
 		[Obsolete("Atom 0.3 is for backwards compatibility and should only be used for deserialization", true)]
-		public AtomEntry03()
+		public AtomEntryOld()
 		{
 		}
 
