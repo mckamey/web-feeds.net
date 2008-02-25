@@ -99,7 +99,7 @@ namespace WebFeeds.Feeds.Atom
 	///		atomTitle
 	///		atomUpdated
 	/// </remarks>
-	public abstract class AtomBase : AtomCommonAttributes
+	public abstract class AtomBase : AtomCommonAttributes, IUriProvider
 	{
 		#region Fields
 
@@ -192,7 +192,7 @@ namespace WebFeeds.Feeds.Atom
 		[EditorBrowsable(EditorBrowsableState.Never)]
 		public virtual bool RightsSpecified
 		{
-			get { return true; }
+			get { return (this.rights != null); }
 			set { }
 		}
 
@@ -239,61 +239,14 @@ namespace WebFeeds.Feeds.Atom
 		}
 
 		#endregion INamespaceProvider members
-	}
 
-	/// <summary>
-	/// http://tools.ietf.org/html/rfc4287#section-4.2.11
-	/// </summary>
-	/// <remarks>
-	/// atomSource : atomBase
-	///		atomGenerator?
-	///		atomIcon?
-	///		atomSubtitle?
-	/// </remarks>
-	public class AtomSource : AtomBase
-	{
-		#region Fields
+		#region IUriProvider Members
 
-		private AtomGenerator generator = null;
-		private Uri icon = null;
-		private AtomText subtitle = null;
-
-		#endregion Fields
-
-		#region Properties
-
-		[DefaultValue(null)]
-		[XmlElement("generator")]
-		public AtomGenerator Generator
+		Uri IUriProvider.Uri
 		{
-			get { return this.generator; }
-			set { this.generator = value; }
+			get { return this.id; }
 		}
 
-		[DefaultValue(null)]
-		[XmlElement("icon")]
-		public string Icon
-		{
-			get { return ExtensibleBase.ConvertToString(this.icon); }
-			set { this.icon = ExtensibleBase.ConvertToUri(value); }
-		}
-
-		[DefaultValue(null)]
-		[XmlElement("subtitle")]
-		public AtomText SubTitle
-		{
-			get { return this.subtitle; }
-			set { this.subtitle = value; }
-		}
-
-		[XmlIgnore]
-		[EditorBrowsable(EditorBrowsableState.Never)]
-		public virtual bool SubTitleSpecified
-		{
-			get { return true; }
-			set { }
-		}
-
-		#endregion Properties
+		#endregion IUriProvider Members
 	}
 }

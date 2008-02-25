@@ -29,6 +29,7 @@
 #endregion WebFeeds License
 
 using System;
+using System.Collections.Generic;
 using System.Xml.Serialization;
 
 namespace WebFeeds.Feeds
@@ -36,12 +37,68 @@ namespace WebFeeds.Feeds
 	/// <summary>
 	/// Feed interface
 	/// </summary>
-	public interface IWebFeed : INamespaceProvider
+	public interface IWebFeed : IWebFeedItem, INamespaceProvider
 	{
 		/// <summary>
 		/// Gets the MIME Type designation for the feed
 		/// </summary>
 		string MimeType { get; }
+
+		/// <summary>
+		/// Gets the link to an image
+		/// </summary>
+		Uri Image { get; }
+
+		/// <summary>
+		/// Gets the copyright
+		/// </summary>
+		string Copyright { get; }
+
+		/// <summary>
+		/// Gets a list of feed items
+		/// </summary>
+		IList<IWebFeedItem> Items { get; }
+	}
+
+	/// <summary>
+	/// Item interface
+	/// </summary>
+	public interface IWebFeedItem
+	{
+		/// <summary>
+		/// Gets a unique identifier
+		/// </summary>
+		Uri ID { get; }
+
+		/// <summary>
+		/// Gets the title
+		/// </summary>
+		string Title { get; }
+
+		/// <summary>
+		/// Gets the description
+		/// </summary>
+		string Description { get; }
+
+		/// <summary>
+		/// Gets the author
+		/// </summary>
+		string Author { get; }
+
+		/// <summary>
+		/// Gets the initial date published
+		/// </summary>
+		DateTime? Published { get; }
+
+		/// <summary>
+		/// Gets the date last updated
+		/// </summary>
+		DateTime? Updated { get; }
+
+		/// <summary>
+		/// Gets the link to the full version
+		/// </summary>
+		Uri Link { get; }
 	}
 
 	public interface INamespaceProvider
@@ -50,5 +107,10 @@ namespace WebFeeds.Feeds
 		/// Adds additional namespace URIs for the feed
 		/// </summary>
 		void AddNamespaces(XmlSerializerNamespaces namespaces);
+	}
+
+	public interface IUriProvider
+	{
+		Uri Uri { get; }
 	}
 }

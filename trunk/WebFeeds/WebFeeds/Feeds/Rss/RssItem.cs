@@ -42,7 +42,7 @@ namespace WebFeeds.Feeds.Rss
 	///		http://blogs.law.harvard.edu/tech/rss#hrelementsOfLtitemgt
 	/// </summary>
 	[Serializable]
-	public class RssItem : RssBase
+	public class RssItem : RssBase, IWebFeedItem
 	{
 		#region Fields
 
@@ -58,6 +58,8 @@ namespace WebFeeds.Feeds.Rss
 		private RssGuid guid = null;
 		private RssDate pubDate;
 		private RssSource source = null;
+
+		private DublinCore dcTerms = null;
 
 		#endregion Fields
 
@@ -213,5 +215,121 @@ namespace WebFeeds.Feeds.Rss
 		}
 
 		#endregion Properties
+
+		#region IWebFeedItem Members
+
+		/// <summary>
+		/// Allows IWebFeedItem to access DublinCore
+		/// </summary>
+		/// <remarks>
+		/// Note this only gets filled on first access
+		/// </remarks>
+		private DublinCore DcTerms
+		{
+			get
+			{
+				if (this.dcTerms == null)
+				{
+					this.dcTerms = new DublinCore();
+					this.FillExtensions(dcTerms);
+				}
+				return this.dcTerms;
+			}
+		}
+
+		Uri IWebFeedItem.ID
+		{
+			get
+			{
+				if (this.guid == null)
+				{
+					return null;
+				}
+
+				return ((IUriProvider)this.guid).Uri;
+			}
+		}
+
+		string IWebFeedItem.Title
+		{
+			get
+			{
+				string title = this.Title;
+				if (String.IsNullOrEmpty(title))
+				{
+					title = this.DcTerms[DublinCore.TermName.Title];
+				}
+				return title;
+			}
+		}
+
+		string IWebFeedItem.Description
+		{
+			get
+			{
+				string description = this.description;
+				if (String.IsNullOrEmpty(description))
+				{
+					description = this.DcTerms[DublinCore.TermName.Description];
+					if (String.IsNullOrEmpty(description))
+					{
+						description = this.DcTerms[DublinCore.TermName.Subject];
+					}
+				}
+				return description;
+			}
+		}
+
+		string IWebFeedItem.Author
+		{
+			get
+			{
+				if (!this.AuthorSpecified)
+				{
+					string author = this.DcTerms[DublinCore.TermName.Creator];
+					if (String.IsNullOrEmpty(author))
+					{
+						author = this.DcTerms[DublinCore.TermName.Contributor];
+
+						if (String.IsNullOrEmpty(author))
+						{
+							author = this.DcTerms[DublinCore.TermName.Publisher];
+						}
+					}
+					return author;
+				}
+				if (String.IsNullOrEmpty(this.author.Name))
+				{
+					return this.author.Email;
+				}
+				return this.author.Name;
+			}
+		}
+
+		DateTime? IWebFeedItem.Published
+		{
+			get
+			{
+				if (!this.pubDate.HasValue)
+				{
+					string date = this.DcTerms[DublinCore.TermName.Date];
+					return ExtensibleBase.ConvertToDateTime(date);
+				}
+
+				return this.pubDate.Value;
+			}
+		}
+
+		DateTime? IWebFeedItem.Updated
+		{
+			get { return ((IWebFeedItem)this).Published; }
+		}
+
+		Uri IWebFeedItem.Link
+		{
+			get { return this.link; }
+		}
+
+		#endregion IWebFeedItem Members
 	}
 }

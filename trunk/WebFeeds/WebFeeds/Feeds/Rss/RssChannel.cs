@@ -43,7 +43,7 @@ namespace WebFeeds.Feeds.Rss
 	///		http://blogs.law.harvard.edu/tech/rss
 	/// </summary>
 	[Serializable]
-	public abstract class RssChannelBase : RssBase
+	public abstract class RssChannelBase : RssBase, IUriProvider
 	{
 		#region Fields
 
@@ -376,6 +376,15 @@ namespace WebFeeds.Feeds.Rss
 		}
 
 		#endregion Properties
+
+		#region IUriProvider Members
+
+		Uri IUriProvider.Uri
+		{
+			get { return this.link; }
+		}
+
+		#endregion IUriProvider Members
 	}
 
 	/// <summary>

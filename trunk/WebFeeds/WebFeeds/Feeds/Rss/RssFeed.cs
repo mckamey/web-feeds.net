@@ -29,6 +29,7 @@
 #endregion WebFeeds License
 
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Xml.Serialization;
 
@@ -88,11 +89,36 @@ namespace WebFeeds.Feeds.Rss
 
 		#region IWebFeed Members
 
-		[XmlIgnore]
 		string IWebFeed.MimeType
 		{
 			get { return RssFeed.MimeType; }
 		}
+
+		string IWebFeed.Copyright
+		{
+			get { return this.Channel.Copyright; }
+		}
+
+		Uri IWebFeed.Image
+		{
+			get
+			{
+				if (!this.Channel.ImageSpecified)
+				{
+					return null;
+				}
+				return ((IUriProvider)this.Channel.Image).Uri;
+			}
+		}
+
+		IList<IWebFeedItem> IWebFeed.Items
+		{
+			get { return this.Channel.Items.ToArray(); }
+		}
+
+		#endregion IWebFeedItem Members
+
+		#region INamespaceProvider Members
 
 		public override void AddNamespaces(XmlSerializerNamespaces namespaces)
 		{
@@ -103,6 +129,80 @@ namespace WebFeeds.Feeds.Rss
 			base.AddNamespaces(namespaces);
 		}
 
-		#endregion IWebFeed Members
+		#endregion INamespaceProvider Members
+
+		#region IWebFeedItem Members
+
+		Uri IWebFeedItem.ID
+		{
+			get { return ((IUriProvider)this.Channel).Uri; }
+		}
+
+		string IWebFeedItem.Title
+		{
+			get { return this.Channel.Title; }
+		}
+
+		string IWebFeedItem.Description
+		{
+			get { return this.Channel.Description; }
+		}
+
+		string IWebFeedItem.Author
+		{
+			get
+			{
+				if (!this.Channel.ManagingEditorSpecified)
+				{
+					if (!this.Channel.WebMasterSpecified)
+					{
+						return null;
+					}
+					if (String.IsNullOrEmpty(this.Channel.WebMaster.Name))
+					{
+						return this.Channel.WebMaster.Email;
+					}
+					return this.Channel.WebMaster.Name;
+				}
+				if (String.IsNullOrEmpty(this.Channel.ManagingEditor.Name))
+				{
+					return this.Channel.ManagingEditor.Email;
+				}
+				return this.Channel.ManagingEditor.Name;
+			}
+		}
+
+		DateTime? IWebFeedItem.Published
+		{
+			get
+			{
+				if (!this.Channel.PubDate.HasValue)
+				{
+					return null;
+				}
+
+				return this.Channel.PubDate.Value;
+			}
+		}
+
+		DateTime? IWebFeedItem.Updated
+		{
+			get
+			{
+				if (!this.Channel.LastBuildDate.HasValue)
+				{
+					return null;
+				}
+
+				return this.Channel.LastBuildDate.Value;
+			}
+		}
+
+		Uri IWebFeedItem.Link
+		{
+			get { return ((IUriProvider)this.Channel).Uri; }
+		}
+
+		#endregion IWebFeedItem Members
 	}
 }

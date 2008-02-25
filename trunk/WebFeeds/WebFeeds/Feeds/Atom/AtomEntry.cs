@@ -46,7 +46,7 @@ namespace WebFeeds.Feeds.Atom
 	///		atomSummary?
 	/// </remarks>
 	[Serializable]
-	public class AtomEntry : AtomBase
+	public class AtomEntry : AtomBase, IWebFeedItem
 	{
 		#region Fields
 
@@ -100,6 +100,132 @@ namespace WebFeeds.Feeds.Atom
 		}
 
 		#endregion Properties
+
+		#region IWebFeedItem Members
+
+		Uri IWebFeedItem.ID
+		{
+			get { return ((IUriProvider)this).Uri; }
+		}
+
+		string IWebFeedItem.Title
+		{
+			get { return this.Title.Value; }
+		}
+
+		string IWebFeedItem.Description
+		{
+			get
+			{
+				if (this.summary == null || String.IsNullOrEmpty(this.summary.Value))
+				{
+					if (this.content == null || String.IsNullOrEmpty(this.content.Value))
+					{
+						return null;
+					}
+					return this.content.Value;
+				}
+				return this.Summary.Value;
+			}
+		}
+
+		string IWebFeedItem.Author
+		{
+			get
+			{
+				if (!this.AuthorsSpecified)
+				{
+					if (!this.ContributorsSpecified)
+					{
+						return null;
+					}
+					foreach (AtomPerson person in this.Contributors)
+					{
+						if (!String.IsNullOrEmpty(person.Name))
+						{
+							return person.Name;
+						}
+						if (!String.IsNullOrEmpty(person.Email))
+						{
+							return person.Name;
+						}
+					}
+				}
+
+				foreach (AtomPerson person in this.Authors)
+				{
+					if (!String.IsNullOrEmpty(person.Name))
+					{
+						return person.Name;
+					}
+					if (!String.IsNullOrEmpty(person.Email))
+					{
+						return person.Name;
+					}
+				}
+
+				return null;
+			}
+		}
+
+		DateTime? IWebFeedItem.Published
+		{
+			get
+			{
+				if (!this.Published.HasValue)
+				{
+					return ((IWebFeedItem)this).Updated;
+				}
+
+				return this.Published.Value;
+			}
+		}
+
+		DateTime? IWebFeedItem.Updated
+		{
+			get
+			{
+				if (!this.Updated.HasValue)
+				{
+					return null;
+				}
+
+				return this.Updated.Value;
+			}
+		}
+
+		Uri IWebFeedItem.Link
+		{
+			get
+			{
+				if (!this.LinksSpecified)
+				{
+					return null;
+				}
+
+				Uri alternate = null;
+				foreach (AtomLink link in this.Links)
+				{
+					if ("alternate".Equals(link.Rel))
+					{
+						return ((IUriProvider)link).Uri;
+					}
+					else if (alternate == null && !"self".Equals(link.Rel))
+					{
+						return ((IUriProvider)link).Uri;
+					}
+				}
+
+				if (alternate == null && this.content != null)
+				{
+					alternate = ((IUriProvider)this.content).Uri;
+				}
+
+				return alternate;
+			}
+		}
+
+		#endregion IWebFeedItem Members
 	}
 
 	/// <summary>

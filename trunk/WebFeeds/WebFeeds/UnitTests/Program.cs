@@ -69,20 +69,49 @@ namespace WebFeeds
 					string path = Path.GetFullPath(unitTest);
 					IWebFeed feed = FeedSerializer.DeserializeXml(path, Timeout);
 
-					#region DublinCore test
-
-					if (feed is RdfFeed)
+					using (StreamWriter writer = File.CreateText(unitTest.Replace(UnitTestFolder, OutputFolder)+".txt"))
 					{
-						DublinCore dc = new DublinCore();
-						((RdfFeed)feed).Channel.FillExtensions(dc);
+						#region IWebFeed
 
-						foreach (DublinCore.TermName term in dc.Terms)
+						writer.WriteLine("Feed Title: {0}", feed.Title);
+						writer.WriteLine("Feed Description: {0}", feed.Description);
+						writer.WriteLine("Feed Author: {0}", feed.Author);
+						writer.WriteLine("Feed Copyright: {0}", feed.Copyright);
+						writer.WriteLine("Feed ID: {0}", feed.ID);
+						writer.WriteLine("Feed Link: {0}", feed.Link);
+						writer.WriteLine("Feed Image: {0}", feed.Image);
+						writer.WriteLine("Feed Published: {0}", feed.Published);
+						writer.WriteLine("Feed Updated: {0}", feed.Updated);
+						foreach (IWebFeedItem item in feed.Items)
 						{
-							Console.WriteLine("DublinCore {0}: {1}", term, dc[term]);
+							writer.WriteLine("_____________________________________________");
+							writer.WriteLine("Item Title: {0}", item.Title);
+							writer.WriteLine("Item Description: {0}", item.Description);
+							writer.WriteLine("Item Author: {0}", item.Author);
+							writer.WriteLine("Item ID: {0}", item.ID);
+							writer.WriteLine("Item Link: {0}", item.Link);
+							writer.WriteLine("Item Published: {0}", item.Published);
+							writer.WriteLine("Item Updated: {0}", item.Updated);
 						}
-					}
+						writer.WriteLine("_____________________________________________");
 
-					#endregion DublinCore test
+						#endregion IWebFeed
+
+						#region DublinCore test
+
+						if (feed is RdfFeed)
+						{
+							DublinCore dc = new DublinCore();
+							((RdfFeed)feed).Channel.FillExtensions(dc);
+
+							foreach (DublinCore.TermName term in dc.Terms)
+							{
+								writer.WriteLine("DublinCore {0}: {1}", term, dc[term]);
+							}
+						}
+
+						#endregion DublinCore test
+					}
 
 					using (Stream output = File.OpenWrite(unitTest.Replace(UnitTestFolder, OutputFolder)))
 					{

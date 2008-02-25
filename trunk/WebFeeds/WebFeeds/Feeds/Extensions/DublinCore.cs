@@ -100,8 +100,11 @@ namespace WebFeeds.Feeds.Extensions
 				try
 				{
 					// ensure date is in correct format
-					DateTime date = ExtensibleBase.ConvertToDateTime(value);
-					value = ExtensibleBase.ConvertToString(date);
+					DateTime? date = ExtensibleBase.ConvertToDateTime(value);
+					value =
+						date.HasValue ?
+						ExtensibleBase.ConvertToString(date.Value) :
+						null;
 				}
 				catch {}
 			}
