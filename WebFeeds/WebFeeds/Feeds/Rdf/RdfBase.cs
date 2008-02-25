@@ -43,7 +43,7 @@ namespace WebFeeds.Feeds.Rdf
 	///		http://web.resource.org/rss/1.0/spec#s5.3
 	/// </summary>
 	[Serializable]
-	public abstract class RdfBase : ExtensibleBase
+	public abstract class RdfBase : ExtensibleBase, IUriProvider
 	{
 		#region Fields
 
@@ -106,5 +106,14 @@ namespace WebFeeds.Feeds.Rdf
 		}
 
 		#endregion Properties
+
+		#region IUriProvider Members
+
+		Uri IUriProvider.Uri
+		{
+			get { return this.link; }
+		}
+
+		#endregion IUriProvider Members
 	}
 }

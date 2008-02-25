@@ -184,11 +184,29 @@ namespace WebFeeds.Feeds.Rdf
 
 		#region IWebFeed Members
 
-		[XmlIgnore]
 		string IWebFeed.MimeType
 		{
 			get { return RdfFeed.MimeType; }
 		}
+
+		string IWebFeed.Copyright
+		{
+			get { return this.Channel.Copyright; }
+		}
+
+		Uri IWebFeed.Image
+		{
+			get { return ((IUriProvider)this.Image).Uri; }
+		}
+
+		IList<IWebFeedItem> IWebFeed.Items
+		{
+			get { return this.Items.ToArray(); }
+		}
+
+		#endregion IWebFeedItem Members
+
+		#region INamespaceProvider Members
 
 		public override void AddNamespaces(XmlSerializerNamespaces namespaces)
 		{
@@ -213,6 +231,45 @@ namespace WebFeeds.Feeds.Rdf
 			base.AddNamespaces(namespaces);
 		}
 
-		#endregion IWebFeed Members
+		#endregion INamespaceProvider Members
+
+		#region IWebFeedItem Members
+
+		Uri IWebFeedItem.ID
+		{
+			get { return ((IWebFeedItem)this.Channel).ID; }
+		}
+
+		string IWebFeedItem.Title
+		{
+			get { return ((IWebFeedItem)this.Channel).Title; }
+		}
+
+		string IWebFeedItem.Description
+		{
+			get { return ((IWebFeedItem)this.Channel).Description; }
+		}
+
+		string IWebFeedItem.Author
+		{
+			get { return ((IWebFeedItem)this.Channel).Author; }
+		}
+
+		DateTime? IWebFeedItem.Published
+		{
+			get { return ((IWebFeedItem)this.Channel).Published; }
+		}
+
+		DateTime? IWebFeedItem.Updated
+		{
+			get { return ((IWebFeedItem)this.Channel).Updated; }
+		}
+
+		Uri IWebFeedItem.Link
+		{
+			get { return ((IWebFeedItem)this.Channel).Link; }
+		}
+
+		#endregion IWebFeedItem Members
 	}
 }

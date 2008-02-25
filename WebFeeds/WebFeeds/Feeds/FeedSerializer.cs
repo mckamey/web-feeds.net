@@ -166,7 +166,7 @@ namespace WebFeeds.Feeds
 		{
 			switch (rootElement)
 			{
-				case AtomFeed.RootElement:
+				case AtomFeed10.RootElement:
 				{
 					switch (namespaceUri)
 					{

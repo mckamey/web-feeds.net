@@ -45,7 +45,7 @@ namespace WebFeeds.Feeds.Rdf
 	/// </summary>
 	[Serializable]
 	[XmlType("image", Namespace=RdfFeed.NamespaceRss10)]
-	public class RdfImage : RdfBase
+	public class RdfImage : RdfBase, IUriProvider
 	{
 		#region Fields
 
@@ -85,6 +85,15 @@ namespace WebFeeds.Feeds.Rdf
 		}
 
 		#endregion Methods
+
+		#region IUriProvider Members
+
+		Uri IUriProvider.Uri
+		{
+			get { return this.url; }
+		}
+
+		#endregion IUriProvider Members
 	}
 
 	#endregion RdfImage

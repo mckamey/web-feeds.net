@@ -437,7 +437,7 @@ namespace WebFeeds.Feeds.Rss
 	///		http://blogs.law.harvard.edu/tech/rss#ltguidgtSubelementOfLtitemgt
 	/// </summary>
 	[Serializable]
-	public class RssGuid : RssBase
+	public class RssGuid : RssBase, IUriProvider
 	{
 		#region Fields
 
@@ -487,6 +487,15 @@ namespace WebFeeds.Feeds.Rss
 		}
 
 		#endregion Properties
+
+		#region IUriProvider Members
+
+		Uri IUriProvider.Uri
+		{
+			get { return this.value; }
+		}
+
+		#endregion IUriProvider Members
 	}
 
 	#endregion RssGuid
@@ -498,7 +507,7 @@ namespace WebFeeds.Feeds.Rss
 	///		http://blogs.law.harvard.edu/tech/rss#ltimagegtSubelementOfLtchannelgt
 	/// </summary>
 	[Serializable]
-	public class RssImage : RssBase
+	public class RssImage : RssBase, IUriProvider
 	{
 		#region Fields
 
@@ -598,6 +607,15 @@ namespace WebFeeds.Feeds.Rss
 		}
 
 		#endregion Methods
+
+		#region IUriProvider Members
+
+		Uri IUriProvider.Uri
+		{
+			get { return this.url; }
+		}
+
+		#endregion IUriProvider Members
 	}
 
 	#endregion RssImage

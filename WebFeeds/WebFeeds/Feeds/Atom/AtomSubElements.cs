@@ -134,7 +134,7 @@ namespace WebFeeds.Feeds.Atom
 	/// http://tools.ietf.org/html/rfc4287#section-4.1.3
 	/// </summary>
 	[Serializable]
-	public class AtomContent : AtomText
+	public class AtomContent : AtomText, IUriProvider
 	{
 		#region Fields
 
@@ -195,6 +195,15 @@ namespace WebFeeds.Feeds.Atom
 		}
 
 		#endregion Properties
+
+		#region IUriProvider Members
+
+		Uri IUriProvider.Uri
+		{
+			get { return this.src; }
+		}
+
+		#endregion IUriProvider Members
 
 		#region Operators
 
@@ -460,7 +469,7 @@ namespace WebFeeds.Feeds.Atom
 	/// http://tools.ietf.org/html/rfc4287#section-4.2.7
 	/// </summary>
 	[Serializable]
-	public class AtomLink : AtomCommonAttributes
+	public class AtomLink : AtomCommonAttributes, IUriProvider
 	{
 		#region Fields
 
@@ -544,6 +553,15 @@ namespace WebFeeds.Feeds.Atom
 		}
 
 		#endregion Properties
+
+		#region IUriProvider Members
+
+		Uri IUriProvider.Uri
+		{
+			get { return this.href; }
+		}
+
+		#endregion IUriProvider Members
 
 		#region Object Overrides
 

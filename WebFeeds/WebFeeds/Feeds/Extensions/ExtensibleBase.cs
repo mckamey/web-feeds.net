@@ -137,12 +137,12 @@ namespace WebFeeds.Feeds.Extensions
 			return XmlConvert.ToString(dateTime, XmlDateTimeSerializationMode.Utc);
 		}
 
-		public static DateTime ConvertToDateTime(string value)
+		public static DateTime? ConvertToDateTime(string value)
 		{
 			DateTime dateTime;
 			if (!DateTime.TryParse(value, out dateTime))
 			{
-				return DateTime.MinValue;
+				return null;
 			}
 			return dateTime;
 		}

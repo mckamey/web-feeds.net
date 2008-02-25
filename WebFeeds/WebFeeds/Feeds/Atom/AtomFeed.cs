@@ -47,43 +47,15 @@ namespace WebFeeds.Feeds.Atom
 	///		atomEntry*
 	/// </remarks>
 	[Serializable]
-	[XmlInclude(typeof(AtomFeed03))]
-	[XmlInclude(typeof(AtomFeed10))]
-	public abstract class AtomFeed : AtomSource
-	{
-		#region Constants
-
-		protected internal const string RootElement = "feed";
-		protected internal const string MimeType = "application/atom+xml";
-
-		#endregion Constants
-
-		#region Fields
-
-		private Uri logo = null;
-
-		#endregion Fields
-
-		#region Properties
-
-		[DefaultValue(null)]
-		[XmlElement("logo")]
-		public string Logo
-		{
-			get { return ExtensibleBase.ConvertToString(this.logo); }
-			set { this.logo = ExtensibleBase.ConvertToUri(value); }
-		}
-
-		#endregion Properties
-	}
-
 	[XmlRoot(AtomFeed10.RootElement, Namespace=AtomFeed10.Namespace)]
-	public class AtomFeed10 : AtomFeed, IWebFeed
+	public class AtomFeed10 : AtomSource, IWebFeed
 	{
 		#region Constants
 
 		public const string SpecificationUrl = "http://tools.ietf.org/html/rfc4287";
 		protected internal const string Namespace = "http://www.w3.org/2005/Atom";
+		protected internal const string RootElement = "feed";
+		protected internal const string MimeType = "application/atom+xml";
 
 		#endregion Constants
 
@@ -104,11 +76,153 @@ namespace WebFeeds.Feeds.Atom
 
 		#region IWebFeed Members
 
-		[XmlIgnore]
 		string IWebFeed.MimeType
 		{
 			get { return AtomFeed10.MimeType; }
 		}
+
+		string IWebFeed.Copyright
+		{
+			get
+			{
+				if (!this.RightsSpecified)
+				{
+					return null;
+				}
+				return this.Rights.Value;
+			}
+		}
+
+		Uri IWebFeed.Image
+		{
+			get
+			{
+				if (this.LogoUri == null)
+				{
+					return this.IconUri;
+				}
+				return this.LogoUri;
+			}
+		}
+
+		IList<IWebFeedItem> IWebFeed.Items
+		{
+			get { return this.Entries.ToArray(); }
+		}
+
+		#endregion IWebFeed Members
+
+		#region IWebFeedItem Members
+
+		Uri IWebFeedItem.ID
+		{
+			get { return ((IUriProvider)this).Uri; }
+		}
+
+		string IWebFeedItem.Title
+		{
+			get { return this.Title.Value; }
+		}
+
+		string IWebFeedItem.Description
+		{
+			get
+			{
+
+				if (this.SubTitle == null || String.IsNullOrEmpty(this.SubTitle.Value))
+				{
+					return null;
+				}
+				return this.SubTitle.Value;
+			}
+		}
+
+		string IWebFeedItem.Author
+		{
+			get
+			{
+				if (!this.AuthorsSpecified)
+				{
+					if (!this.ContributorsSpecified)
+					{
+						return null;
+					}
+					foreach (AtomPerson person in this.Contributors)
+					{
+						if (!String.IsNullOrEmpty(person.Name))
+						{
+							return person.Name;
+						}
+						if (!String.IsNullOrEmpty(person.Email))
+						{
+							return person.Name;
+						}
+					}
+				}
+
+				foreach (AtomPerson person in this.Authors)
+				{
+					if (!String.IsNullOrEmpty(person.Name))
+					{
+						return person.Name;
+					}
+					if (!String.IsNullOrEmpty(person.Email))
+					{
+						return person.Name;
+					}
+				}
+
+				return null;
+			}
+		}
+
+		DateTime? IWebFeedItem.Published
+		{
+			get { return null; }
+		}
+
+		DateTime? IWebFeedItem.Updated
+		{
+			get
+			{
+				if (!this.Updated.HasValue)
+				{
+					return null;
+				}
+
+				return this.Updated.Value;
+			}
+		}
+
+		Uri IWebFeedItem.Link
+		{
+			get
+			{
+				if (!this.LinksSpecified)
+				{
+					return null;
+				}
+
+				Uri alternate = null;
+				foreach (AtomLink link in this.Links)
+				{
+					if ("alternate".Equals(link.Rel))
+					{
+						return ((IUriProvider)link).Uri;
+					}
+					else if (alternate == null && !"self".Equals(link.Rel))
+					{
+						return ((IUriProvider)link).Uri;
+					}
+				}
+
+				return alternate;
+			}
+		}
+
+		#endregion IWebFeedItem Members
+
+		#region INamespaceProvider Members
 
 		public override void AddNamespaces(XmlSerializerNamespaces namespaces)
 		{
@@ -123,19 +237,22 @@ namespace WebFeeds.Feeds.Atom
 			base.AddNamespaces(namespaces);
 		}
 
-		#endregion IWebFeed Members
+		#endregion INamespaceProvider Members
 	}
 
 	/// <summary>
 	/// Adapter for Atom 0.3 compatibility
 	/// </summary>
+	[Serializable]
 	[XmlRoot(AtomFeed03.RootElement, Namespace=AtomFeed03.Namespace)]
-	public class AtomFeed03 : AtomFeed, IWebFeed
+	public class AtomFeed03 : AtomSource, IWebFeed
 	{
 		#region Constants
 
 		public const string SpecificationUrl = "http://www.mnot.net/drafts/draft-nottingham-atom-format-02.html";
 		protected internal const string Namespace = "http://purl.org/atom/ns#";
+		protected internal const string RootElement = "feed";
+		protected internal const string MimeType = "application/atom+xml";
 
 		#endregion Constants
 
@@ -244,11 +361,152 @@ namespace WebFeeds.Feeds.Atom
 
 		#region IWebFeed Members
 
-		[XmlIgnore]
 		string IWebFeed.MimeType
 		{
 			get { return AtomFeed03.MimeType; }
 		}
+
+		string IWebFeed.Copyright
+		{
+			get
+			{
+				if (!this.RightsSpecified)
+				{
+					return null;
+				}
+				return this.Rights.Value;
+			}
+		}
+
+		Uri IWebFeed.Image
+		{
+			get
+			{
+				if (this.LogoUri == null)
+				{
+					return this.IconUri;
+				}
+				return this.LogoUri;
+			}
+		}
+
+		IList<IWebFeedItem> IWebFeed.Items
+		{
+			get { return this.Entries.ToArray(); }
+		}
+
+		#endregion IWebFeed Members
+
+		#region IWebFeedItem Members
+
+		Uri IWebFeedItem.ID
+		{
+			get { return ((IUriProvider)this).Uri; }
+		}
+
+		string IWebFeedItem.Title
+		{
+			get { return this.Title.Value; }
+		}
+
+		string IWebFeedItem.Description
+		{
+			get
+			{
+				if (this.SubTitle == null || String.IsNullOrEmpty(this.SubTitle.Value))
+				{
+					return null;
+				}
+				return this.SubTitle.Value;
+			}
+		}
+
+		string IWebFeedItem.Author
+		{
+			get
+			{
+				if (!this.AuthorsSpecified)
+				{
+					if (!this.ContributorsSpecified)
+					{
+						return null;
+					}
+					foreach (AtomPerson person in this.Contributors)
+					{
+						if (!String.IsNullOrEmpty(person.Name))
+						{
+							return person.Name;
+						}
+						if (!String.IsNullOrEmpty(person.Email))
+						{
+							return person.Name;
+						}
+					}
+				}
+
+				foreach (AtomPerson person in this.Authors)
+				{
+					if (!String.IsNullOrEmpty(person.Name))
+					{
+						return person.Name;
+					}
+					if (!String.IsNullOrEmpty(person.Email))
+					{
+						return person.Name;
+					}
+				}
+
+				return null;
+			}
+		}
+
+		DateTime? IWebFeedItem.Published
+		{
+			get { return ((IWebFeedItem)this).Updated; }
+		}
+
+		DateTime? IWebFeedItem.Updated
+		{
+			get
+			{
+				if (!this.Updated.HasValue)
+				{
+					return null;
+				}
+
+				return this.Updated.Value;
+			}
+		}
+
+		Uri IWebFeedItem.Link
+		{
+			get
+			{
+				if (!this.LinksSpecified)
+				{
+					return null;
+				}
+
+				Uri alternate = null;
+				foreach (AtomLink link in this.Links)
+				{
+					if ("alternate".Equals(link.Rel))
+					{
+						return ((IUriProvider)link).Uri;
+					}
+					else if (alternate == null && !"self".Equals(link.Rel))
+					{
+						return ((IUriProvider)link).Uri;
+					}
+				}
+
+				return alternate;
+			}
+		}
+
+		#endregion IWebFeedItem Members
+
+		#region INamespaceProvider Members
 
 		public override void AddNamespaces(XmlSerializerNamespaces namespaces)
 		{
@@ -263,6 +521,84 @@ namespace WebFeeds.Feeds.Atom
 			base.AddNamespaces(namespaces);
 		}
 
-		#endregion IWebFeed Members
+		#endregion INamespaceProvider Members
+	}
+
+	/// <summary>
+	/// http://tools.ietf.org/html/rfc4287#section-4.2.11
+	/// </summary>
+	/// <remarks>
+	/// atomSource : atomBase
+	///		atomGenerator?
+	///		atomIcon?
+	///		atomLogo?
+	///		atomSubtitle?
+	/// </remarks>
+	public class AtomSource : AtomBase
+	{
+		#region Fields
+
+		private AtomGenerator generator = null;
+		private Uri icon = null;
+		private Uri logo = null;
+		private AtomText subtitle = null;
+
+		#endregion Fields
+
+		#region Properties
+
+		[DefaultValue(null)]
+		[XmlElement("generator")]
+		public AtomGenerator Generator
+		{
+			get { return this.generator; }
+			set { this.generator = value; }
+		}
+
+		[DefaultValue(null)]
+		[XmlElement("icon")]
+		public string Icon
+		{
+			get { return ExtensibleBase.ConvertToString(this.icon); }
+			set { this.icon = ExtensibleBase.ConvertToUri(value); }
+		}
+
+		[XmlIgnore]
+		protected Uri IconUri
+		{
+			get { return this.icon; }
+		}
+
+		[DefaultValue(null)]
+		[XmlElement("logo")]
+		public string Logo
+		{
+			get { return ExtensibleBase.ConvertToString(this.logo); }
+			set { this.logo = ExtensibleBase.ConvertToUri(value); }
+		}
+
+		[XmlIgnore]
+		protected Uri LogoUri
+		{
+			get { return this.logo; }
+		}
+
+		[DefaultValue(null)]
+		[XmlElement("subtitle")]
+		public AtomText SubTitle
+		{
+			get { return this.subtitle; }
+			set { this.subtitle = value; }
+		}
+
+		[XmlIgnore]
+		[EditorBrowsable(EditorBrowsableState.Never)]
+		public virtual bool SubTitleSpecified
+		{
+			get { return true; }
+			set { }
+		}
+
+		#endregion Properties
 	}
 }
