@@ -110,22 +110,22 @@ namespace WebFeeds.Feeds.Atom
 
 		string IWebFeedItem.Title
 		{
-			get { return this.Title.Value; }
+			get { return this.Title.StringValue; }
 		}
 
 		string IWebFeedItem.Description
 		{
 			get
 			{
-				if (this.summary == null || String.IsNullOrEmpty(this.summary.Value))
+				if (this.summary == null || String.IsNullOrEmpty(this.summary.StringValue))
 				{
-					if (this.content == null || String.IsNullOrEmpty(this.content.Value))
+					if (this.content == null || String.IsNullOrEmpty(this.content.StringValue))
 					{
 						return null;
 					}
-					return this.content.Value;
+					return this.content.StringValue;
 				}
-				return this.Summary.Value;
+				return this.summary.StringValue;
 			}
 		}
 

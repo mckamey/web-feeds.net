@@ -768,6 +768,12 @@ namespace WebFeeds.Feeds.Atom
 			}
 		}
 
+		[XmlIgnore]
+		public string StringValue
+		{
+			get { return this.value; }
+		}
+
 		#endregion Properties
 
 		#region Object Overrides
