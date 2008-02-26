@@ -89,7 +89,7 @@ namespace WebFeeds.Feeds.Atom
 				{
 					return null;
 				}
-				return this.Rights.Value;
+				return this.Rights.StringValue;
 			}
 		}
 
@@ -121,18 +121,18 @@ namespace WebFeeds.Feeds.Atom
 
 		string IWebFeedItem.Title
 		{
-			get { return this.Title.Value; }
+			get { return this.Title.StringValue; }
 		}
 
 		string IWebFeedItem.Description
 		{
 			get
 			{
-				if (this.SubTitle == null || String.IsNullOrEmpty(this.SubTitle.Value))
+				if (this.SubTitle == null || String.IsNullOrEmpty(this.SubTitle.StringValue))
 				{
 					return null;
 				}
-				return this.SubTitle.Value;
+				return this.SubTitle.StringValue;
 			}
 		}
 
@@ -373,7 +373,7 @@ namespace WebFeeds.Feeds.Atom
 				{
 					return null;
 				}
-				return this.Rights.Value;
+				return this.Rights.StringValue;
 			}
 		}
 
@@ -405,18 +405,18 @@ namespace WebFeeds.Feeds.Atom
 
 		string IWebFeedItem.Title
 		{
-			get { return this.Title.Value; }
+			get { return this.Title.StringValue; }
 		}
 
 		string IWebFeedItem.Description
 		{
 			get
 			{
-				if (this.SubTitle == null || String.IsNullOrEmpty(this.SubTitle.Value))
+				if (this.SubTitle == null || String.IsNullOrEmpty(this.SubTitle.StringValue))
 				{
 					return null;
 				}
-				return this.SubTitle.Value;
+				return this.SubTitle.StringValue;
 			}
 		}
 
