@@ -128,7 +128,6 @@ namespace WebFeeds.Feeds.Atom
 		{
 			get
 			{
-
 				if (this.SubTitle == null || String.IsNullOrEmpty(this.SubTitle.Value))
 				{
 					return null;
