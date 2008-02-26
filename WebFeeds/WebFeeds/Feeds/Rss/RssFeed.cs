@@ -178,7 +178,7 @@ namespace WebFeeds.Feeds.Rss
 			{
 				if (!this.Channel.PubDate.HasValue)
 				{
-					return null;
+					return ((IWebFeedItem)this).Updated;
 				}
 
 				return this.Channel.PubDate.Value;

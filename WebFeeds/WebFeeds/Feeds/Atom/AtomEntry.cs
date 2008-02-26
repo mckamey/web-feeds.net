@@ -110,16 +110,23 @@ namespace WebFeeds.Feeds.Atom
 
 		string IWebFeedItem.Title
 		{
-			get { return this.Title.StringValue; }
+			get
+			{
+				if (this.Title == null)
+				{
+					return null;
+				}
+				return this.Title.StringValue;
+			}
 		}
 
 		string IWebFeedItem.Description
 		{
 			get
 			{
-				if (this.summary == null || String.IsNullOrEmpty(this.summary.StringValue))
+				if (this.summary == null)
 				{
-					if (this.content == null || String.IsNullOrEmpty(this.content.StringValue))
+					if (this.content == null)
 					{
 						return null;
 					}

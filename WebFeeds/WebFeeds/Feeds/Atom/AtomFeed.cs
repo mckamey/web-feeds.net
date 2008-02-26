@@ -121,14 +121,21 @@ namespace WebFeeds.Feeds.Atom
 
 		string IWebFeedItem.Title
 		{
-			get { return this.Title.StringValue; }
+			get
+			{
+				if (this.Title == null)
+				{
+					return null;
+				}
+				return this.Title.StringValue;
+			}
 		}
 
 		string IWebFeedItem.Description
 		{
 			get
 			{
-				if (this.SubTitle == null || String.IsNullOrEmpty(this.SubTitle.StringValue))
+				if (this.SubTitle == null)
 				{
 					return null;
 				}
@@ -177,7 +184,7 @@ namespace WebFeeds.Feeds.Atom
 
 		DateTime? IWebFeedItem.Published
 		{
-			get { return null; }
+			get { return ((IWebFeedItem)this).Updated; }
 		}
 
 		DateTime? IWebFeedItem.Updated
@@ -405,14 +412,21 @@ namespace WebFeeds.Feeds.Atom
 
 		string IWebFeedItem.Title
 		{
-			get { return this.Title.StringValue; }
+			get
+			{
+				if (this.Title == null)
+				{
+					return null;
+				}
+				return this.Title.StringValue;
+			}
 		}
 
 		string IWebFeedItem.Description
 		{
 			get
 			{
-				if (this.SubTitle == null || String.IsNullOrEmpty(this.SubTitle.StringValue))
+				if (this.SubTitle == null)
 				{
 					return null;
 				}
