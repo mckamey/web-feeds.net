@@ -50,7 +50,7 @@ namespace WebFeeds.Feeds.Rss
 		public const string SpecificationUrl = "http://blogs.law.harvard.edu/tech/rss";
 		protected internal const string RootElement = "rss";
 		protected internal const string Namespace = "";
-		protected internal const string MimeType = "application/rss+xml";
+		public const string MimeType = "application/rss+xml";
 
 		#endregion Constants
 

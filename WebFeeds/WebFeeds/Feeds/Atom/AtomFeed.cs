@@ -55,7 +55,7 @@ namespace WebFeeds.Feeds.Atom
 		public const string SpecificationUrl = "http://tools.ietf.org/html/rfc4287";
 		protected internal const string Namespace = "http://www.w3.org/2005/Atom";
 		protected internal const string RootElement = "feed";
-		protected internal const string MimeType = "application/atom+xml";
+		public const string MimeType = "application/atom+xml";
 
 		#endregion Constants
 
