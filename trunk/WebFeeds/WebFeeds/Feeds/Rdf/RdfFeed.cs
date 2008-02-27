@@ -51,7 +51,7 @@ namespace WebFeeds.Feeds.Rdf
 		protected internal const string NamespaceRdf = "http://www.w3.org/1999/02/22-rdf-syntax-ns#";
 		protected internal const string NamespaceRss10 = "http://purl.org/rss/1.0/";
 		protected internal const string NamespaceDefault = "http://purl.org/rss/1.0/";
-		protected internal const string MimeType = "application/rss+xml";
+		public const string MimeType = "application/rss+xml";
 
 		#endregion Constants
 
