@@ -112,7 +112,14 @@ namespace WebFeeds.Feeds.Rss
 		public string Language
 		{
 			get { return this.language.Name; }
-			set { this.language = CultureInfo.GetCultureInfo(value); }
+			set
+			{
+				if (value == null)
+				{
+					value = String.Empty;
+				}
+				this.language = CultureInfo.GetCultureInfo(value.Trim());
+			}
 		}
 
 		[DefaultValue(null)]
