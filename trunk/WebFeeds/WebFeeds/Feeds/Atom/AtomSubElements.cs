@@ -463,6 +463,82 @@ namespace WebFeeds.Feeds.Atom
 
 	#endregion AtomGenerator
 
+	#region AtomInReplyTo
+
+	/// <summary>
+	/// http://tools.ietf.org/html/rfc4685#section-3
+	/// </summary>
+	[Serializable]
+	[XmlType(TypeName="in-reply-to", Namespace=AtomInReplyTo.ThreadNamespace)]
+	public class AtomInReplyTo : AtomCommonAttributes, IUriProvider
+	{
+		#region Fields
+
+		private Uri refID = null;
+		private Uri href = null;
+		private Uri source = null;
+		private string type = null;
+
+		#endregion Fields
+
+		#region Properties
+
+		[XmlAttribute("ref")]
+		public string Ref
+		{
+			get { return ExtensibleBase.ConvertToString(this.refID); }
+			set { this.refID = ExtensibleBase.ConvertToUri(value); }
+		}
+
+		[XmlAttribute("href")]
+		[DefaultValue(null)]
+		public string Href
+		{
+			get { return ExtensibleBase.ConvertToString(this.href); }
+			set { this.href = ExtensibleBase.ConvertToUri(value); }
+		}
+
+		[XmlAttribute("source")]
+		[DefaultValue(null)]
+		public string Source
+		{
+			get { return ExtensibleBase.ConvertToString(this.source); }
+			set { this.source = ExtensibleBase.ConvertToUri(value); }
+		}
+
+		[XmlAttribute("type")]
+		[DefaultValue(null)]
+		public virtual string Type
+		{
+			get { return this.type; }
+			set { this.type = String.IsNullOrEmpty(value) ? null : value; }
+		}
+
+		#endregion Properties
+
+		#region IUriProvider Members
+
+		Uri IUriProvider.Uri
+		{
+			get { return this.refID; }
+		}
+
+		#endregion IUriProvider Members
+
+		#region INamespaceProvider Members
+
+		public override void AddNamespaces(XmlSerializerNamespaces namespaces)
+		{
+			namespaces.Add(AtomInReplyTo.ThreadPrefix, AtomInReplyTo.ThreadNamespace);
+
+			base.AddNamespaces(namespaces);
+		}
+
+		#endregion INamespaceProvider Members
+	}
+
+	#endregion AtomInReplyTo
+
 	#region AtomLink
 
 	/// <summary>
@@ -479,6 +555,9 @@ namespace WebFeeds.Feeds.Atom
 		private string hreflang = null;
 		private string title = null;
 		private string length = null;
+
+		private int threadCount = 0;
+		private AtomDate threadUpdated;
 
 		#endregion Fields
 
@@ -508,7 +587,15 @@ namespace WebFeeds.Feeds.Atom
 		[DefaultValue(null)]
 		public string Rel
 		{
-			get { return this.rel; }
+			get
+			{
+				// http://tools.ietf.org/html/rfc4685#section-4
+				if (this.ThreadCount > 0)
+				{
+					return "replies";
+				}
+				return this.rel;
+			}
 			set { this.rel = String.IsNullOrEmpty(value) ? null : value; }
 		}
 
@@ -516,7 +603,16 @@ namespace WebFeeds.Feeds.Atom
 		[DefaultValue(null)]
 		public string Type
 		{
-			get { return this.type; }
+			get
+			{
+				// http://tools.ietf.org/html/rfc4685#section-4
+				string value = this.type;
+				if (this.ThreadCount > 0 && String.IsNullOrEmpty(value))
+				{
+					return AtomFeed.MimeType;
+				}
+				return value;
+			}
 			set { this.type = String.IsNullOrEmpty(value) ? null : value; }
 		}
 
@@ -552,6 +648,28 @@ namespace WebFeeds.Feeds.Atom
 			set { this.title = String.IsNullOrEmpty(value) ? null : value; }
 		}
 
+		/// <summary>
+		/// http://tools.ietf.org/html/rfc4685#section-4
+		/// </summary>
+		[XmlAttribute("count", Namespace=AtomLink.ThreadNamespace)]
+		[DefaultValue(0)]
+		public int ThreadCount
+		{
+			get { return this.threadCount; }
+			set { this.threadCount = (value < 0) ? 0 : value; }
+		}
+
+		/// <summary>
+		/// http://tools.ietf.org/html/rfc4685#section-4
+		/// </summary>
+		[DefaultValue(null)]
+		[XmlAttribute("updated", Namespace=AtomLink.ThreadNamespace)]
+		public string ThreadUpdated
+		{
+			get { return this.threadUpdated.Value_Iso8601; }
+			set { this.threadUpdated.Value_Iso8601 = value; }
+		}
+
 		#endregion Properties
 
 		#region IUriProvider Members
@@ -571,6 +689,20 @@ namespace WebFeeds.Feeds.Atom
 		}
 
 		#endregion Object Overrides
+
+		#region INamespaceProvider Members
+
+		public override void AddNamespaces(XmlSerializerNamespaces namespaces)
+		{
+			if (this.ThreadCount > 0)
+			{
+				namespaces.Add(AtomLink.ThreadPrefix, AtomLink.ThreadNamespace);
+			}
+
+			base.AddNamespaces(namespaces);
+		}
+
+		#endregion INamespaceProvider Members
 	}
 
 	#endregion AtomLink

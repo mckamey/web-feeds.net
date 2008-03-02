@@ -120,10 +120,20 @@ namespace WebFeeds.Feeds.Extensions
 		{
 			foreach (XmlNode node in this.AttributeExtensions)
 			{
+				if (String.IsNullOrEmpty(node.Prefix))
+				{
+					// do not let extensions overwrite the default namespace
+					continue;
+				}
 				namespaces.Add(node.Prefix, node.NamespaceURI);
 			}
 			foreach (XmlNode node in this.ElementExtensions)
 			{
+				if (String.IsNullOrEmpty(node.Prefix))
+				{
+					// do not let extensions overwrite the default namespace
+					continue;
+				}
 				namespaces.Add(node.Prefix, node.NamespaceURI);
 			}
 		}

@@ -54,6 +54,7 @@ namespace WebFeeds.Feeds.Atom
 		private AtomDate published;
 		private AtomSource source = null;
 		private AtomText summary = null;
+		private int threadTotal = 0;
 
 		#endregion Fields
 
@@ -97,6 +98,28 @@ namespace WebFeeds.Feeds.Atom
 		{
 			get { return this.summary; }
 			set { this.summary = value; }
+		}
+
+		[XmlElement("in-reply-to", Namespace=AtomInReplyTo.ThreadNamespace)]
+		public readonly List<AtomInReplyTo> InReplyToReferences = new List<AtomInReplyTo>();
+
+		[XmlIgnore]
+		[EditorBrowsable(EditorBrowsableState.Never)]
+		public bool InReplyToReferencesSpecified
+		{
+			get { return (this.InReplyToReferences.Count > 0); }
+			set { }
+		}
+
+		/// <summary>
+		/// http://tools.ietf.org/html/rfc4685#section-5
+		/// </summary>
+		[DefaultValue(0)]
+		[XmlElement(ElementName="total", Namespace=AtomEntry.ThreadNamespace)]
+		public int ThreadTotal
+		{
+			get { return this.threadTotal; }
+			set { this.threadTotal = (value < 0) ? 0 : value; }
 		}
 
 		#endregion Properties
@@ -233,6 +256,28 @@ namespace WebFeeds.Feeds.Atom
 		}
 
 		#endregion IWebFeedItem Members
+
+		#region INamespaceProvider Members
+
+		public override void AddNamespaces(XmlSerializerNamespaces namespaces)
+		{
+			if (this.ThreadTotal > 0)
+			{
+				namespaces.Add(AtomEntry.ThreadPrefix, AtomEntry.ThreadNamespace);
+			}
+
+			if (this.InReplyToReferencesSpecified)
+			{
+				foreach (AtomInReplyTo inReplyTo in this.InReplyToReferences)
+				{
+					inReplyTo.AddNamespaces(namespaces);
+				}
+			}
+
+			base.AddNamespaces(namespaces);
+		}
+
+		#endregion INamespaceProvider Members
 	}
 
 	/// <summary>

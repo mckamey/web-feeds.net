@@ -51,7 +51,10 @@ namespace WebFeeds.Feeds.Atom
 	{
 		#region Constants
 
+		public const string XmlPrefix = "xml";
 		public const string XmlNamespace = "http://www.w3.org/XML/1998/namespace";
+		public const string ThreadPrefix = "thr";
+		public const string ThreadNamespace = "http://purl.org/syndication/thread/1.0";
 
 		#endregion Constants
 
