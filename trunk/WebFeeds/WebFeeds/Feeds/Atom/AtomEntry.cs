@@ -291,6 +291,32 @@ namespace WebFeeds.Feeds.Atom
 			}
 		}
 
+		Uri IWebFeedBase.ImageLink
+		{
+			get
+			{
+				if (!this.LinksSpecified)
+				{
+					return null;
+				}
+
+				foreach (AtomLink link in this.Links)
+				{
+					if (link.Relation == AtomLinkRelation.Enclosure)
+					{
+						string type = link.Type;
+						if (!String.IsNullOrEmpty(type) &&
+							type.StartsWith("image", StringComparison.InvariantCultureIgnoreCase))
+						{
+							return ((IUriProvider)link).Uri;
+						}
+					}
+				}
+
+				return null;
+			}
+		}
+
 		Uri IWebFeedItem.ThreadLink
 		{
 			get

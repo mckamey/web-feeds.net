@@ -94,18 +94,6 @@ namespace WebFeeds.Feeds.Atom
 			}
 		}
 
-		Uri IWebFeed.ImageLink
-		{
-			get
-			{
-				if (this.LogoUri == null)
-				{
-					return this.IconUri;
-				}
-				return this.LogoUri;
-			}
-		}
-
 		IList<IWebFeedItem> IWebFeed.Items
 		{
 			get { return this.Entries.ToArray(); }
@@ -224,6 +212,18 @@ namespace WebFeeds.Feeds.Atom
 				}
 
 				return alternate;
+			}
+		}
+
+		Uri IWebFeedBase.ImageLink
+		{
+			get
+			{
+				if (this.LogoUri == null)
+				{
+					return this.IconUri;
+				}
+				return this.LogoUri;
 			}
 		}
 
@@ -387,18 +387,6 @@ namespace WebFeeds.Feeds.Atom
 			}
 		}
 
-		Uri IWebFeed.ImageLink
-		{
-			get
-			{
-				if (this.LogoUri == null)
-				{
-					return this.IconUri;
-				}
-				return this.LogoUri;
-			}
-		}
-
 		IList<IWebFeedItem> IWebFeed.Items
 		{
 			get { return this.Entries.ToArray(); }
@@ -529,6 +517,18 @@ namespace WebFeeds.Feeds.Atom
 				}
 
 				return alternate;
+			}
+		}
+
+		Uri IWebFeedBase.ImageLink
+		{
+			get
+			{
+				if (this.LogoUri == null)
+				{
+					return this.IconUri;
+				}
+				return this.LogoUri;
 			}
 		}
 

@@ -410,6 +410,26 @@ namespace WebFeeds.Feeds.Rss
 			get { return this.link; }
 		}
 
+		Uri IWebFeedBase.ImageLink
+		{
+			get
+			{
+				if (!this.EnclosureSpecified)
+				{
+					return null;
+				}
+
+				string type = this.enclosure.Type;
+				if (String.IsNullOrEmpty(type) ||
+					!type.StartsWith("image", StringComparison.InvariantCultureIgnoreCase))
+				{
+					return null;
+				}
+
+				return ((IUriProvider)this.enclosure).Uri;
+			}
+		}
+
 		Uri IWebFeedItem.ThreadLink
 		{
 			get

@@ -45,11 +45,6 @@ namespace WebFeeds.Feeds
 		string MimeType { get; }
 
 		/// <summary>
-		/// Gets the link to an image
-		/// </summary>
-		Uri ImageLink { get; }
-
-		/// <summary>
 		/// Gets the copyright
 		/// </summary>
 		string Copyright { get; }
@@ -120,6 +115,11 @@ namespace WebFeeds.Feeds
 		/// Gets the link to the full version
 		/// </summary>
 		Uri Link { get; }
+
+		/// <summary>
+		/// Gets a link to a related image
+		/// </summary>
+		Uri ImageLink { get; }
 	}
 
 	public interface INamespaceProvider
