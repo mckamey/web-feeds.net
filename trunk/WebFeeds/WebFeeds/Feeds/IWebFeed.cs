@@ -47,7 +47,7 @@ namespace WebFeeds.Feeds
 		/// <summary>
 		/// Gets the link to an image
 		/// </summary>
-		Uri Image { get; }
+		Uri ImageLink { get; }
 
 		/// <summary>
 		/// Gets the copyright
@@ -108,7 +108,7 @@ namespace WebFeeds.Feeds
 		/// <summary>
 		/// Gets the number of comments on this item
 		/// </summary>
-		int ThreadCount { get; }
+		int? ThreadCount { get; }
 
 		/// <summary>
 		/// Gets the number of comments on this item

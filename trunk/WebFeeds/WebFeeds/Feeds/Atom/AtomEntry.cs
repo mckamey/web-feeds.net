@@ -288,7 +288,7 @@ namespace WebFeeds.Feeds.Atom
 			}
 		}
 
-		int IWebFeedItem.ThreadCount
+		int? IWebFeedItem.ThreadCount
 		{
 			get
 			{
