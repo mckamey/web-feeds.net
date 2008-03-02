@@ -42,6 +42,15 @@ namespace WebFeeds.Feeds.Extensions
 	/// </summary>
 	public abstract class ExtensibleBase : INamespaceProvider
 	{
+		#region Constants
+
+		public const string WfwPrefix = "wfw";
+		public const string WfwNamespace = "http://wellformedweb.org/CommentAPI/";
+		protected const string WfwCommentElement = "comment";
+		protected const string WfwCommentRssElement = "commentRss";
+
+		#endregion Constants
+
 		#region Fields
 
 		[XmlAnyElement]
