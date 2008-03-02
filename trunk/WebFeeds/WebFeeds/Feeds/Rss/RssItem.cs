@@ -59,7 +59,10 @@ namespace WebFeeds.Feeds.Rss
 		private RssDate pubDate;
 		private RssSource source = null;
 
-		private DublinCore dcTerms = null;
+		// extensions
+		private DublinCore dublinCore = null;
+		private Uri wfwComment = null;
+		private Uri wfwCommentRss = null;
 
 		#endregion Fields
 
@@ -214,6 +217,28 @@ namespace WebFeeds.Feeds.Rss
 			set { this.source = value; }
 		}
 
+		/// <summary>
+		/// Gets and sets the Uri to which comments can be POSTed
+		/// </summary>
+		[DefaultValue(null)]
+		[XmlElement(RssItem.WfwCommentElement, Namespace=RssItem.WfwNamespace)]
+		public string WfwComment
+		{
+			get { return ExtensibleBase.ConvertToString(this.wfwComment); }
+			set { this.wfwComment = ExtensibleBase.ConvertToUri(value); }
+		}
+
+		/// <summary>
+		/// Gets and sets the Uri at which a feed of comments can be found
+		/// </summary>
+		[DefaultValue(null)]
+		[XmlElement(RssItem.WfwCommentRssElement, Namespace=RssItem.WfwNamespace)]
+		public string WfwCommentRss
+		{
+			get { return ExtensibleBase.ConvertToString(this.wfwCommentRss); }
+			set { this.wfwCommentRss = ExtensibleBase.ConvertToUri(value); }
+		}
+
 		#endregion Properties
 
 		#region IWebFeedItem Members
@@ -224,16 +249,16 @@ namespace WebFeeds.Feeds.Rss
 		/// <remarks>
 		/// Note this only gets filled on first access
 		/// </remarks>
-		private DublinCore DcTerms
+		private DublinCore DublinCore
 		{
 			get
 			{
-				if (this.dcTerms == null)
+				if (this.dublinCore == null)
 				{
-					this.dcTerms = new DublinCore();
-					this.FillExtensions(dcTerms);
+					this.dublinCore = new DublinCore();
+					this.FillExtensions(dublinCore);
 				}
-				return this.dcTerms;
+				return this.dublinCore;
 			}
 		}
 
@@ -257,7 +282,7 @@ namespace WebFeeds.Feeds.Rss
 				string title = this.Title;
 				if (String.IsNullOrEmpty(title))
 				{
-					title = this.DcTerms[DublinCore.TermName.Title];
+					title = this.DublinCore[DublinCore.TermName.Title];
 				}
 				return title;
 			}
@@ -270,10 +295,10 @@ namespace WebFeeds.Feeds.Rss
 				string description = this.description;
 				if (String.IsNullOrEmpty(description))
 				{
-					description = this.DcTerms[DublinCore.TermName.Description];
+					description = this.DublinCore[DublinCore.TermName.Description];
 					if (String.IsNullOrEmpty(description))
 					{
-						description = this.DcTerms[DublinCore.TermName.Subject];
+						description = this.DublinCore[DublinCore.TermName.Subject];
 					}
 				}
 				return description;
@@ -286,14 +311,14 @@ namespace WebFeeds.Feeds.Rss
 			{
 				if (!this.AuthorSpecified)
 				{
-					string author = this.DcTerms[DublinCore.TermName.Creator];
+					string author = this.DublinCore[DublinCore.TermName.Creator];
 					if (String.IsNullOrEmpty(author))
 					{
-						author = this.DcTerms[DublinCore.TermName.Contributor];
+						author = this.DublinCore[DublinCore.TermName.Contributor];
 
 						if (String.IsNullOrEmpty(author))
 						{
-							author = this.DcTerms[DublinCore.TermName.Publisher];
+							author = this.DublinCore[DublinCore.TermName.Publisher];
 						}
 					}
 					return author;
@@ -312,7 +337,7 @@ namespace WebFeeds.Feeds.Rss
 			{
 				if (!this.pubDate.HasValue)
 				{
-					string date = this.DcTerms[DublinCore.TermName.Date];
+					string date = this.DublinCore[DublinCore.TermName.Date];
 					return ExtensibleBase.ConvertToDateTime(date);
 				}
 
@@ -332,7 +357,14 @@ namespace WebFeeds.Feeds.Rss
 
 		Uri IWebFeedItem.ThreadLink
 		{
-			get { return null; }
+			get
+			{
+				if (this.comments == null)
+				{
+					return this.wfwCommentRss;
+				}
+				return this.comments;
+			}
 		}
 
 		int? IWebFeedItem.ThreadCount
@@ -346,5 +378,19 @@ namespace WebFeeds.Feeds.Rss
 		}
 
 		#endregion IWebFeedItem Members
+
+		#region INamespaceProvider Members
+
+		public override void AddNamespaces(XmlSerializerNamespaces namespaces)
+		{
+			if (this.wfwComment != null || this.wfwCommentRss != null)
+			{
+				namespaces.Add(RssItem.WfwPrefix, RssItem.WfwNamespace);
+			}
+
+			base.AddNamespaces(namespaces);
+		}
+
+		#endregion INamespaceProvider Members
 	}
 }

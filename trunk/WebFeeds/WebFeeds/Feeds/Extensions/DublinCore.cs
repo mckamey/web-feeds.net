@@ -109,14 +109,14 @@ namespace WebFeeds.Feeds.Extensions
 				catch {}
 			}
 
-			XmlElement node = DublinCore.NodeCreator.CreateElement(
+			XmlElement element = DublinCore.NodeCreator.CreateElement(
 				DublinCore.Prefix,
 				term.ToString().ToLowerInvariant(), //TODO: use the XmlEnumAttribute to convert the term name
 				DublinCore.Namespace);
 
-			node.InnerText = value;
+			element.InnerText = value;
 
-			this.DcTerms[term] = node;
+			this.DcTerms[term] = element;
 		}
 
 		public bool Remove(DublinCore.TermName term)

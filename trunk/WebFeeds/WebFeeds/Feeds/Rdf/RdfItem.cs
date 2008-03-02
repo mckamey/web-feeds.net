@@ -47,7 +47,10 @@ namespace WebFeeds.Feeds.Rdf
 
 		private string description = String.Empty;
 
-		private DublinCore dcTerms = null;
+		// extensions
+		private DublinCore dublinCore = null;
+		private Uri wfwComment = null;
+		private Uri wfwCommentRss = null;
 
 		#endregion Fields
 
@@ -69,7 +72,29 @@ namespace WebFeeds.Feeds.Rdf
 
 		protected internal string Copyright
 		{
-			get { return this.DcTerms[DublinCore.TermName.Rights]; }
+			get { return this.DublinCore[DublinCore.TermName.Rights]; }
+		}
+
+		/// <summary>
+		/// Gets and sets the Uri to which comments can be POSTed
+		/// </summary>
+		[DefaultValue(null)]
+		[XmlElement(RdfItem.WfwCommentElement, Namespace=RdfItem.WfwNamespace)]
+		public string WfwComment
+		{
+			get { return ExtensibleBase.ConvertToString(this.wfwComment); }
+			set { this.wfwComment = ExtensibleBase.ConvertToUri(value); }
+		}
+
+		/// <summary>
+		/// Gets and sets the Uri at which a feed of comments can be found
+		/// </summary>
+		[DefaultValue(null)]
+		[XmlElement(RdfItem.WfwCommentRssElement, Namespace=RdfItem.WfwNamespace)]
+		public string WfwCommentRss
+		{
+			get { return ExtensibleBase.ConvertToString(this.wfwCommentRss); }
+			set { this.wfwCommentRss = ExtensibleBase.ConvertToUri(value); }
 		}
 
 		#endregion Properties
@@ -82,16 +107,16 @@ namespace WebFeeds.Feeds.Rdf
 		/// <remarks>
 		/// Note this only gets filled on first access
 		/// </remarks>
-		private DublinCore DcTerms
+		private DublinCore DublinCore
 		{
 			get
 			{
-				if (this.dcTerms == null)
+				if (this.dublinCore == null)
 				{
-					this.dcTerms = new DublinCore();
-					this.FillExtensions(dcTerms);
+					this.dublinCore = new DublinCore();
+					this.FillExtensions(dublinCore);
 				}
-				return this.dcTerms;
+				return this.dublinCore;
 			}
 		}
 
@@ -115,7 +140,7 @@ namespace WebFeeds.Feeds.Rdf
 				string title = this.Title;
 				if (String.IsNullOrEmpty(title))
 				{
-					title = this.DcTerms[DublinCore.TermName.Title];
+					title = this.DublinCore[DublinCore.TermName.Title];
 				}
 				return title;
 			}
@@ -128,10 +153,10 @@ namespace WebFeeds.Feeds.Rdf
 				string description = this.description;
 				if (String.IsNullOrEmpty(description))
 				{
-					description = this.DcTerms[DublinCore.TermName.Description];
+					description = this.DublinCore[DublinCore.TermName.Description];
 					if (String.IsNullOrEmpty(description))
 					{
-						description = this.DcTerms[DublinCore.TermName.Subject];
+						description = this.DublinCore[DublinCore.TermName.Subject];
 					}
 				}
 				return description;
@@ -142,14 +167,14 @@ namespace WebFeeds.Feeds.Rdf
 		{
 			get
 			{
-				string author = this.DcTerms[DublinCore.TermName.Creator];
+				string author = this.DublinCore[DublinCore.TermName.Creator];
 				if (String.IsNullOrEmpty(author))
 				{
-					author = this.DcTerms[DublinCore.TermName.Contributor];
+					author = this.DublinCore[DublinCore.TermName.Contributor];
 
 					if (String.IsNullOrEmpty(author))
 					{
-						author = this.DcTerms[DublinCore.TermName.Publisher];
+						author = this.DublinCore[DublinCore.TermName.Publisher];
 					}
 				}
 				return author;
@@ -160,7 +185,7 @@ namespace WebFeeds.Feeds.Rdf
 		{
 			get
 			{
-				string date = this.DcTerms[DublinCore.TermName.Date];
+				string date = this.DublinCore[DublinCore.TermName.Date];
 				return ExtensibleBase.ConvertToDateTime(date);
 			}
 		}
@@ -169,7 +194,7 @@ namespace WebFeeds.Feeds.Rdf
 		{
 			get
 			{
-				string date = this.DcTerms[DublinCore.TermName.Date];
+				string date = this.DublinCore[DublinCore.TermName.Date];
 				return ExtensibleBase.ConvertToDateTime(date);
 			}
 		}
@@ -181,7 +206,7 @@ namespace WebFeeds.Feeds.Rdf
 
 		Uri IWebFeedItem.ThreadLink
 		{
-			get { return null; }
+			get { return this.wfwCommentRss; }
 		}
 
 		int? IWebFeedItem.ThreadCount
@@ -195,5 +220,19 @@ namespace WebFeeds.Feeds.Rdf
 		}
 
 		#endregion IWebFeedItem Members
+
+		#region INamespaceProvider Members
+
+		public override void AddNamespaces(XmlSerializerNamespaces namespaces)
+		{
+			if (this.wfwComment != null || this.wfwCommentRss != null)
+			{
+				namespaces.Add(RdfItem.WfwPrefix, RdfItem.WfwNamespace);
+			}
+
+			base.AddNamespaces(namespaces);
+		}
+
+		#endregion INamespaceProvider Members
 	}
 }

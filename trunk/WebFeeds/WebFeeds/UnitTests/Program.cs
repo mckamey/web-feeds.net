@@ -32,8 +32,9 @@ using System;
 using System.IO;
 
 using WebFeeds.Feeds;
-using WebFeeds.Feeds.Extensions;
 using WebFeeds.Feeds.Rdf;
+using WebFeeds.Feeds.Rss;
+using WebFeeds.Feeds.Extensions;
 
 namespace WebFeeds
 {
@@ -105,15 +106,23 @@ namespace WebFeeds
 
 						#region DublinCore test
 
+						DublinCore dc = new DublinCore();
 						if (feed is RdfFeed)
 						{
-							DublinCore dc = new DublinCore();
 							((RdfFeed)feed).Channel.FillExtensions(dc);
+						}
+						else if (feed is RssFeed)
+						{
+							((RssFeed)feed).Channel.FillExtensions(dc);
+						}
+						else if (feed is ExtensibleBase)
+						{
+							((ExtensibleBase)feed).FillExtensions(dc);
+						}
 
-							foreach (DublinCore.TermName term in dc.Terms)
-							{
-								writer.WriteLine("DublinCore {0}: {1}", term, dc[term]);
-							}
+						foreach (DublinCore.TermName term in dc.Terms)
+						{
+							writer.WriteLine("DublinCore {0}: {1}", term, dc[term]);
 						}
 
 						#endregion DublinCore test
