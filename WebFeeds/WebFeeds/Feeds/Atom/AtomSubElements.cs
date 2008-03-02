@@ -707,9 +707,21 @@ namespace WebFeeds.Feeds.Atom
 		/// <summary>
 		/// http://tools.ietf.org/html/rfc4685#section-4
 		/// </summary>
+		[XmlIgnore]
+		public AtomDate ThreadUpdated
+		{
+			get { return this.threadUpdated; }
+			set { this.threadUpdated = value; }
+		}
+
+		/// <summary>
+		/// Gets and sets the DateTime using ISO-8601 date format.
+		/// For serialization purposes only, use the ThreadUpdated property instead.
+		/// </summary>
 		[DefaultValue(null)]
 		[XmlAttribute("updated", Namespace=AtomLink.ThreadingNamespace)]
-		public string ThreadUpdated
+		[EditorBrowsable(EditorBrowsableState.Never)]
+		public string ThreadUpdated_Iso8601
 		{
 			get { return this.threadUpdated.Value_Iso8601; }
 			set { this.threadUpdated.Value_Iso8601 = value; }

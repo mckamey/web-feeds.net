@@ -521,13 +521,25 @@ namespace WebFeeds.Feeds.Atom
 				Uri alternate = null;
 				foreach (AtomLink link in this.Links)
 				{
-					if ("alternate".Equals(link.Rel))
+					switch (link.Relation)
 					{
-						return ((IUriProvider)link).Uri;
-					}
-					else if (alternate == null && !"self".Equals(link.Rel))
-					{
-						return ((IUriProvider)link).Uri;
+						case AtomLinkRelation.Alternate:
+						{
+							return ((IUriProvider)link).Uri;
+						}
+						case AtomLinkRelation.Related:
+						case AtomLinkRelation.Enclosure:
+						{
+							if (alternate == null)
+							{
+								alternate = ((IUriProvider)link).Uri;
+							}
+							break;
+						}
+						default:
+						{
+							continue;
+						}
 					}
 				}
 
@@ -537,17 +549,67 @@ namespace WebFeeds.Feeds.Atom
 
 		Uri IWebFeedItem.Thread
 		{
-			get { return null; }
+			get
+			{
+				if (!this.LinksSpecified)
+				{
+					return null;
+				}
+
+				foreach (AtomLink link in this.Links)
+				{
+					if (link.Relation == AtomLinkRelation.Replies)
+					{
+						return ((IUriProvider)link).Uri;
+					}
+				}
+
+				return null;
+			}
 		}
 
 		int IWebFeedItem.ThreadCount
 		{
-			get { return 0; }
+			get
+			{
+				if (!this.LinksSpecified)
+				{
+					return 0;
+				}
+
+				foreach (AtomLink link in this.Links)
+				{
+					if (link.Relation == AtomLinkRelation.Replies &&
+						link.ThreadCountSpecified)
+					{
+						return link.ThreadCount;
+					}
+				}
+
+				return 0;
+			}
 		}
 
 		DateTime? IWebFeedItem.ThreadUpdated
 		{
-			get { return null; }
+			get
+			{
+				if (!this.LinksSpecified)
+				{
+					return null;
+				}
+
+				foreach (AtomLink link in this.Links)
+				{
+					if (link.Relation == AtomLinkRelation.Replies &&
+						link.ThreadUpdatedSpecified)
+					{
+						return link.ThreadUpdated.Value;
+					}
+				}
+
+				return null;
+			}
 		}
 
 		#endregion IWebFeedItem Members
