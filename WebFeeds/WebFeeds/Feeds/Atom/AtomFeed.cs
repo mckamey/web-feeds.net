@@ -53,6 +53,7 @@ namespace WebFeeds.Feeds.Atom
 		#region Constants
 
 		public const string SpecificationUrl = "http://tools.ietf.org/html/rfc4287";
+		protected internal const string Prefix = "";
 		protected internal const string Namespace = "http://www.w3.org/2005/Atom";
 		protected internal const string RootElement = "feed";
 		public const string MimeType = "application/atom+xml";
@@ -232,8 +233,8 @@ namespace WebFeeds.Feeds.Atom
 
 		public override void AddNamespaces(XmlSerializerNamespaces namespaces)
 		{
-			namespaces.Add("", AtomFeed.Namespace);
-			namespaces.Add("xml", AtomFeed.XmlNamespace);
+			namespaces.Add(AtomFeed.Prefix, AtomFeed.Namespace);
+			namespaces.Add(AtomFeed.XmlPrefix, AtomFeed.XmlNamespace);
 
 			foreach (AtomEntry entry in this.Entries)
 			{
@@ -256,6 +257,7 @@ namespace WebFeeds.Feeds.Atom
 		#region Constants
 
 		public const string SpecificationUrl = "http://www.mnot.net/drafts/draft-nottingham-atom-format-02.html";
+		protected internal const string Prefix = "";
 		protected internal const string Namespace = "http://purl.org/atom/ns#";
 		protected internal const string RootElement = "feed";
 		protected internal const string MimeType = "application/atom+xml";
@@ -326,6 +328,7 @@ namespace WebFeeds.Feeds.Atom
 				}
 				return this.Entries.Count;
 			}
+			set { }
 		}
 
 		[XmlElement("entry")]
@@ -523,8 +526,8 @@ namespace WebFeeds.Feeds.Atom
 
 		public override void AddNamespaces(XmlSerializerNamespaces namespaces)
 		{
-			namespaces.Add("", AtomFeedOld.Namespace);
-			namespaces.Add("xml", AtomFeed.XmlNamespace);
+			namespaces.Add(AtomFeedOld.Prefix, AtomFeedOld.Namespace);
+			namespaces.Add(AtomFeedOld.XmlPrefix, AtomFeedOld.XmlNamespace);
 
 			foreach (AtomEntry entry in this.Entries)
 			{
