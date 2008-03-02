@@ -118,19 +118,6 @@ namespace WebFeeds.Feeds.Rss
 
 		#endregion IWebFeedItem Members
 
-		#region INamespaceProvider Members
-
-		public override void AddNamespaces(XmlSerializerNamespaces namespaces)
-		{
-			namespaces.Add("", RssFeed.Namespace);
-
-			this.Channel.AddNamespaces(namespaces);
-
-			base.AddNamespaces(namespaces);
-		}
-
-		#endregion INamespaceProvider Members
-
 		#region IWebFeedItem Members
 
 		Uri IWebFeedItem.ID
@@ -203,6 +190,34 @@ namespace WebFeeds.Feeds.Rss
 			get { return ((IUriProvider)this.Channel).Uri; }
 		}
 
+		Uri IWebFeedItem.Thread
+		{
+			get { return null; }
+		}
+
+		int IWebFeedItem.ThreadCount
+		{
+			get { return 0; }
+		}
+
+		DateTime? IWebFeedItem.ThreadUpdated
+		{
+			get { return null; }
+		}
+
 		#endregion IWebFeedItem Members
+
+		#region INamespaceProvider Members
+
+		public override void AddNamespaces(XmlSerializerNamespaces namespaces)
+		{
+			namespaces.Add("", RssFeed.Namespace);
+
+			this.Channel.AddNamespaces(namespaces);
+
+			base.AddNamespaces(namespaces);
+		}
+
+		#endregion INamespaceProvider Members
 	}
 }

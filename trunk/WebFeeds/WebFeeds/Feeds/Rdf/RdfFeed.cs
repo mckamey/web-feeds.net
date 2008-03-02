@@ -206,33 +206,6 @@ namespace WebFeeds.Feeds.Rdf
 
 		#endregion IWebFeedItem Members
 
-		#region INamespaceProvider Members
-
-		public override void AddNamespaces(XmlSerializerNamespaces namespaces)
-		{
-			namespaces.Add("", RdfFeed.NamespaceRss10);
-			namespaces.Add("rdf", RdfFeed.NamespaceRdf);
-
-			this.Channel.AddNamespaces(namespaces);
-			if (this.ImageSpecified)
-			{
-				this.Image.AddNamespaces(namespaces);
-			}
-			if (this.TextInputSpecified)
-			{
-				this.TextInput.AddNamespaces(namespaces);
-			}
-
-			foreach (RdfItem item in this.Items)
-			{
-				item.AddNamespaces(namespaces);
-			}
-
-			base.AddNamespaces(namespaces);
-		}
-
-		#endregion INamespaceProvider Members
-
 		#region IWebFeedItem Members
 
 		Uri IWebFeedItem.ID
@@ -270,6 +243,48 @@ namespace WebFeeds.Feeds.Rdf
 			get { return ((IWebFeedItem)this.Channel).Link; }
 		}
 
+		Uri IWebFeedItem.Thread
+		{
+			get { return null; }
+		}
+
+		int IWebFeedItem.ThreadCount
+		{
+			get { return 0; }
+		}
+
+		DateTime? IWebFeedItem.ThreadUpdated
+		{
+			get { return null; }
+		}
+
 		#endregion IWebFeedItem Members
+
+		#region INamespaceProvider Members
+
+		public override void AddNamespaces(XmlSerializerNamespaces namespaces)
+		{
+			namespaces.Add("", RdfFeed.NamespaceRss10);
+			namespaces.Add("rdf", RdfFeed.NamespaceRdf);
+
+			this.Channel.AddNamespaces(namespaces);
+			if (this.ImageSpecified)
+			{
+				this.Image.AddNamespaces(namespaces);
+			}
+			if (this.TextInputSpecified)
+			{
+				this.TextInput.AddNamespaces(namespaces);
+			}
+
+			foreach (RdfItem item in this.Items)
+			{
+				item.AddNamespaces(namespaces);
+			}
+
+			base.AddNamespaces(namespaces);
+		}
+
+		#endregion INamespaceProvider Members
 	}
 }

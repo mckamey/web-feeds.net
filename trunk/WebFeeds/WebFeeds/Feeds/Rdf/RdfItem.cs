@@ -179,6 +179,21 @@ namespace WebFeeds.Feeds.Rdf
 			get { return ((IUriProvider)this).Uri; }
 		}
 
+		Uri IWebFeedItem.Thread
+		{
+			get { return null; }
+		}
+
+		int IWebFeedItem.ThreadCount
+		{
+			get { return 0; }
+		}
+
+		DateTime? IWebFeedItem.ThreadUpdated
+		{
+			get { return null; }
+		}
+
 		#endregion IWebFeedItem Members
 	}
 }

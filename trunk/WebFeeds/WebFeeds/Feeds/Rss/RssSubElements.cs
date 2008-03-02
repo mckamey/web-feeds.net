@@ -786,9 +786,13 @@ namespace WebFeeds.Feeds.Rss
 
 				foreach (string day in value)
 				{
-					if (Enum.IsDefined(typeof(DayOfWeek), day))
+					try
 					{
-						this[(DayOfWeek)Enum.Parse(typeof(DayOfWeek), day)] = true;
+						this[(DayOfWeek)Enum.Parse(typeof(DayOfWeek), day, true)] = true;
+					}
+					catch
+					{
+						continue;
 					}
 				}
 			}

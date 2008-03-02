@@ -227,6 +227,21 @@ namespace WebFeeds.Feeds.Atom
 			}
 		}
 
+		Uri IWebFeedItem.Thread
+		{
+			get { return null; }
+		}
+
+		int IWebFeedItem.ThreadCount
+		{
+			get { return 0; }
+		}
+
+		DateTime? IWebFeedItem.ThreadUpdated
+		{
+			get { return null; }
+		}
+
 		#endregion IWebFeedItem Members
 
 		#region INamespaceProvider Members
@@ -518,6 +533,21 @@ namespace WebFeeds.Feeds.Atom
 
 				return alternate;
 			}
+		}
+
+		Uri IWebFeedItem.Thread
+		{
+			get { return null; }
+		}
+
+		int IWebFeedItem.ThreadCount
+		{
+			get { return 0; }
+		}
+
+		DateTime? IWebFeedItem.ThreadUpdated
+		{
+			get { return null; }
 		}
 
 		#endregion IWebFeedItem Members
