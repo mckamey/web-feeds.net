@@ -469,7 +469,7 @@ namespace WebFeeds.Feeds.Atom
 	/// http://tools.ietf.org/html/rfc4685#section-3
 	/// </summary>
 	[Serializable]
-	[XmlType(TypeName="in-reply-to", Namespace=AtomInReplyTo.ThreadNamespace)]
+	[XmlType(TypeName="in-reply-to", Namespace=AtomInReplyTo.ThreadingNamespace)]
 	public class AtomInReplyTo : AtomCommonAttributes, IUriProvider
 	{
 		#region Fields
@@ -529,7 +529,7 @@ namespace WebFeeds.Feeds.Atom
 
 		public override void AddNamespaces(XmlSerializerNamespaces namespaces)
 		{
-			namespaces.Add(AtomInReplyTo.ThreadPrefix, AtomInReplyTo.ThreadNamespace);
+			namespaces.Add(AtomInReplyTo.ThreadingPrefix, AtomInReplyTo.ThreadingNamespace);
 
 			base.AddNamespaces(namespaces);
 		}
@@ -651,7 +651,7 @@ namespace WebFeeds.Feeds.Atom
 		/// <summary>
 		/// http://tools.ietf.org/html/rfc4685#section-4
 		/// </summary>
-		[XmlAttribute("count", Namespace=AtomLink.ThreadNamespace)]
+		[XmlAttribute("count", Namespace=AtomLink.ThreadingNamespace)]
 		[DefaultValue(0)]
 		public int ThreadCount
 		{
@@ -663,7 +663,7 @@ namespace WebFeeds.Feeds.Atom
 		/// http://tools.ietf.org/html/rfc4685#section-4
 		/// </summary>
 		[DefaultValue(null)]
-		[XmlAttribute("updated", Namespace=AtomLink.ThreadNamespace)]
+		[XmlAttribute("updated", Namespace=AtomLink.ThreadingNamespace)]
 		public string ThreadUpdated
 		{
 			get { return this.threadUpdated.Value_Iso8601; }
@@ -696,7 +696,7 @@ namespace WebFeeds.Feeds.Atom
 		{
 			if (this.ThreadCount > 0)
 			{
-				namespaces.Add(AtomLink.ThreadPrefix, AtomLink.ThreadNamespace);
+				namespaces.Add(AtomLink.ThreadingPrefix, AtomLink.ThreadingNamespace);
 			}
 
 			base.AddNamespaces(namespaces);
