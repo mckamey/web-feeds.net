@@ -49,6 +49,7 @@ namespace WebFeeds.Feeds.Rdf
 
 		// extensions
 		private DublinCore dublinCore = null;
+		private string contentEncoded = null;
 		private Uri wfwComment = null;
 		private Uri wfwCommentRss = null;
 
@@ -73,6 +74,17 @@ namespace WebFeeds.Feeds.Rdf
 		protected internal string Copyright
 		{
 			get { return this.DublinCore[DublinCore.TermName.Rights]; }
+		}
+
+		/// <summary>
+		/// Gets and sets the encoded content for this item
+		/// </summary>
+		[DefaultValue(null)]
+		[XmlElement(RdfItem.ContentEncodedElement, Namespace=RdfItem.ContentNamespace)]
+		public string ContentEncoded
+		{
+			get { return this.contentEncoded; }
+			set { this.contentEncoded = value; }
 		}
 
 		/// <summary>
@@ -225,6 +237,11 @@ namespace WebFeeds.Feeds.Rdf
 
 		public override void AddNamespaces(XmlSerializerNamespaces namespaces)
 		{
+			if (this.contentEncoded != null)
+			{
+				namespaces.Add(RdfItem.ContentPrefix, RdfItem.ContentNamespace);
+			}
+
 			if (this.wfwComment != null || this.wfwCommentRss != null)
 			{
 				namespaces.Add(RdfItem.WfwPrefix, RdfItem.WfwNamespace);

@@ -61,6 +61,7 @@ namespace WebFeeds.Feeds.Rss
 
 		// extensions
 		private DublinCore dublinCore = null;
+		private string contentEncoded = null;
 		private Uri wfwComment = null;
 		private Uri wfwCommentRss = null;
 
@@ -215,6 +216,17 @@ namespace WebFeeds.Feeds.Rss
 		{
 			get { return this.source; }
 			set { this.source = value; }
+		}
+
+		/// <summary>
+		/// Gets and sets the encoded content for this item
+		/// </summary>
+		[DefaultValue(null)]
+		[XmlElement(RssItem.ContentEncodedElement, Namespace=RssItem.ContentNamespace)]
+		public string ContentEncoded
+		{
+			get { return this.contentEncoded; }
+			set { this.contentEncoded = value; }
 		}
 
 		/// <summary>
@@ -383,6 +395,11 @@ namespace WebFeeds.Feeds.Rss
 
 		public override void AddNamespaces(XmlSerializerNamespaces namespaces)
 		{
+			if (this.contentEncoded != null)
+			{
+				namespaces.Add(RssItem.ContentPrefix, RssItem.ContentNamespace);
+			}
+
 			if (this.wfwComment != null || this.wfwCommentRss != null)
 			{
 				namespaces.Add(RssItem.WfwPrefix, RssItem.WfwNamespace);
