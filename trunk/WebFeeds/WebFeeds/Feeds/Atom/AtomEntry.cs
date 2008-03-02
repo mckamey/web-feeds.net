@@ -290,12 +290,46 @@ namespace WebFeeds.Feeds.Atom
 
 		int IWebFeedItem.ThreadCount
 		{
-			get { return this.ThreadTotal; }
+			get
+			{
+				if (!this.LinksSpecified)
+				{
+					return this.ThreadTotal;
+				}
+
+				foreach (AtomLink link in this.Links)
+				{
+					if (link.Relation == AtomLinkRelation.Replies &&
+						link.ThreadCountSpecified)
+					{
+						return link.ThreadCount;
+					}
+				}
+
+				return this.ThreadTotal;
+			}
 		}
 
 		DateTime? IWebFeedItem.ThreadUpdated
 		{
-			get { throw new Exception("The method or operation is not implemented."); }
+			get
+			{
+				if (!this.LinksSpecified)
+				{
+					return null;
+				}
+
+				foreach (AtomLink link in this.Links)
+				{
+					if (link.Relation == AtomLinkRelation.Replies &&
+						link.ThreadUpdatedSpecified)
+					{
+						return link.ThreadUpdated.Value;
+					}
+				}
+
+				return null;
+			}
 		}
 
 		#endregion IWebFeedItem Members
