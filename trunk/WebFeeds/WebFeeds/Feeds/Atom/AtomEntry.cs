@@ -100,7 +100,7 @@ namespace WebFeeds.Feeds.Atom
 			set { this.summary = value; }
 		}
 
-		[XmlElement("in-reply-to", Namespace=AtomInReplyTo.ThreadNamespace)]
+		[XmlElement("in-reply-to", Namespace=AtomInReplyTo.ThreadingNamespace)]
 		public readonly List<AtomInReplyTo> InReplyToReferences = new List<AtomInReplyTo>();
 
 		[XmlIgnore]
@@ -115,7 +115,7 @@ namespace WebFeeds.Feeds.Atom
 		/// http://tools.ietf.org/html/rfc4685#section-5
 		/// </summary>
 		[DefaultValue(0)]
-		[XmlElement(ElementName="total", Namespace=AtomEntry.ThreadNamespace)]
+		[XmlElement(ElementName="total", Namespace=AtomEntry.ThreadingNamespace)]
 		public int ThreadTotal
 		{
 			get { return this.threadTotal; }
@@ -263,7 +263,7 @@ namespace WebFeeds.Feeds.Atom
 		{
 			if (this.ThreadTotal > 0)
 			{
-				namespaces.Add(AtomEntry.ThreadPrefix, AtomEntry.ThreadNamespace);
+				namespaces.Add(AtomEntry.ThreadingPrefix, AtomEntry.ThreadingNamespace);
 			}
 
 			if (this.InReplyToReferencesSpecified)
