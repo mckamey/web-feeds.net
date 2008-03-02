@@ -83,9 +83,6 @@ namespace WebFeeds
 						writer.WriteLine("Feed Image Link: {0}", feed.ImageLink);
 						writer.WriteLine("Feed Published: {0}", feed.Published);
 						writer.WriteLine("Feed Updated: {0}", feed.Updated);
-						writer.WriteLine("Feed Thread Link: {0}", feed.ThreadLink);
-						writer.WriteLine("Feed Thread Count: {0}", feed.ThreadCount);
-						writer.WriteLine("Feed Thread Updated: {0}", feed.ThreadUpdated);
 						foreach (IWebFeedItem item in feed.Items)
 						{
 							writer.WriteLine("_____________________________________________");

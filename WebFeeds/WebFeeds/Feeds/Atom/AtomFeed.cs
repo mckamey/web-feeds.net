@@ -113,14 +113,14 @@ namespace WebFeeds.Feeds.Atom
 
 		#endregion IWebFeed Members
 
-		#region IWebFeedItem Members
+		#region IWebFeedBase Members
 
-		Uri IWebFeedItem.ID
+		Uri IWebFeedBase.ID
 		{
 			get { return ((IUriProvider)this).Uri; }
 		}
 
-		string IWebFeedItem.Title
+		string IWebFeedBase.Title
 		{
 			get
 			{
@@ -132,7 +132,7 @@ namespace WebFeeds.Feeds.Atom
 			}
 		}
 
-		string IWebFeedItem.Description
+		string IWebFeedBase.Description
 		{
 			get
 			{
@@ -144,7 +144,7 @@ namespace WebFeeds.Feeds.Atom
 			}
 		}
 
-		string IWebFeedItem.Author
+		string IWebFeedBase.Author
 		{
 			get
 			{
@@ -183,12 +183,12 @@ namespace WebFeeds.Feeds.Atom
 			}
 		}
 
-		DateTime? IWebFeedItem.Published
+		DateTime? IWebFeedBase.Published
 		{
-			get { return ((IWebFeedItem)this).Updated; }
+			get { return ((IWebFeedBase)this).Updated; }
 		}
 
-		DateTime? IWebFeedItem.Updated
+		DateTime? IWebFeedBase.Updated
 		{
 			get
 			{
@@ -201,7 +201,7 @@ namespace WebFeeds.Feeds.Atom
 			}
 		}
 
-		Uri IWebFeedItem.Link
+		Uri IWebFeedBase.Link
 		{
 			get
 			{
@@ -227,22 +227,7 @@ namespace WebFeeds.Feeds.Atom
 			}
 		}
 
-		Uri IWebFeedItem.ThreadLink
-		{
-			get { return null; }
-		}
-
-		int? IWebFeedItem.ThreadCount
-		{
-			get { return null; }
-		}
-
-		DateTime? IWebFeedItem.ThreadUpdated
-		{
-			get { return null; }
-		}
-
-		#endregion IWebFeedItem Members
+		#endregion IWebFeedBase Members
 
 		#region INamespaceProvider Members
 
@@ -421,14 +406,14 @@ namespace WebFeeds.Feeds.Atom
 
 		#endregion IWebFeed Members
 
-		#region IWebFeedItem Members
+		#region IWebFeedBase Members
 
-		Uri IWebFeedItem.ID
+		Uri IWebFeedBase.ID
 		{
 			get { return ((IUriProvider)this).Uri; }
 		}
 
-		string IWebFeedItem.Title
+		string IWebFeedBase.Title
 		{
 			get
 			{
@@ -440,7 +425,7 @@ namespace WebFeeds.Feeds.Atom
 			}
 		}
 
-		string IWebFeedItem.Description
+		string IWebFeedBase.Description
 		{
 			get
 			{
@@ -452,7 +437,7 @@ namespace WebFeeds.Feeds.Atom
 			}
 		}
 
-		string IWebFeedItem.Author
+		string IWebFeedBase.Author
 		{
 			get
 			{
@@ -491,12 +476,12 @@ namespace WebFeeds.Feeds.Atom
 			}
 		}
 
-		DateTime? IWebFeedItem.Published
+		DateTime? IWebFeedBase.Published
 		{
-			get { return ((IWebFeedItem)this).Updated; }
+			get { return ((IWebFeedBase)this).Updated; }
 		}
 
-		DateTime? IWebFeedItem.Updated
+		DateTime? IWebFeedBase.Updated
 		{
 			get
 			{
@@ -509,7 +494,7 @@ namespace WebFeeds.Feeds.Atom
 			}
 		}
 
-		Uri IWebFeedItem.Link
+		Uri IWebFeedBase.Link
 		{
 			get
 			{
@@ -547,72 +532,7 @@ namespace WebFeeds.Feeds.Atom
 			}
 		}
 
-		Uri IWebFeedItem.ThreadLink
-		{
-			get
-			{
-				if (!this.LinksSpecified)
-				{
-					return null;
-				}
-
-				foreach (AtomLink link in this.Links)
-				{
-					if (link.Relation == AtomLinkRelation.Replies)
-					{
-						return ((IUriProvider)link).Uri;
-					}
-				}
-
-				return null;
-			}
-		}
-
-		int? IWebFeedItem.ThreadCount
-		{
-			get
-			{
-				if (!this.LinksSpecified)
-				{
-					return null;
-				}
-
-				foreach (AtomLink link in this.Links)
-				{
-					if (link.Relation == AtomLinkRelation.Replies &&
-						link.ThreadCountSpecified)
-					{
-						return link.ThreadCount;
-					}
-				}
-
-				return null;
-			}
-		}
-
-		DateTime? IWebFeedItem.ThreadUpdated
-		{
-			get
-			{
-				if (!this.LinksSpecified)
-				{
-					return null;
-				}
-
-				foreach (AtomLink link in this.Links)
-				{
-					if (link.Relation == AtomLinkRelation.Replies &&
-						link.ThreadUpdatedSpecified)
-					{
-						return link.ThreadUpdated.Value;
-					}
-				}
-
-				return null;
-			}
-		}
-
-		#endregion IWebFeedItem Members
+		#endregion IWebFeedBase Members
 
 		#region INamespaceProvider Members
 

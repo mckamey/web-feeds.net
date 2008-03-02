@@ -52,6 +52,7 @@ namespace WebFeeds.Feeds.Rdf
 		private string contentEncoded = null;
 		private Uri wfwComment = null;
 		private Uri wfwCommentRss = null;
+		private int? slashComments = null;
 
 		#endregion Fields
 
@@ -76,6 +77,10 @@ namespace WebFeeds.Feeds.Rdf
 			get { return this.DublinCore[DublinCore.TermName.Rights]; }
 		}
 
+		#endregion Properties
+
+		#region Content Extensions
+
 		/// <summary>
 		/// Gets and sets the encoded content for this item
 		/// </summary>
@@ -86,6 +91,10 @@ namespace WebFeeds.Feeds.Rdf
 			get { return this.contentEncoded; }
 			set { this.contentEncoded = value; }
 		}
+
+		#endregion Content Extensions
+
+		#region WellFormedWeb
 
 		/// <summary>
 		/// Gets and sets the Uri to which comments can be POSTed
@@ -109,7 +118,37 @@ namespace WebFeeds.Feeds.Rdf
 			set { this.wfwCommentRss = ExtensibleBase.ConvertToUri(value); }
 		}
 
-		#endregion Properties
+		#endregion WellFormedWeb
+
+		#region Slash Extensions
+
+		/// <summary>
+		/// Gets and sets the number of comments for this item
+		/// </summary>
+		[DefaultValue(null)]
+		[XmlElement(RdfItem.SlashCommentsElement, Namespace=RdfItem.SlashNamespace)]
+		public int SlashComments
+		{
+			get
+			{
+				if (!this.slashComments.HasValue)
+				{
+					return 0;
+				}
+				return this.slashComments.Value;
+			}
+			set { this.slashComments = value; }
+		}
+
+		[XmlIgnore]
+		[EditorBrowsable(EditorBrowsableState.Never)]
+		public bool SlashCommentsSpecified
+		{
+			get { return this.slashComments.HasValue; }
+			set { }
+		}
+
+		#endregion Slash Extensions
 
 		#region IWebFeedItem Members
 
@@ -132,7 +171,7 @@ namespace WebFeeds.Feeds.Rdf
 			}
 		}
 
-		Uri IWebFeedItem.ID
+		Uri IWebFeedBase.ID
 		{
 			get
 			{
@@ -145,7 +184,7 @@ namespace WebFeeds.Feeds.Rdf
 			}
 		}
 
-		string IWebFeedItem.Title
+		string IWebFeedBase.Title
 		{
 			get
 			{
@@ -158,7 +197,7 @@ namespace WebFeeds.Feeds.Rdf
 			}
 		}
 
-		string IWebFeedItem.Description
+		string IWebFeedBase.Description
 		{
 			get
 			{
@@ -179,7 +218,7 @@ namespace WebFeeds.Feeds.Rdf
 			}
 		}
 
-		string IWebFeedItem.Author
+		string IWebFeedBase.Author
 		{
 			get
 			{
@@ -197,7 +236,7 @@ namespace WebFeeds.Feeds.Rdf
 			}
 		}
 
-		DateTime? IWebFeedItem.Published
+		DateTime? IWebFeedBase.Published
 		{
 			get
 			{
@@ -206,7 +245,7 @@ namespace WebFeeds.Feeds.Rdf
 			}
 		}
 
-		DateTime? IWebFeedItem.Updated
+		DateTime? IWebFeedBase.Updated
 		{
 			get
 			{
@@ -215,7 +254,7 @@ namespace WebFeeds.Feeds.Rdf
 			}
 		}
 
-		Uri IWebFeedItem.Link
+		Uri IWebFeedBase.Link
 		{
 			get { return ((IUriProvider)this).Uri; }
 		}
@@ -227,7 +266,7 @@ namespace WebFeeds.Feeds.Rdf
 
 		int? IWebFeedItem.ThreadCount
 		{
-			get { return null; }
+			get { return this.SlashComments; }
 		}
 
 		DateTime? IWebFeedItem.ThreadUpdated

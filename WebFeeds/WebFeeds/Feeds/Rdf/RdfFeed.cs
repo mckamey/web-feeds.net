@@ -204,61 +204,46 @@ namespace WebFeeds.Feeds.Rdf
 			get { return this.Items.ToArray(); }
 		}
 
-		#endregion IWebFeedItem Members
+		#endregion IWebFeed Members
 
-		#region IWebFeedItem Members
+		#region IWebFeedBase Members
 
-		Uri IWebFeedItem.ID
+		Uri IWebFeedBase.ID
 		{
-			get { return ((IWebFeedItem)this.Channel).ID; }
+			get { return ((IWebFeedBase)this.Channel).ID; }
 		}
 
-		string IWebFeedItem.Title
+		string IWebFeedBase.Title
 		{
-			get { return ((IWebFeedItem)this.Channel).Title; }
+			get { return ((IWebFeedBase)this.Channel).Title; }
 		}
 
-		string IWebFeedItem.Description
+		string IWebFeedBase.Description
 		{
-			get { return ((IWebFeedItem)this.Channel).Description; }
+			get { return ((IWebFeedBase)this.Channel).Description; }
 		}
 
-		string IWebFeedItem.Author
+		string IWebFeedBase.Author
 		{
-			get { return ((IWebFeedItem)this.Channel).Author; }
+			get { return ((IWebFeedBase)this.Channel).Author; }
 		}
 
-		DateTime? IWebFeedItem.Published
+		DateTime? IWebFeedBase.Published
 		{
-			get { return ((IWebFeedItem)this.Channel).Published; }
+			get { return ((IWebFeedBase)this.Channel).Published; }
 		}
 
-		DateTime? IWebFeedItem.Updated
+		DateTime? IWebFeedBase.Updated
 		{
-			get { return ((IWebFeedItem)this.Channel).Updated; }
+			get { return ((IWebFeedBase)this.Channel).Updated; }
 		}
 
-		Uri IWebFeedItem.Link
+		Uri IWebFeedBase.Link
 		{
-			get { return ((IWebFeedItem)this.Channel).Link; }
+			get { return ((IWebFeedBase)this.Channel).Link; }
 		}
 
-		Uri IWebFeedItem.ThreadLink
-		{
-			get { return null; }
-		}
-
-		int? IWebFeedItem.ThreadCount
-		{
-			get { return null; }
-		}
-
-		DateTime? IWebFeedItem.ThreadUpdated
-		{
-			get { return null; }
-		}
-
-		#endregion IWebFeedItem Members
+		#endregion IWebFeedBase Members
 
 		#region INamespaceProvider Members
 
