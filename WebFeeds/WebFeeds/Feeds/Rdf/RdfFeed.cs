@@ -194,11 +194,6 @@ namespace WebFeeds.Feeds.Rdf
 			get { return this.Channel.Copyright; }
 		}
 
-		Uri IWebFeed.ImageLink
-		{
-			get { return ((IUriProvider)this.Image).Uri; }
-		}
-
 		IList<IWebFeedItem> IWebFeed.Items
 		{
 			get { return this.Items.ToArray(); }
@@ -241,6 +236,11 @@ namespace WebFeeds.Feeds.Rdf
 		Uri IWebFeedBase.Link
 		{
 			get { return ((IWebFeedBase)this.Channel).Link; }
+		}
+
+		Uri IWebFeedBase.ImageLink
+		{
+			get { return ((IUriProvider)this.Image).Uri; }
 		}
 
 		#endregion IWebFeedBase Members

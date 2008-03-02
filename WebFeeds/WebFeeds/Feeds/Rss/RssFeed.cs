@@ -99,18 +99,6 @@ namespace WebFeeds.Feeds.Rss
 			get { return this.Channel.Copyright; }
 		}
 
-		Uri IWebFeed.ImageLink
-		{
-			get
-			{
-				if (!this.Channel.ImageSpecified)
-				{
-					return null;
-				}
-				return ((IUriProvider)this.Channel.Image).Uri;
-			}
-		}
-
 		IList<IWebFeedItem> IWebFeed.Items
 		{
 			get { return this.Channel.Items.ToArray(); }
@@ -188,6 +176,18 @@ namespace WebFeeds.Feeds.Rss
 		Uri IWebFeedBase.Link
 		{
 			get { return ((IUriProvider)this.Channel).Uri; }
+		}
+
+		Uri IWebFeedBase.ImageLink
+		{
+			get
+			{
+				if (!this.Channel.ImageSpecified)
+				{
+					return null;
+				}
+				return ((IUriProvider)this.Channel.Image).Uri;
+			}
 		}
 
 		#endregion IWebFeedBase Members

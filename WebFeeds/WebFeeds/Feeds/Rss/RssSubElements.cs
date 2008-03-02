@@ -364,7 +364,7 @@ namespace WebFeeds.Feeds.Rss
 	///		http://www.reallysimplesyndication.com/discuss/msgReader$221
 	/// </summary>
 	[Serializable]
-	public class RssEnclosure : RssBase
+	public class RssEnclosure : RssBase, IUriProvider
 	{
 		#region Fields
 
@@ -426,6 +426,15 @@ namespace WebFeeds.Feeds.Rss
 		}
 
 		#endregion Properties
+
+		#region IUriProvider Members
+
+		Uri IUriProvider.Uri
+		{
+			get { return this.url; }
+		}
+
+		#endregion IUriProvider Members
 	}
 
 	#endregion RssEnclosure

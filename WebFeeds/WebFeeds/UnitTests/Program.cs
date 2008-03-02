@@ -90,9 +90,10 @@ namespace WebFeeds
 							writer.WriteLine("Item Description: {0}", item.Description);
 							writer.WriteLine("Item Author: {0}", item.Author);
 							writer.WriteLine("Item ID: {0}", item.ID);
-							writer.WriteLine("Item Link: {0}", item.Link);
 							writer.WriteLine("Item Published: {0}", item.Published);
 							writer.WriteLine("Item Updated: {0}", item.Updated);
+							writer.WriteLine("Item Link: {0}", item.Link);
+							writer.WriteLine("Item Image Link: {0}", item.ImageLink);
 							writer.WriteLine("Item Thread Link: {0}", item.ThreadLink);
 							writer.WriteLine("Item Thread Count: {0}", item.ThreadCount);
 							writer.WriteLine("Item Thread Updated: {0}", item.ThreadUpdated);

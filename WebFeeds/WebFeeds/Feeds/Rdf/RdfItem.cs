@@ -259,6 +259,11 @@ namespace WebFeeds.Feeds.Rdf
 			get { return ((IUriProvider)this).Uri; }
 		}
 
+		Uri IWebFeedBase.ImageLink
+		{
+			get { return null; }
+		}
+
 		Uri IWebFeedItem.ThreadLink
 		{
 			get { return this.wfwCommentRss; }
