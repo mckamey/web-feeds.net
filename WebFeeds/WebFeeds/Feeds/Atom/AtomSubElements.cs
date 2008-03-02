@@ -547,6 +547,12 @@ namespace WebFeeds.Feeds.Atom
 	[Serializable]
 	public class AtomLink : AtomCommonAttributes, IUriProvider
 	{
+		#region Constants
+
+		private const string RepliesRelation = "replies";
+
+		#endregion Constants
+
 		#region Fields
 
 		private string rel = null;
@@ -592,7 +598,7 @@ namespace WebFeeds.Feeds.Atom
 				// http://tools.ietf.org/html/rfc4685#section-4
 				if (this.ThreadCount > 0)
 				{
-					return "replies";
+					return AtomLink.RepliesRelation;
 				}
 				return this.rel;
 			}
@@ -652,11 +658,18 @@ namespace WebFeeds.Feeds.Atom
 		/// http://tools.ietf.org/html/rfc4685#section-4
 		/// </summary>
 		[XmlAttribute("count", Namespace=AtomLink.ThreadingNamespace)]
-		[DefaultValue(0)]
 		public int ThreadCount
 		{
 			get { return this.threadCount; }
 			set { this.threadCount = (value < 0) ? 0 : value; }
+		}
+
+		[XmlIgnore]
+		[EditorBrowsable(EditorBrowsableState.Never)]
+		public bool ThreadCountSpecified
+		{
+			get { return AtomLink.RepliesRelation.Equals(this.Rel); }
+			set { }
 		}
 
 		/// <summary>
