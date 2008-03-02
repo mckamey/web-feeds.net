@@ -424,7 +424,14 @@ namespace WebFeeds.Feeds.Rss
 
 		int? IWebFeedItem.ThreadCount
 		{
-			get { return this.SlashComments; }
+			get
+			{
+				if (!this.SlashCommentsSpecified)
+				{
+					return null;
+				}
+				return this.SlashComments;
+			}
 		}
 
 		DateTime? IWebFeedItem.ThreadUpdated

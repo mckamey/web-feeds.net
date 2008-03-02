@@ -54,7 +54,7 @@ namespace WebFeeds.Feeds.Atom
 		private AtomDate published;
 		private AtomSource source = null;
 		private AtomText summary = null;
-		private int threadTotal = 0;
+		private int? threadTotal = null;
 
 		#endregion Fields
 
@@ -114,12 +114,36 @@ namespace WebFeeds.Feeds.Atom
 		/// <summary>
 		/// http://tools.ietf.org/html/rfc4685#section-5
 		/// </summary>
-		[DefaultValue(0)]
 		[XmlElement(ElementName="total", Namespace=AtomEntry.ThreadingNamespace)]
 		public int ThreadTotal
 		{
-			get { return this.threadTotal; }
-			set { this.threadTotal = (value < 0) ? 0 : value; }
+			get
+			{
+				if (!this.threadTotal.HasValue)
+				{
+					return 0;
+				}
+				return this.threadTotal.Value;
+			}
+			set
+			{
+				if (value < 0)
+				{
+					this.threadTotal = null;
+				}
+				else
+				{
+					this.threadTotal = value;
+				}
+			}
+		}
+
+		[XmlIgnore]
+		[EditorBrowsable(EditorBrowsableState.Never)]
+		public bool ThreadTotalSpecified
+		{
+			get { return this.threadTotal.HasValue; }
+			set { }
 		}
 
 		#endregion Properties
@@ -292,21 +316,18 @@ namespace WebFeeds.Feeds.Atom
 		{
 			get
 			{
-				if (!this.LinksSpecified)
+				if (this.LinksSpecified)
 				{
-					return this.ThreadTotal;
-				}
-
-				foreach (AtomLink link in this.Links)
-				{
-					if (link.Relation == AtomLinkRelation.Replies &&
-						link.ThreadCountSpecified)
+					foreach (AtomLink link in this.Links)
 					{
-						return link.ThreadCount;
+						if (link.Relation == AtomLinkRelation.Replies &&
+						link.ThreadCountSpecified)
+						{
+							return link.ThreadCount;
+						}
 					}
 				}
-
-				return this.ThreadTotal;
+				return this.threadTotal;
 			}
 		}
 
@@ -314,20 +335,17 @@ namespace WebFeeds.Feeds.Atom
 		{
 			get
 			{
-				if (!this.LinksSpecified)
+				if (this.LinksSpecified)
 				{
-					return null;
-				}
-
-				foreach (AtomLink link in this.Links)
-				{
-					if (link.Relation == AtomLinkRelation.Replies &&
-						link.ThreadUpdatedSpecified)
+					foreach (AtomLink link in this.Links)
 					{
-						return link.ThreadUpdated.Value;
+						if (link.Relation == AtomLinkRelation.Replies &&
+						link.ThreadUpdatedSpecified)
+						{
+							return link.ThreadUpdated.Value;
+						}
 					}
 				}
-
 				return null;
 			}
 		}
