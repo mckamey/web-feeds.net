@@ -165,10 +165,14 @@ namespace WebFeeds.Feeds.Rdf
 				string description = this.description;
 				if (String.IsNullOrEmpty(description))
 				{
-					description = this.DublinCore[DublinCore.TermName.Description];
+					description = this.ContentEncoded;
 					if (String.IsNullOrEmpty(description))
 					{
-						description = this.DublinCore[DublinCore.TermName.Subject];
+						description = this.DublinCore[DublinCore.TermName.Description];
+						if (String.IsNullOrEmpty(description))
+						{
+							description = this.DublinCore[DublinCore.TermName.Subject];
+						}
 					}
 				}
 				return description;
