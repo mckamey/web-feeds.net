@@ -330,7 +330,7 @@ namespace WebFeeds.Feeds.Rss
 			get { return this.link; }
 		}
 
-		Uri IWebFeedItem.Thread
+		Uri IWebFeedItem.ThreadLink
 		{
 			get { return null; }
 		}

@@ -243,7 +243,7 @@ namespace WebFeeds.Feeds.Rdf
 			get { return ((IWebFeedItem)this.Channel).Link; }
 		}
 
-		Uri IWebFeedItem.Thread
+		Uri IWebFeedItem.ThreadLink
 		{
 			get { return null; }
 		}
