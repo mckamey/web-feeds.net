@@ -267,7 +267,7 @@ namespace WebFeeds.Feeds.Atom
 			}
 		}
 
-		Uri IWebFeedItem.Thread
+		Uri IWebFeedItem.ThreadLink
 		{
 			get
 			{

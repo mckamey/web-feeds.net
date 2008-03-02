@@ -179,7 +179,7 @@ namespace WebFeeds.Feeds.Rdf
 			get { return ((IUriProvider)this).Uri; }
 		}
 
-		Uri IWebFeedItem.Thread
+		Uri IWebFeedItem.ThreadLink
 		{
 			get { return null; }
 		}

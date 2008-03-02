@@ -103,7 +103,7 @@ namespace WebFeeds.Feeds
 		/// <summary>
 		/// Gets the link to comments on this item
 		/// </summary>
-		Uri Thread { get; }
+		Uri ThreadLink { get; }
 
 		/// <summary>
 		/// Gets the number of comments on this item

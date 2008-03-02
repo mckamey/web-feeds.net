@@ -190,7 +190,7 @@ namespace WebFeeds.Feeds.Rss
 			get { return ((IUriProvider)this.Channel).Uri; }
 		}
 
-		Uri IWebFeedItem.Thread
+		Uri IWebFeedItem.ThreadLink
 		{
 			get { return null; }
 		}
