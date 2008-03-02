@@ -330,6 +330,21 @@ namespace WebFeeds.Feeds.Rss
 			get { return this.link; }
 		}
 
+		Uri IWebFeedItem.Thread
+		{
+			get { return null; }
+		}
+
+		int IWebFeedItem.ThreadCount
+		{
+			get { return 0; }
+		}
+
+		DateTime? IWebFeedItem.ThreadUpdated
+		{
+			get { return null; }
+		}
+
 		#endregion IWebFeedItem Members
 	}
 }

@@ -547,14 +547,9 @@ namespace WebFeeds.Feeds.Atom
 	[Serializable]
 	public class AtomLink : AtomCommonAttributes, IUriProvider
 	{
-		#region Constants
-
-		private const string RepliesRelation = "replies";
-
-		#endregion Constants
-
 		#region Fields
 
+		private AtomLinkRelation relation = AtomLinkRelation.None;
 		private string rel = null;
 		private string type = null;
 		private Uri href = null;
@@ -589,20 +584,57 @@ namespace WebFeeds.Feeds.Atom
 
 		#region Properties
 
-		[XmlAttribute("rel")]
-		[DefaultValue(null)]
-		public string Rel
+		[XmlIgnore]
+		[DefaultValue(AtomLinkRelation.None)]
+		public AtomLinkRelation Relation
 		{
 			get
 			{
 				// http://tools.ietf.org/html/rfc4685#section-4
 				if (this.ThreadCount > 0)
 				{
-					return AtomLink.RepliesRelation;
+					return AtomLinkRelation.Replies;
 				}
-				return this.rel;
+				return this.relation;
 			}
-			set { this.rel = String.IsNullOrEmpty(value) ? null : value; }
+			set
+			{
+				this.relation = value;
+				this.rel = null;
+			}
+		}
+
+		[XmlAttribute("rel")]
+		[DefaultValue(null)]
+		public string Rel
+		{
+			get
+			{
+				if (this.Relation == AtomLinkRelation.None)
+				{
+					return this.rel;
+				}
+
+				return this.relation.ToString().ToLowerInvariant();
+			}
+			set
+			{
+				if (String.IsNullOrEmpty(value))
+				{
+					this.relation = AtomLinkRelation.None;
+					this.rel = null;
+				}
+
+				try
+				{
+					this.relation = (AtomLinkRelation)Enum.Parse(typeof(AtomLinkRelation), value, true);
+				}
+				catch
+				{
+					this.relation = AtomLinkRelation.None;
+					this.rel = value;
+				}
+			}
 		}
 
 		[XmlAttribute("type")]
@@ -668,7 +700,7 @@ namespace WebFeeds.Feeds.Atom
 		[EditorBrowsable(EditorBrowsableState.Never)]
 		public bool ThreadCountSpecified
 		{
-			get { return AtomLink.RepliesRelation.Equals(this.Rel); }
+			get { return (this.Relation == AtomLinkRelation.Replies); }
 			set { }
 		}
 
@@ -681,6 +713,14 @@ namespace WebFeeds.Feeds.Atom
 		{
 			get { return this.threadUpdated.Value_Iso8601; }
 			set { this.threadUpdated.Value_Iso8601 = value; }
+		}
+
+		[XmlIgnore]
+		[EditorBrowsable(EditorBrowsableState.Never)]
+		public bool ThreadUpdatedSpecified
+		{
+			get { return (this.Relation == AtomLinkRelation.Replies) && this.threadUpdated.HasValue; }
+			set { }
 		}
 
 		#endregion Properties
@@ -716,6 +756,48 @@ namespace WebFeeds.Feeds.Atom
 		}
 
 		#endregion INamespaceProvider Members
+	}
+
+	public enum AtomLinkRelation
+	{
+		[XmlEnum(null)]
+		None,
+
+		[XmlEnum("alternate")]
+		Alternate,
+
+		[XmlEnum("related")]
+		Related,
+
+		[XmlEnum("self")]
+		Self,
+
+		[XmlEnum("enclosure")]
+		Enclosure,
+
+		[XmlEnum("via")]
+		Via,
+
+		[XmlEnum("replies")]
+		Replies,
+
+		[XmlEnum("edit")]
+		Edit,
+
+		[XmlEnum("current")]
+		Current,
+
+		[XmlEnum("previous")]
+		Previous,
+
+		[XmlEnum("next")]
+		Next,
+
+		[XmlEnum("prev-archive")]
+		PrevArchive,
+
+		[XmlEnum("next-archive")]
+		NextArchive
 	}
 
 	#endregion AtomLink

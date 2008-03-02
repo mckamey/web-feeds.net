@@ -99,6 +99,21 @@ namespace WebFeeds.Feeds
 		/// Gets the link to the full version
 		/// </summary>
 		Uri Link { get; }
+
+		/// <summary>
+		/// Gets the link to comments on this item
+		/// </summary>
+		Uri Thread { get; }
+
+		/// <summary>
+		/// Gets the number of comments on this item
+		/// </summary>
+		int ThreadCount { get; }
+
+		/// <summary>
+		/// Gets the number of comments on this item
+		/// </summary>
+		DateTime? ThreadUpdated { get; }
 	}
 
 	public interface INamespaceProvider
