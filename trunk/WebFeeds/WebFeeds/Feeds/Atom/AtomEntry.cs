@@ -126,12 +126,12 @@ namespace WebFeeds.Feeds.Atom
 
 		#region IWebFeedItem Members
 
-		Uri IWebFeedItem.ID
+		Uri IWebFeedBase.ID
 		{
 			get { return ((IUriProvider)this).Uri; }
 		}
 
-		string IWebFeedItem.Title
+		string IWebFeedBase.Title
 		{
 			get
 			{
@@ -143,7 +143,7 @@ namespace WebFeeds.Feeds.Atom
 			}
 		}
 
-		string IWebFeedItem.Description
+		string IWebFeedBase.Description
 		{
 			get
 			{
@@ -159,7 +159,7 @@ namespace WebFeeds.Feeds.Atom
 			}
 		}
 
-		string IWebFeedItem.Author
+		string IWebFeedBase.Author
 		{
 			get
 			{
@@ -198,20 +198,20 @@ namespace WebFeeds.Feeds.Atom
 			}
 		}
 
-		DateTime? IWebFeedItem.Published
+		DateTime? IWebFeedBase.Published
 		{
 			get
 			{
 				if (!this.Published.HasValue)
 				{
-					return ((IWebFeedItem)this).Updated;
+					return ((IWebFeedBase)this).Updated;
 				}
 
 				return this.Published.Value;
 			}
 		}
 
-		DateTime? IWebFeedItem.Updated
+		DateTime? IWebFeedBase.Updated
 		{
 			get
 			{
@@ -224,7 +224,7 @@ namespace WebFeeds.Feeds.Atom
 			}
 		}
 
-		Uri IWebFeedItem.Link
+		Uri IWebFeedBase.Link
 		{
 			get
 			{

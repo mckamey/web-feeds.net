@@ -37,7 +37,7 @@ namespace WebFeeds.Feeds
 	/// <summary>
 	/// Feed interface
 	/// </summary>
-	public interface IWebFeed : IWebFeedItem, INamespaceProvider
+	public interface IWebFeed : IWebFeedBase, INamespaceProvider
 	{
 		/// <summary>
 		/// Gets the MIME Type designation for the feed
@@ -63,7 +63,28 @@ namespace WebFeeds.Feeds
 	/// <summary>
 	/// Item interface
 	/// </summary>
-	public interface IWebFeedItem
+	public interface IWebFeedItem : IWebFeedBase
+	{
+		/// <summary>
+		/// Gets the link to comments on this item
+		/// </summary>
+		Uri ThreadLink { get; }
+
+		/// <summary>
+		/// Gets the number of comments on this item
+		/// </summary>
+		int? ThreadCount { get; }
+
+		/// <summary>
+		/// Gets the number of comments on this item
+		/// </summary>
+		DateTime? ThreadUpdated { get; }
+	}
+
+	/// <summary>
+	/// Item interface
+	/// </summary>
+	public interface IWebFeedBase
 	{
 		/// <summary>
 		/// Gets a unique identifier
@@ -99,21 +120,6 @@ namespace WebFeeds.Feeds
 		/// Gets the link to the full version
 		/// </summary>
 		Uri Link { get; }
-
-		/// <summary>
-		/// Gets the link to comments on this item
-		/// </summary>
-		Uri ThreadLink { get; }
-
-		/// <summary>
-		/// Gets the number of comments on this item
-		/// </summary>
-		int? ThreadCount { get; }
-
-		/// <summary>
-		/// Gets the number of comments on this item
-		/// </summary>
-		DateTime? ThreadUpdated { get; }
 	}
 
 	public interface INamespaceProvider

@@ -116,26 +116,26 @@ namespace WebFeeds.Feeds.Rss
 			get { return this.Channel.Items.ToArray(); }
 		}
 
-		#endregion IWebFeedItem Members
+		#endregion IWebFeed Members
 
-		#region IWebFeedItem Members
+		#region IWebFeedBase Members
 
-		Uri IWebFeedItem.ID
+		Uri IWebFeedBase.ID
 		{
 			get { return ((IUriProvider)this.Channel).Uri; }
 		}
 
-		string IWebFeedItem.Title
+		string IWebFeedBase.Title
 		{
 			get { return this.Channel.Title; }
 		}
 
-		string IWebFeedItem.Description
+		string IWebFeedBase.Description
 		{
 			get { return this.Channel.Description; }
 		}
 
-		string IWebFeedItem.Author
+		string IWebFeedBase.Author
 		{
 			get
 			{
@@ -159,20 +159,20 @@ namespace WebFeeds.Feeds.Rss
 			}
 		}
 
-		DateTime? IWebFeedItem.Published
+		DateTime? IWebFeedBase.Published
 		{
 			get
 			{
 				if (!this.Channel.PubDate.HasValue)
 				{
-					return ((IWebFeedItem)this).Updated;
+					return ((IWebFeedBase)this).Updated;
 				}
 
 				return this.Channel.PubDate.Value;
 			}
 		}
 
-		DateTime? IWebFeedItem.Updated
+		DateTime? IWebFeedBase.Updated
 		{
 			get
 			{
@@ -185,27 +185,12 @@ namespace WebFeeds.Feeds.Rss
 			}
 		}
 
-		Uri IWebFeedItem.Link
+		Uri IWebFeedBase.Link
 		{
 			get { return ((IUriProvider)this.Channel).Uri; }
 		}
 
-		Uri IWebFeedItem.ThreadLink
-		{
-			get { return null; }
-		}
-
-		int? IWebFeedItem.ThreadCount
-		{
-			get { return null; }
-		}
-
-		DateTime? IWebFeedItem.ThreadUpdated
-		{
-			get { return null; }
-		}
-
-		#endregion IWebFeedItem Members
+		#endregion IWebFeedBase Members
 
 		#region INamespaceProvider Members
 

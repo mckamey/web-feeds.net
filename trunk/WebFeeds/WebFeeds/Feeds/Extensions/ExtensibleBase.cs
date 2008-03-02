@@ -53,6 +53,13 @@ namespace WebFeeds.Feeds.Extensions
 		protected const string WfwCommentElement = "comment";
 		protected const string WfwCommentRssElement = "commentRss";
 
+		protected const string SlashPrefix = "slash";
+		protected const string SlashNamespace = "http://purl.org/rss/1.0/modules/slash/";
+		//protected const string SlashSectionElement = "section";
+		//protected const string SlashDepartmentElement = "department";
+		protected const string SlashCommentsElement = "comments";
+		//protected const string SlashHitParadeElement = "hit_parade";
+
 		#endregion Constants
 
 		#region Fields
