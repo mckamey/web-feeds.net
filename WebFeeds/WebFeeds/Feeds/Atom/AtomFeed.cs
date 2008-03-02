@@ -94,7 +94,7 @@ namespace WebFeeds.Feeds.Atom
 			}
 		}
 
-		Uri IWebFeed.Image
+		Uri IWebFeed.ImageLink
 		{
 			get
 			{
@@ -232,9 +232,9 @@ namespace WebFeeds.Feeds.Atom
 			get { return null; }
 		}
 
-		int IWebFeedItem.ThreadCount
+		int? IWebFeedItem.ThreadCount
 		{
-			get { return 0; }
+			get { return null; }
 		}
 
 		DateTime? IWebFeedItem.ThreadUpdated
@@ -402,7 +402,7 @@ namespace WebFeeds.Feeds.Atom
 			}
 		}
 
-		Uri IWebFeed.Image
+		Uri IWebFeed.ImageLink
 		{
 			get
 			{
@@ -568,13 +568,13 @@ namespace WebFeeds.Feeds.Atom
 			}
 		}
 
-		int IWebFeedItem.ThreadCount
+		int? IWebFeedItem.ThreadCount
 		{
 			get
 			{
 				if (!this.LinksSpecified)
 				{
-					return 0;
+					return null;
 				}
 
 				foreach (AtomLink link in this.Links)
@@ -586,7 +586,7 @@ namespace WebFeeds.Feeds.Atom
 					}
 				}
 
-				return 0;
+				return null;
 			}
 		}
 

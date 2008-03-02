@@ -79,7 +79,7 @@ namespace WebFeeds
 						writer.WriteLine("Feed Copyright: {0}", feed.Copyright);
 						writer.WriteLine("Feed ID: {0}", feed.ID);
 						writer.WriteLine("Feed Link: {0}", feed.Link);
-						writer.WriteLine("Feed Image: {0}", feed.Image);
+						writer.WriteLine("Feed Image Link: {0}", feed.ImageLink);
 						writer.WriteLine("Feed Published: {0}", feed.Published);
 						writer.WriteLine("Feed Updated: {0}", feed.Updated);
 						writer.WriteLine("Feed Thread Link: {0}", feed.ThreadLink);

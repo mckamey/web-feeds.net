@@ -99,7 +99,7 @@ namespace WebFeeds.Feeds.Rss
 			get { return this.Channel.Copyright; }
 		}
 
-		Uri IWebFeed.Image
+		Uri IWebFeed.ImageLink
 		{
 			get
 			{
@@ -195,9 +195,9 @@ namespace WebFeeds.Feeds.Rss
 			get { return null; }
 		}
 
-		int IWebFeedItem.ThreadCount
+		int? IWebFeedItem.ThreadCount
 		{
-			get { return 0; }
+			get { return null; }
 		}
 
 		DateTime? IWebFeedItem.ThreadUpdated

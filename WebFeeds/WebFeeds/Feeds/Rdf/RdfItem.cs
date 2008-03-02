@@ -184,9 +184,9 @@ namespace WebFeeds.Feeds.Rdf
 			get { return null; }
 		}
 
-		int IWebFeedItem.ThreadCount
+		int? IWebFeedItem.ThreadCount
 		{
-			get { return 0; }
+			get { return null; }
 		}
 
 		DateTime? IWebFeedItem.ThreadUpdated

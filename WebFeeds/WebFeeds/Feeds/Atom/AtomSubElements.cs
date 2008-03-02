@@ -550,7 +550,7 @@ namespace WebFeeds.Feeds.Atom
 		#region Fields
 
 		private AtomLinkRelation relation = AtomLinkRelation.None;
-		private string rel = null;
+		private Uri rel = null;
 		private string type = null;
 		private Uri href = null;
 		private string hreflang = null;
@@ -612,10 +612,25 @@ namespace WebFeeds.Feeds.Atom
 			{
 				if (this.Relation == AtomLinkRelation.None)
 				{
-					return this.rel;
+					return ExtensibleBase.ConvertToString(this.rel);
 				}
 
-				return this.relation.ToString().ToLowerInvariant();
+				// TODO: use XmlEnum values
+				switch (this.relation)
+				{
+					case AtomLinkRelation.NextArchive:
+					{
+						return "next-archive";
+					}
+					case AtomLinkRelation.PrevArchive:
+					{
+						return "prev-archive";
+					}
+					default:
+					{
+						return this.relation.ToString().ToLowerInvariant();
+					}
+				}
 			}
 			set
 			{
@@ -627,12 +642,13 @@ namespace WebFeeds.Feeds.Atom
 
 				try
 				{
-					this.relation = (AtomLinkRelation)Enum.Parse(typeof(AtomLinkRelation), value, true);
+					// TODO: use XmlEnum values
+					this.relation = (AtomLinkRelation)Enum.Parse(typeof(AtomLinkRelation), value.Replace("-",""), true);
 				}
 				catch
 				{
 					this.relation = AtomLinkRelation.None;
-					this.rel = value;
+					this.rel = ExtensibleBase.ConvertToUri(value);
 				}
 			}
 		}
@@ -770,6 +786,9 @@ namespace WebFeeds.Feeds.Atom
 		#endregion INamespaceProvider Members
 	}
 
+	/// <summary>
+	/// http://www.iana.org/assignments/link-relations.html
+	/// </summary>
 	public enum AtomLinkRelation
 	{
 		[XmlEnum(null)]
@@ -778,38 +797,53 @@ namespace WebFeeds.Feeds.Atom
 		[XmlEnum("alternate")]
 		Alternate,
 
-		[XmlEnum("related")]
-		Related,
-
-		[XmlEnum("self")]
-		Self,
+		[XmlEnum("current")]
+		Current,
 
 		[XmlEnum("enclosure")]
 		Enclosure,
 
-		[XmlEnum("via")]
-		Via,
-
-		[XmlEnum("replies")]
-		Replies,
-
 		[XmlEnum("edit")]
 		Edit,
 
-		[XmlEnum("current")]
-		Current,
+		[XmlEnum("edit-media")]
+		EditMedia,
 
-		[XmlEnum("previous")]
-		Previous,
+		[XmlEnum("first")]
+		First,
+
+		[XmlEnum("last")]
+		Last,
+
+		[XmlEnum("license")]
+		License,
 
 		[XmlEnum("next")]
 		Next,
 
+		[XmlEnum("next-archive")]
+		NextArchive,
+
+		[XmlEnum("payment")]
+		Payment,
+
+		[XmlEnum("previous")]
+		Previous,
+
 		[XmlEnum("prev-archive")]
 		PrevArchive,
 
-		[XmlEnum("next-archive")]
-		NextArchive
+		[XmlEnum("related")]
+		Related,
+
+		[XmlEnum("replies")]
+		Replies,
+
+		[XmlEnum("self")]
+		Self,
+
+		[XmlEnum("via")]
+		Via
 	}
 
 	#endregion AtomLink
