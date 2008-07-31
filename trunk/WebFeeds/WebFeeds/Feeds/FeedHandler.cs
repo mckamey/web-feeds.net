@@ -247,6 +247,9 @@ namespace WebFeeds.Feeds
 					// this way we don't have to jump through
 					// elaborate hoops to pass in the arguments
 
+					// enable current context
+					HttpContext.Current = context;
+
 					try
 					{
 						worker[Key_Feed] = this.GenerateFeed(context);
