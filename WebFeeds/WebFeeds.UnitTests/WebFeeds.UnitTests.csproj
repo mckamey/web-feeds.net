@@ -151,7 +151,7 @@
   <ItemGroup>
     <ProjectReference Include="..\WebFeeds\WebFeeds.csproj">
       <Project>{301120A9-E032-4770-8589-552E80FF4C45}</Project>
-      <Name>WebFeeds</Name>
+      <Name>WebFeeds %28WebFeeds\WebFeeds%29</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
