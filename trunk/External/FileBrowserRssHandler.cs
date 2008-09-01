@@ -8,7 +8,7 @@ using System.Globalization;
 using WebFeeds.Feeds;
 using WebFeeds.Feeds.Rss;
 using WebFeeds.Feeds.Extensions;
-using MediaLib.Web;
+using MimeUtils;
 using MediaLib.Web.Hosting;
 
 namespace MediaLib.Web.Handlers
