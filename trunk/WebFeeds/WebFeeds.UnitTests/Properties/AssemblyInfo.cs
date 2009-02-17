@@ -1,11 +1,11 @@
-﻿#region WebFeeds License
+﻿#region License
 /*---------------------------------------------------------------------------------*\
 
-	WebFeeds distributed under the terms of an MIT-style license:
+	Distributed under the terms of an MIT-style license:
 
 	The MIT License
 
-	Copyright (c) 2006-2008 Stephen M. McKamey
+	Copyright (c) 2006-2009 Stephen M. McKamey
 
 	Permission is hereby granted, free of charge, to any person obtaining a copy
 	of this software and associated documentation files (the "Software"), to deal
@@ -26,7 +26,7 @@
 	THE SOFTWARE.
 
 \*---------------------------------------------------------------------------------*/
-#endregion WebFeeds License
+#endregion License
 
 using System.Reflection;
 using System.Runtime.CompilerServices;
@@ -37,7 +37,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("WebFeeds")]
-[assembly: AssemblyCopyright("Copyright © 2006-2008 Stephen M. McKamey. All rights reserved.")]
+[assembly: AssemblyCopyright("Copyright © 2006-2009 Stephen M. McKamey. All rights reserved.")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
