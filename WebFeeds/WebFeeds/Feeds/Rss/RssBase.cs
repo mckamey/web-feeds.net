@@ -30,12 +30,12 @@
 
 using System;
 
-using WebFeeds.Feeds.Modules;
+using WebFeeds.Feeds.Extensions;
 
 namespace WebFeeds.Feeds.Rss
 {
 	[Serializable]
-	public abstract class RssBase : FeedExtension
+	public abstract class RssBase : ExtensibleBase
 	{
 	}
 }

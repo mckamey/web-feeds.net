@@ -32,7 +32,7 @@ using System;
 using System.ComponentModel;
 using System.Xml.Serialization;
 
-using WebFeeds.Feeds.Modules;
+using WebFeeds.Feeds.Extensions;
 
 namespace WebFeeds.Feeds.Rss
 {
@@ -95,7 +95,7 @@ namespace WebFeeds.Feeds.Rss
 			get { return RssFeed.MimeType; }
 		}
 
-		void IWebFeed.AddNamespaces(XmlSerializerNamespaces namespaces)
+		void INamespaceProvider.AddNamespaces(XmlSerializerNamespaces namespaces)
 		{
 			namespaces.Add("", RssFeed.Namespace);
 		}

@@ -34,7 +34,7 @@ using System.Collections.Generic;
 using System.Xml;
 using System.Xml.Serialization;
 
-using WebFeeds.Feeds.Modules;
+using WebFeeds.Feeds.Extensions;
 
 namespace WebFeeds.Feeds.Rdf
 {
@@ -43,7 +43,7 @@ namespace WebFeeds.Feeds.Rdf
 	///		http://web.resource.org/rss/1.0/spec#s5.3
 	/// </summary>
 	[Serializable]
-	public abstract class RdfBase : FeedExtension
+	public abstract class RdfBase : ExtensibleBase
 	{
 		#region Fields
 

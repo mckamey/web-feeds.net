@@ -36,15 +36,18 @@ namespace WebFeeds.Feeds
 	/// <summary>
 	/// Feed interface
 	/// </summary>
-	public interface IWebFeed
+	public interface IWebFeed : INamespaceProvider
 	{
 		/// <summary>
 		/// Gets the MIME Type designation for the feed
 		/// </summary>
 		string MimeType { get; }
+	}
 
+	public interface INamespaceProvider
+	{
 		/// <summary>
-		/// Gets the default namespace URI for the feed
+		/// Adds additional namespace URIs for the feed
 		/// </summary>
 		void AddNamespaces(XmlSerializerNamespaces namespaces);
 	}

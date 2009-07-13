@@ -34,7 +34,7 @@ using System.ComponentModel;
 using System.Xml;
 using System.Xml.Serialization;
 
-using WebFeeds.Feeds.Modules;
+using WebFeeds.Feeds.Extensions;
 
 namespace WebFeeds.Feeds.Rdf
 {
@@ -43,7 +43,7 @@ namespace WebFeeds.Feeds.Rdf
 	///		http://web.resource.org/rss/1.0/spec#s5.2
 	/// </summary>
 	[XmlRoot(RdfFeed.RootElement, Namespace=RdfFeed.NamespaceRdf)]
-	public class RdfFeed : FeedExtension, IWebFeed
+	public class RdfFeed : ExtensibleBase, IWebFeed
 	{
 		#region Constants
 
@@ -175,7 +175,7 @@ namespace WebFeeds.Feeds.Rdf
 			get { return RdfFeed.MimeType; }
 		}
 
-		void IWebFeed.AddNamespaces(XmlSerializerNamespaces namespaces)
+		void INamespaceProvider.AddNamespaces(XmlSerializerNamespaces namespaces)
 		{
 			namespaces.Add("", RdfFeed.NamespaceRss10);
 			namespaces.Add("rdf", RdfFeed.NamespaceRdf);
