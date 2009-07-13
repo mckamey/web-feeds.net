@@ -34,9 +34,9 @@ using System.Runtime.InteropServices;
 
 [assembly: AssemblyTitle("WebFeeds")]
 [assembly: AssemblyDescription("")]
-[assembly: AssemblyProduct("JsonFx.NET")]
+[assembly: AssemblyProduct("WebFeeds")]
 [assembly: AssemblyCopyright("Copyright © 2006-2009 Stephen M. McKamey. All rights reserved.")]
-[assembly: AssemblyCompany("http://jsonfx.net")]
+[assembly: AssemblyCompany("http://code.google.com/p/web-feeds/")]
 #if DEBUG
 [assembly: AssemblyConfiguration("Debug")]
 #else

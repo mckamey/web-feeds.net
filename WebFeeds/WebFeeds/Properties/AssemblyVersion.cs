@@ -7,5 +7,6 @@
 using System.Reflection;
 
 [assembly: AssemblyVersion("1.0.902.1710")]
+[assembly: AssemblyFileVersion("1.0.902.1710")]
 
 #endregion 1.0.902.1710
