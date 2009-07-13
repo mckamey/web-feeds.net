@@ -33,7 +33,7 @@ using System.ComponentModel;
 using System.Collections.Generic;
 using System.Xml.Serialization;
 
-using WebFeeds.Feeds.Modules;
+using WebFeeds.Feeds.Extensions;
 
 namespace WebFeeds.Feeds.Atom
 {
@@ -46,7 +46,7 @@ namespace WebFeeds.Feeds.Atom
 	///		attribute xml:base?
 	///		attribute xml:lang?
 	/// </remarks>
-	public abstract class AtomCommonAttributes : FeedExtension
+	public abstract class AtomCommonAttributes : ExtensibleBase
 	{
 		#region Constants
 

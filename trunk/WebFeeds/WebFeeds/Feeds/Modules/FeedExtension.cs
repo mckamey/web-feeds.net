@@ -29,64 +29,96 @@
 #endregion WebFeeds License
 
 using System;
-using System.ComponentModel;
 using System.Collections.Generic;
 using System.Xml;
 using System.Xml.Serialization;
 
-namespace WebFeeds.Feeds.Modules
+namespace WebFeeds.Feeds.Extensions
 {
-	public class FeedExtension
+	/// <summary>
+	/// Allows any generic extensions expressed as XmlElements and XmlAttributes
+	/// </summary>
+	public abstract class ExtensibleBase : INamespaceProvider
 	{
 		#region Fields
 
-		private List<XmlNode> elements = new List<XmlNode>();
-		private List<XmlNode> attributes = new List<XmlNode>();
+		[XmlAnyElement]
+		public readonly List<XmlElement> ElementExtensions = new List<XmlElement>();
+
+		[XmlAnyAttribute]
+		public readonly List<XmlAttribute> AttributeExtensions = new List<XmlAttribute>();
 
 		#endregion Fields
 
-		#region Properties
+		#region Methods
 
-		[XmlAnyAttribute]
-		public List<XmlNode> ExtendedAttributes
+		/// <summary>
+		/// Applies the extensions in adaptor to ExtensibleBase
+		/// </summary>
+		/// <param name="adaptor"></param>
+		public void ApplyExtensions(IExtensionAdaptor adaptor)
 		{
-			get { return this.attributes; }
-			set { this.attributes = value; }
+			if (adaptor == null)
+			{
+				return;
+			}
+
+			IEnumerable<XmlAttribute> attributes = adaptor.GetAttributeEntensions();
+			if (attributes != null)
+			{
+				this.AttributeExtensions.AddRange(attributes);
+			}
+
+			IEnumerable<XmlElement> elements = adaptor.GetElementExtensions();
+			if (elements != null)
+			{
+				this.ElementExtensions.AddRange(elements);
+			}
 		}
 
-		[XmlIgnore]
-		[Browsable(false)]
-		public bool ExtendedAttributesSpecified
+		/// <summary>
+		/// Extracts the extensions in this ExtensibleBase into adaptor
+		/// </summary>
+		/// <param name="adaptor"></param>
+		public void LoadExtensions(IExtensionAdaptor adaptor)
 		{
-			get { return (this.attributes != null && this.attributes.Count > 0); }
+			if (adaptor == null)
+			{
+				return;
+			}
+
+			adaptor.SetAttributeEntensions(this.AttributeExtensions);
+			adaptor.SetElementExtensions(this.ElementExtensions);
 		}
 
-		[XmlAnyElement]
-		public List<XmlNode> ExtendedElements
-		{
-			get { return this.elements; }
-			set { this.elements = value; }
-		}
+		#endregion Methods
 
-		[XmlIgnore]
-		[Browsable(false)]
-		public bool ExtendedElementsSpecified
-		{
-			get { return (this.elements != null && this.elements.Count > 0); }
-		}
+		#region INamespaceProvider Members
 
 		public virtual void AddNamespaces(XmlSerializerNamespaces namespaces)
 		{
-			foreach (XmlNode node in this.ExtendedAttributes)
+			foreach (XmlNode node in this.AttributeExtensions)
 			{
 				namespaces.Add(node.Prefix, node.NamespaceURI);
 			}
-			foreach (XmlNode node in this.ExtendedElements)
+			foreach (XmlNode node in this.ElementExtensions)
 			{
 				namespaces.Add(node.Prefix, node.NamespaceURI);
 			}
 		}
 
-		#endregion Properties
+		#endregion INamespaceProvider Members
+	}
+
+	/// <summary>
+	/// Interface that adaptors implement to apply / extract additional elements and attributes
+	/// </summary>
+	public interface IExtensionAdaptor
+	{
+		IEnumerable<XmlAttribute> GetAttributeEntensions();
+		IEnumerable<XmlElement> GetElementExtensions();
+
+		void SetAttributeEntensions(IEnumerable<XmlAttribute> attributes);
+		void SetElementExtensions(IEnumerable<XmlElement> elements);
 	}
 }
